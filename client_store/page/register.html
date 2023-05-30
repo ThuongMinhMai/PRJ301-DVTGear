@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#fad56a",
+              "dvt-black-1": "#2a303c",
+              "dvt-black-2": "#1b1a21",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style type="text/tailwindcss">
+      body {
+        background-color: #2a303c;
+        background-image: url("../assets/food.png");
+      }
+      input:focus ~ label {
+        top: -20px;
+      }
+      input:valid ~ label {
+        top: -20px;
+      }
+      .icon {
+        -webkit-filter: invert(100%);
+      }
+    </style>
+    <title>DVT Login</title>
+    <link rel="icon" href="../assets/logovuongtachen.png" type="icon" />
+  </head>
+
+  <body class="font-[roboto]">
+    <div class="inset-0 absolute bg-cover -z-50"></div>
+    <div class="flex justify-center items-center h-screen">
+      <div
+        class="relative flex justify-center items-center w-[450px] h-[550px] bg-[#1b1a21] border-[2px] border-white rounded-xl"
+      >
+        <div class="form-value">
+          <form action="" class="flex justify-center flex-col items-center">
+            <h2 class="text-5xl text-[#F0F8FF] text-center">Register</h2>
+            <div
+              class="input relative flex-row justify-center items-center mx-0 my-4 w-80 border-b-[2px] border-white"
+            >
+              <img
+                class="w-[6%] absolute right-2 text-white top-[-10px] icon"
+                src="../assets/email.svg"
+              />
+              <input
+                class="w-[100%] h-5 bg-transparent border-none outline-none text-base py-0 pr-[35px] pl-[5px] text-white"
+                type="text"
+                required
+              />
+              <label
+                class="absolute text-white top-[10%] left-1 mb-[-10px] pointer-events-none transition duration-500"
+                for=""
+                >Username</label
+              >
+            </div>
+            <div
+              class="input relative flex-row justify-center items-center mx-0 my-4 w-80 border-b-[2px] border-white"
+            >
+              <img
+                class="w-[6%] absolute right-2 text-white top-[-10px] icon"
+                src="../assets/lock.svg"
+              />
+              <input
+                class="w-[100%] h-5 bg-transparent border-none outline-none text-base py-0 pr-[35px] pl-[5px] text-white"
+                type="password"
+                required
+              />
+              <label
+                class="absolute text-white top-[10%] left-1 mb-[-10px] pointer-events-none transition duration-500"
+                for=""
+                >Password</label
+              >
+            </div>
+            <div
+              class="input relative flex-row justify-center items-center mx-0 mt-4 w-80 border-b-[2px] border-white"
+            >
+              <img
+                class="w-[6%] absolute right-2 text-white top-[-10px] icon"
+                src="../assets/lock.svg"
+              />
+              <input
+                class="w-[100%] h-5 bg-transparent border-none outline-none text-base py-0 pr-[35px] pl-[5px] text-white"
+                type="password"
+                required
+              />
+              <label
+                class="absolute text-white top-[10%] left-1 mb-[-10px] pointer-events-none transition duration-500"
+                for=""
+                >Confirm Password</label
+              >
+            </div>
+            <div
+              class="text-red-500 py-2 px-4 rounded-xl border-red-500 border bg-red-200 my-3 w-80"
+            >
+              The username or password is incorrect
+            </div>
+            <button
+              class="w-[100%] h-10 rounded-[40px] bg-[#fad56a] border-none outline-none cursor-pointer text-xl font-semibold login-button hover:opacity-70"
+            >
+              Register
+            </button>
+            <div
+              class="text-xl text-white text-center mt-2 flex flex-row justify-center items-center register"
+            >
+              <p>
+                Already have an account?<a
+                  class="no-underline text-white font-semibold ml-2 hover:underline"
+                  href="#"
+                  >Login</a
+                >
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

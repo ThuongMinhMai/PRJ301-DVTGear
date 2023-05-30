@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* For Webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #424242;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #7b7b7b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a0a0a0;
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #7b7b7b #424242;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: #424242;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #7b7b7b;
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #a0a0a0;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Opera */
+}
+
+body {
+  @apply bg-primary;
+}
+
+.icon {
+  filter: invert(100%);
+  transition: filter 0.3s ease-in-out;
+}
+
+.icon:hover {
+  filter: invert(0%);
+}
+
+h1 {
+  @apply text-3xl font-bold;
+}
+
+.navigation_effect {
+  @apply relative;
+}
+
+.navigation_effect::before {
+  content: "";
+  width: 36px;
+  height: 36px;
+  background-color: transparent;
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-radius: 50%;
+  transform: translateY(-100%);
+  box-shadow: 18px 18px 0 0 red;
+}
+
+.navigation_effect::after {
+  content: "";
+  width: 36px;
+  height: 36px;
+  background-color: transparent;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  border-radius: 50%;
+  transform: translateY(100%);
+  box-shadow: 18px -18px 0 0 yellow;
+}
+
+th {
+  @apply text-left;
+}
+
+td {
+  @apply py-4;
+}
