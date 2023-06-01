@@ -56,7 +56,7 @@ DVT Cream consists of two websites: DVT Store and DVT Admin. The DVT Store is an
 
 **Technology stack:**
 
-\- DVT Store: Java Servlets will be used for both the client and server-side development.
+\- DVT Store is an application where regular HTML, CSS, and JavaScript are employed for frontend development, while Java Servlets serve as the backend infrastructure.
 
 \- DVT Admin: The client-side will be developed using Next.js/React.js, and the server-side will utilize Java Servlets to create an API for interacting with the DVTCream database.
 
