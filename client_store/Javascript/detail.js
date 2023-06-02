@@ -18,3 +18,19 @@ function resetActiveImg() {
         img.parentElement.classList.remove('active');
     });
 }
+
+var decrementButton = document.getElementById("decrement");
+var incrementButton = document.getElementById("increment");
+var quantityInput = document.getElementById("quantity");
+
+decrementButton.addEventListener("click", function () {
+  if (parseInt(quantityInput.value) > 1) {
+    quantityInput.value = parseInt(quantityInput.value) - 1;
+  }
+});
+
+incrementButton.addEventListener("click", function () {
+  if (parseInt(quantityInput.value) < 10) {
+    quantityInput.value = parseInt(quantityInput.value) + 1;
+  }
+});

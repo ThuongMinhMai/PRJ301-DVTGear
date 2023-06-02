@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,93 +9,345 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              primary: "#fad56a",
-              "dvt-black-1": "#2a303c",
-              "dvt-black-2": "#1b1a21",
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#fad56a",
+                        "dvt-black-1": "#2a303c",
+                        "dvt-black-2": "#1b1a21",
+                    },
+                },
             },
-          },
-        },
-      };
+        };
     </script>
 
     <style type="text/tailwindcss">
-      /* ví dụ cách dùng tailwindcss, làm bình thường vẫn được */
-      .page {
+        /* ví dụ cách dùng tailwindcss, làm bình thường vẫn được */
+     .page {
         @apply bg-pink-500 h-screen;
       }
 
-      .input-qty{
-        color: black;
+      ::-webkit-scrollbar {
+        width: 12px;
       }
 
+      ::-webkit-scrollbar-track {
+        background-color: #1b1a21;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background-color: #2a303c;
+        border-radius: 6px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background-color: #fad56a;
+      }
+      body {
+        background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
+        background-color: #2a303c;
+      }
+      header.scrolled {
+        background: #1b1a21;
+        transition: 0.2s;
+      }
+      header.scrolled .header_nav ul li a {
+        color: white;
+      }
+      header.scrolled .cart_login .cart img,
+      header.scrolled .cart_login .user img {
+        -webkit-filter: invert(100%);
+      }
+    .quantity-display input[type="number"]::-webkit-inner-spin-button,
+    .quantity-display input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+    .quantity-display input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+    width: 75px;
+    }
+    .footer-col h4::before{
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -10px;
+        background-color: #fad56a;
+        height: 2px;
+        box-sizing: border-box;
+        width: 50px;
+      }
+
+      .footer-col ul li:not(:last-child){
+        margin-bottom: 10px;
+      }
     </style>
     <link rel="stylesheet" href="detail.css">
     <title>Detail Product</title>
 
 </head>
-<body class="bg-dvt-black-1">
-    <div class="grid grid-cols-12 gap-6 m-0 max-w-7xl mx-auto rounded-md text-white bg-dvt-black-2 p-6">
+
+<body>
+    <!-- Start header  -->
+    <header
+        class="flex justify-around items-center bg-transparent fixed top-0 left-0 right-0 z-50 transition duration-200 scrolled">
+        <!-- Start Logo DVT -->
+        <div>
+            <img class="h-24 object-cover" src="../src/image/demo.png" alt="icon_DVT" />
+        </div>
+        <!-- Nav -->
+        <nav class="pl-0 header_nav">
+            <ul class="flex list-none pl-3">
+                <li>
+                    <a class="no-underline text-xl py-[10px] px-[15px] rounded-[20px] transition-colors duration-300 ease-linear hover:bg-[#fad56a] hover:text-white font-semibold uppercase text-[#1b1a21]"
+                        href="">Trang chủ</a>
+                </li>
+                <li>
+                    <a class="no-underline text-xl py-[10px] px-[15px] rounded-[20px] transition-colors duration-300 ease-linear hover:bg-[#fad56a] hover:text-white font-semibold uppercase text-[#1b1a21]"
+                        href="">Tìm hiểu thêm</a>
+                </li>
+                <li>
+                    <a class="no-underline text-xl py-[10px] px-[15px] rounded-[20px] transition-colors duration-300 ease-linear hover:bg-[#fad56a] hover:text-white font-semibold uppercase text-[#1b1a21]"
+                        href="">Liên hệ</a>
+                </li>
+                <li>
+                    <a class="no-underline text-xl py-[10px] px-[15px] rounded-[20px] transition-colors duration-300 ease-linear hover:bg-[#fad56a] hover:text-white font-semibold uppercase text-[#1b1a21]"
+                        href="">Hỗ Trợ</a>
+                </li>
+            </ul>
+        </nav>
+        <!-- Search box -->
+        <div class="flex items-center relative">
+            <input
+                class="h-[40px] w-[250px] rounded-[20px] px-[15px] py-0 border-none outline-none bg-[#fad56a] text-white placeholder-white"
+                type="text" placeholder="Tìm kiếm ...." />
+            <div
+                class="flex justify-center items-center absolute top-[50%] right-[5px] transform -translate-y-1/2 w-[30px] h-[30px] bg-cover cursor-pointer bg-white rounded-[30px]">
+                <img class="w-[20px] h-[20px]" src="../src/image/search.svg" alt="" />
+            </div>
+        </div>
+        <!-- Cart and login -->
+        <div class="flex cart_login">
+            <button class="h-[55px] w-[55px] border-none bg-transparent cursor-pointer cart">
+                <img src="../src/image/cart.svg" alt="icon_cart" />
+            </button>
+            <div class="h-[50px] w-[50px] border-none bg-transparent cursor-pointer user">
+                <a href="">
+                    <img src="../src/image/user.svg" alt="icon_login" />
+                </a>
+            </div>
+        </div>
+    </header>
+    <!-- End header  -->
+
+    <!-- start detail product -->
+
+    <div class="grid grid-cols-12 gap-6 mt-28 max-w-7xl mx-auto rounded-md text-white bg-dvt-black-2 p-6 ">
         <div class="image flex flex-col gap-1 col-span-12 lg:col-span-5">
             <div class="main-image w-full aspect-square">
-                <img class="w-full h-full object-cover rounded-md" src="../assets/1.1.jpg">
+                <img class="w-full h-full object-cover rounded-md" src="../assets/laptop-1.webp">
             </div>
             <div class="hower-image grid grid-cols-5 gap-2">
-                <div class="border border-white hover:border-primary hover:border-2 col-span-1 aspect-square rounded-md ">
-                    <img class="w-full object-fill h-full rounded-md" src="../assets/39.2.jpg" >
+                <div
+                    class="border border-white hover:border-primary hover:border-2 col-span-1 aspect-square rounded-md ">
+                    <img class="w-full object-fill h-full rounded-md" src="../assets/laptop-2.webp">
                 </div>
-                <div class="border border-white hover:border-primary hover:border-2 col-span-1 aspect-square rounded-md">
-                    <img class="w-full object-fill h-full rounded-md" src="../assets/40.1.jpg">
+                <div
+                    class="border border-white hover:border-primary hover:border-2 col-span-1 aspect-square rounded-md">
+                    <img class="w-full object-fill h-full rounded-md" src="../assets/laptop-3.webp">
                 </div>
-                <div class="border border-white hover:border-primary hover:border-2 col-span-1 aspect-square rounded-md">
-                    <img class="w-full object-fill h-full rounded-md" src="../assets/40.2.jpg">
+                <div
+                    class="border border-white hover:border-primary hover:border-2 col-span-1 aspect-square rounded-md">
+                    <img class="w-full object-fill h-full rounded-md" src="../assets/laptop-4.webp">
                 </div>
-               
+
             </div>
         </div>
 
         <div class="detail ml-20 pl-30 flex flex-col justify-center gap-4  col-span-12 lg:col-span-7">
             <div class="title ">
                 <h2 class="capitalize font-bold text-5xl ">
-                    Kem ốc quế vani socola Celano cây 110ml (66g)
+                    Laptop gaming Acer Predator Helios Neo PHN16 71 74BA
                 </h2>
             </div>
             <div class="price ">
-                <p class="text-3xl font-medium text-primary">20.300đ</p> 
+                <p class="text-3xl font-medium text-primary">42,990,000₫</p>
             </div>
-            <div class="rating  ">
+            <!-- <div class="rating  ">
                 <a class="text-orange-500" href="#"><i class="fa fa-star checked"></i></a>
                 <a class="text-orange-500" href="#"><i class="fa fa-star checked"></i></a>
                 <a class="text-orange-500" href="#"><i class="fa fa-star checked"></i></a>
                 <a class="text-orange-500" href="#"><i class="fa fa-star checked"></i></a>
-                <a class="text-orange-500" href="#"><i class="fa fa-star checked"></i></a>
-            </div>
+                <a class="text-orange-500" href="#"><i class="fa fa-star-half checked"></i></a>
+            </div> -->
             <div class="description ">
                 <p class="text-2xl">
-                    Kem ốc quế Celano là một trong những dòng kem cao cấp, quen thuộc đối với người dùng. 
-                    Sản phẩm kem ốc quế vani socola Celano cây 110ml mang đến sự độc đáo, 
-                    mới lạ với kem bánh giòn cùng vị sô cô la ngọt ngào, vừa đậm đà đầy kích thích
+                    ✔ Bảo hành chính hãng 12 tháng.
+                </p>
+                <p class="text-2xl">
+                    ✔ Hỗ trợ đổi mới trong 7 ngày.
+                </p>
+                <p class="text-2xl">
+                    ✔ Windows bản quyền tích hợp.
+                </p>
+                <p class="text-2xl">
+                    ✔ Miễn phí giao hàng toàn quốc.
                 </p>
             </div>
-            <div class="order flex flex-row gap-20">
-                <div class="soluong mt-4">
-                    <input class="minus is-form" type="button" value="-">
-                    <input aria-label="quantity" class="input-qty" max="20" min="1" name="" type="number" value="">
-                    <input class="plus is-form" type="button" value="+">
+            <div class="order flex flex-col ">
+                <div class="quantity-display flex justify-start h-fit text-xl font-bold">
+
+                <button id="decrement"
+                    class="bg-inherit text-white py-2 px-4 border border-primary rounded-l-2xl hover:bg-primary">
+                    -
+                </button>
+                <input type="number" id="quantity" value="1" min="1" max="10"
+                    class="text-center border border-primary outline-none py-2 px-3 w-5 bg-inherit" />
+                <button id="increment"
+                    class="bg-inherit text-white py-1 px-4 border border-primary rounded-r-2xl hover:bg-primary">
+                    +
+                </button>
+            </div>
+            <div class="button ">
+                <button
+                    class="bg-dvt-black-2 pt-4 pb-4 pl-7 pr-7 mt-10 rounded-lg text-primary text-xl border-2 border-primary hover:bg-orange-700 hover:bg-opacity-70"><i
+                        class="fa fa-shopping-cart"></i>
+                    Thêm vào giỏ hàng
+                </button>
+                <button
+                    class="bg-primary pt-4 pb-4 pl-7 pr-7 mt-10 rounded-lg text-white text-xl hover:bg-orange-700 hover:bg-opacity-70">
+                    Mua ngay
+                </button>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- end detail product -->
+    <!-- start description product -->
+    <div class="bg-dvt-black-2 mt-10 max-w-7xl mx-auto rounded-md">
+        <h2 class="text-white capitalize text-4xl mx-4">
+            Mô tả sản phẩm
+        </h2>
+        <div class="text-white my-3 mx-4">
+            <span class="text-2xl my-4">
+                Đánh giá chi tiết laptop gaming Acer Predator Helios Neo PHN16 71 74BA
+            </span>
+            <p class="">
+                Acer Predator Helios Neo PHN16 71 74BA được ra đời như một biểu tượng laptop gaming mạnh mẽ của nhà Acer. 
+                Hứa hẹn sẽ mang lại nhiều trải nghiệm thú vị cho các game thủ trên chặng đường sắp tới. Cùng GEARVN tìm hiểu đánh giá về sản phẩm này nhé!
+            </p>
+            <!-- <div class="flex justify-center my-5">
+                <img src="../src/image/laptop5.webp">
+            </div> -->
+           
+        </div>
+
+        <div class="text-white my-3 mx-4">
+            <span class="text-2xl my-3">
+                Đánh giá chi tiết laptop gaming Acer Predator Helios Neo PHN16 71 74BA
+            </span>
+            <p>
+                Acer Predator Helios Neo PHN16 71 74BA được ra đời như một biểu tượng laptop gaming mạnh mẽ của nhà Acer. 
+                Hứa hẹn sẽ mang lại nhiều trải nghiệm thú vị cho các game thủ trên chặng đường sắp tới. Cùng GEARVN tìm hiểu đánh giá về sản phẩm này nhé!
+            </p>
+            <!-- <div class="flex justify-center my-5">
+                <img src="../src/image/laptop6.webp">
+            </div> -->
+        </div>
+
+        <div class="text-white my-3 mx-4">
+            <span class="text-2xl my-3">
+                Đánh giá chi tiết laptop gaming Acer Predator Helios Neo PHN16 71 74BA
+            </span>
+            <p>
+                Acer Predator Helios Neo PHN16 71 74BA được ra đời như một biểu tượng laptop gaming mạnh mẽ của nhà Acer. 
+                Hứa hẹn sẽ mang lại nhiều trải nghiệm thú vị cho các game thủ trên chặng đường sắp tới. Cùng GEARVN tìm hiểu đánh giá về sản phẩm này nhé!
+            </p>
+            <!-- <div class="flex justify-center my-5">
+                <img src="../src/image/laptop7.jpg">
+            </div> -->
+        </div>
+
+        <div class="text-white my-3 mx-4">
+            <span class="text-2xl my-3">
+                Đánh giá chi tiết laptop gaming Acer Predator Helios Neo PHN16 71 74BA
+            </span>
+            <p>
+                Acer Predator Helios Neo PHN16 71 74BA được ra đời như một biểu tượng laptop gaming mạnh mẽ của nhà Acer. 
+                Hứa hẹn sẽ mang lại nhiều trải nghiệm thú vị cho các game thủ trên chặng đường sắp tới. Cùng GEARVN tìm hiểu đánh giá về sản phẩm này nhé!
+            </p>
+            <!-- <div class="flex justify-center my-5">
+                <img src="../src/image/laptop8.jpg">
+            </div> -->
+        </div>
+
+        <div class="text-white my-3 mx-4 pb-4">
+            <span class="text-2xl my-3">
+                Đánh giá chi tiết laptop gaming Acer Predator Helios Neo PHN16 71 74BA
+            </span>
+            <p>
+                Acer Predator Helios Neo PHN16 71 74BA được ra đời như một biểu tượng laptop gaming mạnh mẽ của nhà Acer. 
+                Hứa hẹn sẽ mang lại nhiều trải nghiệm thú vị cho các game thủ trên chặng đường sắp tới. Cùng GEARVN tìm hiểu đánh giá về sản phẩm này nhé!
+            </p>
+            <!-- <div class="flex justify-center my-5">
+                <img src="../src/image/laptop9.webp">
+            </div> -->
+        </div>
+
+    </div>
+
+
+    <!-- end description product -->
+    <!-- start footer -->
+    <footer class="footer bg-dvt-black-2 py-[50px] mt-10">
+        <div class="container bg-dvt-black-2 mx-auto">
+            <div class="row grid grid-cols-12">
+                <div class="footer-col col-span-12 w-full mb-8 pl-2 lg:col-span-3 md:col-span-6 sm:col-span-12">
+                  <h4 class="text-2xl w-full font-bold text-white capitalize mb-[30px] relative">Company</h4>
+                  <ul>
+                    <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">About us</a></li>
+                    <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Our services</a></li>
+                    <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Privacy policy</a></li>
+                    <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Affiliate Program</a></li>
+                  </ul>
                 </div>
-                <div class="button ">
-                    <button class="bg-primary pt-5 pb-5 pl-7 pr-7 mt-10 rounded-lg text-white text-xl hover:bg-orange-700"><i class="fa fa-shopping-cart" ></i>
-                        Add to cart
-                    </button>
+
+                <div class="footer-col col-span-12 w-full mb-8 pl-2 lg:col-span-3 md:col-span-6 sm:col-span-12">
+                  <h4 class="text-2xl font-bold text-white capitalize mb-[30px] relative">Get Help</h4>
+                  <ul>
+                    <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">FAQ</a></li>
+                    <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Shipping</a></li>
+                    <li> <a class="text-lg capitalize text-gray-500 md-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Returns</a></li>
+                    <li> <a class="text-lg capitalize text-gray-500 md-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Payment Options</a></li>
+                  </ul>
+                </div>
+
+                <div class="footer-col col-span-12 w-full mb-8 pl-2 lg:col-span-3 md:col-span-6 sm:col-span-12">
+                  <h4 class="text-2xl font-bold text-white capitalize mb-[30px] relative">Office Hours</h4>
+                  <ul>
+                    <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Monday - Friday: 9:00 - 23:00</a></li>
+                    <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Saturday: 9:00 - 22:00</a></li>
+                    <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Sunday: 9:00 - 17:00</a></li>
+                  </ul>
+                </div>
+
+                <div class="footer-col col-span-12 w-full mb-8 pl-2 lg:col-span-3 md:col-span-6 sm:col-span-12">
+                  <h4 class="text-2xl font-bold text-white capitalize mb-[30px] relative">Follow Us</h4>
+                  <div class="social-links">
+                    <a class="inline-block bg-white/20 h-10 w-10 text-center leading-10 rounded-[50%] text-white hover:bg-primary hover:text-white transition-all duration-500 ease-in-out" href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a class="inline-block bg-white/20 h-10 w-10 text-center leading-10 rounded-[50%] text-white hover:bg-primary hover:text-white transition-all duration-500 ease-in-out" href="#"><i class="fab fa-twitter"></i></a>
+                    <a class="inline-block bg-white/20 h-10 w-10 text-center leading-10 rounded-[50%] text-white hover:bg-primary hover:text-white transition-all duration-500 ease-in-out" href="#"><i class="fab fa-instagram"></i></a>
+                    <a class="inline-block bg-white/20 h-10 w-10 text-center leading-10 rounded-[50%] text-white hover:bg-primary hover:text-white transition-all duration-500 ease-in-out" href="#"><i class="fab fa-linkedin-in"></i></a>
+                  </div>
                 </div>
             </div>
         </div>
-
-        
-    </div>
+    </footer>
+    <!-- end footer -->
     <script src="../Javascript/detail.js"></script>
 </body>
+
 </html>
