@@ -219,9 +219,7 @@
         </div>
       </div>
 
-      <div
-        class="detail ml-20 pl-30 flex flex-col gap-4 col-span-12 lg:col-span-7 pr-4"
-      >
+      <div class="detail flex flex-col gap-4 col-span-12 lg:col-span-7 p-6">
         <div class="title">
           <h2 class="capitalize font-bold text-5xl line-clamp-3">
             Laptop gaming Acer Predator Helios Neo PHN16 71 74BA
@@ -244,22 +242,34 @@
           <p class="text-2xl">✔ Miễn phí giao hàng toàn quốc.</p>
         </div> -->
 
-        <p class="line-clamp-4">
-          Acer Predator Helios Neo PHN16 71 74BA là một laptop gaming mạnh mẽ
-          của Acer, được thiết kế với ngoại hình đẹp và cá tính. Với bàn phím có
-          đèn nền RGB 4 vùng, nó mang đến trải nghiệm thú vị cho game thủ.
-          Laptop này được trang bị con chip Intel Core i7-13700HX và card đồ họa
-          rời GeForce RTX 4060, mang lại hiệu năng cao và trải nghiệm đồ họa đẹp
-          mắt. Với bộ nhớ RAM 16GB DDR5 4800MHz, laptop này hỗ trợ tác vụ đa
-          nhiệm mượt mà và còn có khả năng nâng cấp RAM lên đến 32GB. Hệ thống
-          tản nhiệt đỉnh cao với 2 quạt kim loại 3D AeroBlade thế hệ 5 giúp duy
-          trì hiệu suất cao trong thời gian dài. Màn hình 16 inch với độ phân
-          giải WQXGA (2560 x 1600) và tần số quét 165Hz mang lại hình ảnh sắc
-          nét và màu sắc sống động. Laptop cũng đi kèm với các cổng kết nối đa
-          dạng như USB, Thunderbolt, HDMI và jack tai nghe 3.5mm.
-        </p>
+        <div class="relative transition-all">
+          <p
+            class="line-clamp-4 relative transition-all"
+            id="descriptionProduct"
+          >
+            Acer Predator Helios Neo PHN16 71 74BA là một laptop gaming mạnh mẽ
+            của Acer, được thiết kế với ngoại hình đẹp và cá tính. Với bàn phím
+            có đèn nền RGB 4 vùng, nó mang đến trải nghiệm thú vị cho game thủ.
+            Laptop này được trang bị con chip Intel Core i7-13700HX và card đồ
+            họa rời GeForce RTX 4060, mang lại hiệu năng cao và trải nghiệm đồ
+            họa đẹp mắt. Với bộ nhớ RAM 16GB DDR5 4800MHz, laptop này hỗ trợ tác
+            vụ đa nhiệm mượt mà và còn có khả năng nâng cấp RAM lên đến 32GB. Hệ
+            thống tản nhiệt đỉnh cao với 2 quạt kim loại 3D AeroBlade thế hệ 5
+            giúp duy trì hiệu suất cao trong thời gian dài. Màn hình 16 inch với
+            độ phân giải WQXGA (2560 x 1600) và tần số quét 165Hz mang lại hình
+            ảnh sắc nét và màu sắc sống động. Laptop cũng đi kèm với các cổng
+            kết nối đa dạng như USB, Thunderbolt, HDMI và jack tai nghe 3.5mm.
+          </p>
 
-        <div class="order flex flex-col">
+          <div
+            id="btnViewMore"
+            class="transition-all py-2 px-4 bg-primary rounded-xl h-fit absolute z-10 -bottom-14 left-1/2 -translate-x-1/2 cursor-pointer hover:opacity-70"
+          >
+            View More
+          </div>
+        </div>
+
+        <div class="order flex flex-col mt-8">
           <div
             class="quantity-display flex justify-start h-fit text-xl font-bold my-6"
           >
@@ -342,8 +352,8 @@
             >Laptop ASUS TUF Gaming F15 FX506HC HN144W có thiết kế vô cùng độc
             đáo với màu Graphite Black huyền bí. Được trang bị cấu hình khủng từ
             những linh kiện hàng đầu cho ra một sản phẩm tuyệt vời. Hứa hẹn đây
-            sẽ là sản phẩm oanh tạc thị trường game thủ sắp tới.</span
-          >
+            sẽ là sản phẩm oanh tạc thị trường game thủ sắp tới.
+          </span>
         </div>
         <button
           class="mt-4 mx-auto px-4 py-2 rounded-[30px] bg-[#fad56a] border-none uppercase cursor-pointer mb-4 hover:opacity-80"
@@ -654,5 +664,20 @@
     </footer>
     <!-- end footer -->
     <script src="../Javascript/detail.js"></script>
+    <script>
+      const description = document.getElementById("descriptionProduct");
+      const btnViewMore = document.getElementById("btnViewMore");
+      btnViewMore.innerHTML = "View More";
+
+      btnViewMore.addEventListener("click", () => {
+        if (btnViewMore.innerHTML === "View More") {
+          description.classList.remove("line-clamp-4");
+          btnViewMore.innerHTML = "View Less";
+        } else {
+          description.classList.add("line-clamp-4");
+          btnViewMore.innerHTML = "View More";
+        }
+      });
+    </script>
   </body>
 </html>
