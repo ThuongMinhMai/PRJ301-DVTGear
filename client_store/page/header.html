@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
       rel="stylesheet"
@@ -70,6 +71,22 @@
       .product:hover .name_product span {
         color: #fad56a;
       }
+
+      .footer-col h4::before{
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -10px;
+        background-color: #fad56a;
+        height: 2px;
+        box-sizing: border-box;
+        width: 50px;
+      }
+
+      .footer-col ul li:not(:last-child){
+        margin-bottom: 10px;
+      }
+
     </style>
     <link rel="icon" href="../assets/DVTLogo-Short.png" type="icon" />
     <title>DVT Cream</title>
@@ -235,5 +252,51 @@
       });
     </script>
     <!-- End body -->
+    <!-- Start Footer -->
+    <footer class="footer bg-dvt-black-2 py-[50px]">
+      <div class="container bg-dvt-black-2 mx-auto max-w-7xl w-11/12">
+          <div class="row grid grid-cols-12">
+              <div class="footer-col col-span-12 w-full mb-8 p-3 lg:col-span-3 md:col-span-6 sm:col-span-12">
+                <h4 class="text-2xl w-full font-bold text-white capitalize mb-[30px] relative">Company</h4>
+                <ul>
+                  <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">About us</a></li>
+                  <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Our services</a></li>
+                  <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Privacy policy</a></li>
+                  <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Affiliate Program</a></li>
+                </ul>
+              </div>
+
+              <div class="footer-col col-span-12 w-full mb-8 p-3 lg:col-span-3 md:col-span-6 sm:col-span-12">
+                <h4 class="text-2xl font-bold text-white capitalize mb-[30px] relative">Get Help</h4>
+                <ul>
+                  <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">FAQ</a></li>
+                  <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Shipping</a></li>
+                  <li> <a class="text-lg capitalize text-gray-500 md-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Returns</a></li>
+                  <li> <a class="text-lg capitalize text-gray-500 md-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Payment Options</a></li>
+                </ul>
+              </div>
+
+              <div class="footer-col col-span-12 w-full mb-8 p-3 lg:col-span-3 md:col-span-6 sm:col-span-12">
+                <h4 class="text-2xl font-bold text-white capitalize mb-[30px] relative">Office Hours</h4>
+                <ul>
+                  <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Monday - Friday: 9:00 - 23:00</a></li>
+                  <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Saturday: 9:00 - 22:00</a></li>
+                  <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Sunday: 9:00 - 17:00</a></li>
+                </ul>
+              </div>
+
+              <div class="footer-col col-span-12 w-full mb-8 p-3 lg:col-span-3 md:col-span-6 sm:col-span-12">
+                <h4 class="text-2xl font-bold text-white capitalize mb-[30px] relative">Follow Us</h4>
+                <div class="social-links">
+                  <a class="inline-block bg-white/20 h-10 w-10 text-center leading-10 rounded-[50%] text-white hover:bg-primary hover:text-white transition-all duration-500 ease-in-out" href="#"><i class="fab fa-facebook-f"></i></a>
+                  <a class="inline-block bg-white/20 h-10 w-10 text-center leading-10 rounded-[50%] text-white hover:bg-primary hover:text-white transition-all duration-500 ease-in-out" href="#"><i class="fab fa-twitter"></i></a>
+                  <a class="inline-block bg-white/20 h-10 w-10 text-center leading-10 rounded-[50%] text-white hover:bg-primary hover:text-white transition-all duration-500 ease-in-out" href="#"><i class="fab fa-instagram"></i></a>
+                  <a class="inline-block bg-white/20 h-10 w-10 text-center leading-10 rounded-[50%] text-white hover:bg-primary hover:text-white transition-all duration-500 ease-in-out" href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+              </div>
+          </div>
+      </div>
+  </footer>
+    <!-- End Footer -->
   </body>
 </html>
