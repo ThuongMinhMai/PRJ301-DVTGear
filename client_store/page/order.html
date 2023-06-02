@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
       rel="stylesheet"
@@ -27,31 +30,31 @@
       };
     </script>
     <style>
-        body {
-        background-image: url("https://www.transparenttextures.com/patterns/food.png");
+      body {
+        background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
         background-color: #2a303c;
-        }
-        header .cart_login .cart img,
-        header .cart_login .user img {
-            -webkit-filter: invert(100%);
-        }
-        .footer-col h4::before{
-          content: '';
-          position: absolute;
-          left: 0;
-          bottom: -10px;
-          background-color: #fad56a;
-          height: 2px;
-          box-sizing: border-box;
-          width: 50px;
-        }
-        .footer-col ul li:not(:last-child){
-          margin-bottom: 10px;
-        }
+      }
+      header .cart_login .cart img,
+      header .cart_login .user img {
+        -webkit-filter: invert(100%);
+      }
+      .footer-col h4::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -10px;
+        background-color: #fad56a;
+        height: 2px;
+        box-sizing: border-box;
+        width: 50px;
+      }
+      .footer-col ul li:not(:last-child) {
+        margin-bottom: 10px;
+      }
     </style>
     <title>Order Page</title>
-</head>
-<body class="text-white">
+  </head>
+  <body class="text-white">
     <!-- Start header  -->
     <header
       class="flex justify-around items-center bg-[#1b1a21] fixed top-0 left-0 right-0 z-50"
@@ -127,161 +130,350 @@
       </div>
     </header>
     <!-- End header  -->
-    <div class="h-24">
-    </div>
+    <div class="h-24"></div>
     <!--Start Order List-->
     <div class="mx-auto max-w-7xl w-11/12">
-    <!--List 1-->
-    <div class="mt-5 bg-white pt-3 px-6">
+      <!--List 1-->
+      <div class="mt-5 bg-dvt-black-2 pt-3 px-6 text-white">
         <div class="flex justify-between">
-            <span class="text-black pb-3">DVT Gear Computer and computer Component Store</span>
-            <label id="status1" class="text-red-600 uppercase">Đang giao</label>
+          <span class="pb-3"
+            >DVT Gear Computer and computer Component Store</span
+          >
+          <label id="status1" class="text-primary uppercase">Đang giao</label>
         </div>
-        <hr>
+        <hr />
         <div class="flex my-5">
-            <img class="h-24 aspect-square" src="../assets/product1.jpg" alt="sản phẩm">
-            <div class="flex flex-col ml-4 w-[100%]">
-                <span class="text-black pb-1 text-lg">Laptop ASUS TUF Gaming F15 FX506HC HN144W</span>
-                <span class="text-black opacity-50 pb-1 text-sm">Phân loại hàng: Laptop</span>
-                <span class="text-black pb-1">x1</span>
-                <span class="border-x-[1px] border-y-[1px] border-red-600 w-fit text-red-600 text-xs px-1">Bảo hành 1 năm</span>
-            </div>
-            <div class="flex text-red-600 flex-col justify-center">
-                19.490.000₫
-            </div>
+          <img
+            class="h-24 aspect-square"
+            src="../assets/product1.jpg"
+            alt="sản phẩm"
+          />
+          <div class="flex flex-col ml-4 w-[100%]">
+            <span class="pb-1 text-lg"
+              >Laptop ASUS TUF Gaming F15 FX506HC HN144W</span
+            >
+            <span class="opacity-50 pb-1 text-sm"
+              >Phân loại hàng: Laptop</span
+            >
+            <span class="pb-1">x1</span>
+            <span
+              class="border border-primary w-fit text-primary text-xs px-1"
+              >Bảo hành 1 năm</span
+            >
+          </div>
+          <div class="flex text-primary flex-col justify-center">
+            19.490.000₫
+          </div>
         </div>
-        <hr>
+        <hr />
         <div>
-            <div class="flex items-end justify-end my-7">
-                <span class="text-black">Thành tiền:</span>
-                <span class="text-red-600 text-2xl">19.490.000₫</span>
+          <div class="flex items-end justify-end my-7">
+            <span class=">Thành tiền:</span>
+            <span class="text-primary text-2xl">19.490.000₫</span>
+          </div>
+          <div class="flex justify-between py-6">
+            <span id="sub-status1" class="opacity-50 w-[40%] text-xs"
+              >Vui lòng chỉ nhấn "Đã nhận được hàng" khi đơn hàng đã được giao
+              đến bạn và sản phẩm nhận được không có vấn đề nào.</span
+            >
+            <div>
+              <button
+                id="button_cancel1"
+                onclick="clickCancel(1)"
+                class="border border-primary text-primary px-5 py-2 rounded-sm hover:opacity-70 mr-2"
+              >
+                Hủy đơn
+              </button>
+              <button
+                id="button_received1"
+                onclick="clickReceived(1)"
+                class="border-x-[1px] bg-primary border-y-[1px] border-black px-5 py-2 rounded-sm hover:opacity-70"
+              >
+                Đã nhận hàng
+              </button>
             </div>
-            <div class="flex justify-between py-6">
-                <span id="sub-status1" class="text-black opacity-50 w-[40%] text-xs">Vui lòng chỉ nhấn "Đã nhận được hàng" khi đơn hàng đã được giao đến bạn và sản phẩm nhận được không có vấn đề nào.</span>
-                <div>
-                    <button id="button_cancel1" onclick="clickCancel(1)" class="text-black border-x-[1px] border-y-[1px] border-black px-5 py-2 rounded-sm hover:bg-gray-200 mr-2">Hủy đơn</button>
-                    <button id="button_received1" onclick="clickReceived(1)" class="text-black border-x-[1px] border-y-[1px] border-black px-5 py-2 rounded-sm hover:bg-gray-200">Đã nhận hàng</button>
-                </div>    
-            </div>
+          </div>
         </div>
-    </div>
-    <!--List 2-->
-    <div class="mt-5 bg-white pt-3 px-6">
+      </div>
+      <!--List 2-->
+      <div class="mt-5 bg-dvt-black-2 pt-3 px-6 text-white">
         <div class="flex justify-between">
-            <span class="text-black pb-3">DVT Gear Computer and computer Component Store</span>
-            <label id="status2" class="text-red-600 uppercase">Đang giao</label>
+          <span class="pb-3"
+            >DVT Gear Computer and computer Component Store</span
+          >
+          <label id="status2" class="text-primary uppercase">Đang giao</label>
         </div>
-        <hr>
+        <hr />
         <div class="flex my-5">
-            <img class="h-24 aspect-square" src="../assets/product1.jpg" alt="sản phẩm">
-            <div class="flex flex-col ml-4 w-[100%]">
-                <span class="text-black pb-1 text-lg">Laptop ASUS TUF Gaming F15 FX506HC HN144W</span>
-                <span class="text-black opacity-50 pb-1 text-sm">Phân loại hàng: Laptop</span>
-                <span class="text-black pb-1">x1</span>
-                <span class="border-x-[1px] border-y-[1px] border-red-600 w-fit text-red-600 text-xs px-1">Bảo hành 1 năm</span>
-            </div>
-            <div class="flex text-red-600 flex-col justify-center">
-                19.490.000₫
-            </div>
+          <img
+            class="h-24 aspect-square"
+            src="../assets/product1.jpg"
+            alt="sản phẩm"
+          />
+          <div class="flex flex-col ml-4 w-[100%]">
+            <span class="pb-1 text-lg"
+              >Laptop ASUS TUF Gaming F15 FX506HC HN144W</span
+            >
+            <span class="opacity-50 pb-1 text-sm"
+              >Phân loại hàng: Laptop</span
+            >
+            <span class="pb-1">x1</span>
+            <span
+              class="border border-primary w-fit text-primary text-xs px-1"
+              >Bảo hành 1 năm</span
+            >
+          </div>
+          <div class="flex text-primary flex-col justify-center">
+            19.490.000₫
+          </div>
         </div>
-        <hr>
+        <hr />
         <div>
-            <div class="flex items-end justify-end my-7">
-                <span class="text-black">Thành tiền:</span>
-                <span class="text-red-600 text-2xl">19.490.000₫</span>
+          <div class="flex items-end justify-end my-7">
+            <span class=">Thành tiền:</span>
+            <span class="text-primary text-2xl">19.490.000₫</span>
+          </div>
+          <div class="flex justify-between py-6">
+            <span id="sub-status2" class="opacity-50 w-[40%] text-xs"
+              >Vui lòng chỉ nhấn "Đã nhận được hàng" khi đơn hàng đã được giao
+              đến bạn và sản phẩm nhận được không có vấn đề nào.</span
+            >
+            <div>
+              <button
+                id="button_cancel2"
+                onclick="clickCancel(2)"
+                class="border border-primary text-primary px-5 py-2 rounded-sm hover:opacity-70 mr-2"
+              >
+                Hủy đơn
+              </button>
+              <button
+                id="button_received2"
+                onclick="clickReceived(2)"
+                class="border-x-[1px] bg-primary border-y-[1px] border-black px-5 py-2 rounded-sm hover:opacity-70"
+              >
+                Đã nhận hàng
+              </button>
             </div>
-            <div class="flex justify-between py-6">
-                <span id="sub-status2" class="text-black opacity-50 w-[40%] text-xs">Vui lòng chỉ nhấn "Đã nhận được hàng" khi đơn hàng đã được giao đến bạn và sản phẩm nhận được không có vấn đề nào.</span>
-                <div>
-                    <button id="button_cancel2" onclick="clickCancel(2)" class="text-black border-x-[1px] border-y-[1px] border-black px-5 py-2 rounded-sm hover:bg-gray-200 mr-2">Hủy đơn</button>
-                    <button id="button_received2" onclick="clickReceived(2)" class="text-black border-x-[1px] border-y-[1px] border-black px-5 py-2 rounded-sm hover:bg-gray-200">Đã nhận hàng</button>
-                </div>    
-            </div>
+          </div>
         </div>
-    </div>
-    <!--List 3-->
-    <div class="mt-5 bg-white pt-3 px-6">
+      </div>
+      <!--List 3-->
+      <div class="mt-5 bg-dvt-black-2 pt-3 px-6 text-white">
         <div class="flex justify-between">
-            <span class="text-black pb-3">DVT Gear Computer and computer Component Store</span>
-            <label id="status3" class="text-red-600 uppercase">Đang giao</label>
+          <span class="pb-3"
+            >DVT Gear Computer and computer Component Store</span
+          >
+          <label id="status3" class="text-primary uppercase">Đang giao</label>
         </div>
-        <hr>
+        <hr />
         <div class="flex my-5">
-            <img class="h-24 aspect-square" src="../assets/product1.jpg" alt="sản phẩm">
-            <div class="flex flex-col ml-4 w-[100%]">
-                <span class="text-black pb-1 text-lg">Laptop ASUS TUF Gaming F15 FX506HC HN144W</span>
-                <span class="text-black opacity-50 pb-1 text-sm">Phân loại hàng: Laptop</span>
-                <span class="text-black pb-1">x1</span>
-                <span class="border-x-[1px] border-y-[1px] border-red-600 w-fit text-red-600 text-xs px-1">Bảo hành 1 năm</span>
-            </div>
-            <div class="flex text-red-600 flex-col justify-center">
-                19.490.000₫
-            </div>
+          <img
+            class="h-24 aspect-square"
+            src="../assets/product1.jpg"
+            alt="sản phẩm"
+          />
+          <div class="flex flex-col ml-4 w-[100%]">
+            <span class="pb-1 text-lg"
+              >Laptop ASUS TUF Gaming F15 FX506HC HN144W</span
+            >
+            <span class="opacity-50 pb-1 text-sm"
+              >Phân loại hàng: Laptop</span
+            >
+            <span class="pb-1">x1</span>
+            <span
+              class="border border-primary w-fit text-primary text-xs px-1"
+              >Bảo hành 1 năm</span
+            >
+          </div>
+          <div class="flex text-primary flex-col justify-center">
+            19.490.000₫
+          </div>
         </div>
-        <hr>
+        <hr />
         <div>
-            <div class="flex items-end justify-end my-7">
-                <span class="text-black">Thành tiền:</span>
-                <span class="text-red-600 text-2xl">19.490.000₫</span>
+          <div class="flex items-end justify-end my-7">
+            <span class=">Thành tiền:</span>
+            <span class="text-primary text-2xl">19.490.000₫</span>
+          </div>
+          <div class="flex justify-between py-6">
+            <span id="sub-status3" class="opacity-50 w-[40%] text-xs"
+              >Vui lòng chỉ nhấn "Đã nhận được hàng" khi đơn hàng đã được giao
+              đến bạn và sản phẩm nhận được không có vấn đề nào.</span
+            >
+            <div>
+              <button
+                id="button_cancel3"
+                onclick="clickCancel(3)"
+                class="border border-primary text-primary px-5 py-2 rounded-sm hover:opacity-70 mr-2"
+              >
+                Hủy đơn
+              </button>
+              <button
+                id="button_received3"
+                onclick="clickReceived(3)"
+                class="border-x-[1px] bg-primary border-y-[1px] border-black px-5 py-2 rounded-sm hover:opacity-70"
+              >
+                Đã nhận hàng
+              </button>
             </div>
-            <div class="flex justify-between py-6">
-                <span id="sub-status3" class="text-black opacity-50 w-[40%] text-xs">Vui lòng chỉ nhấn "Đã nhận được hàng" khi đơn hàng đã được giao đến bạn và sản phẩm nhận được không có vấn đề nào.</span>
-                <div>
-                    <button id="button_cancel3" onclick="clickCancel(3)" class="text-black border-x-[1px] border-y-[1px] border-black px-5 py-2 rounded-sm hover:bg-gray-200 mr-2">Hủy đơn</button>
-                    <button id="button_received3" onclick="clickReceived(3)" class="text-black border-x-[1px] border-y-[1px] border-black px-5 py-2 rounded-sm hover:bg-gray-200">Đã nhận hàng</button>
-                </div>    
-            </div>
+          </div>
         </div>
+      </div>
     </div>
-  </div>
     <!--End Order List-->
     <!-- Start Footer -->
     <footer class="mt-10 footer bg-dvt-black-2 py-[20px]">
-        <div class="container bg-dvt-black-2 mx-auto max-w-7xl w-11/12">
-            <div class="row grid grid-cols-12">
-                <div class="footer-col col-span-12 w-full mb-8 p-3 lg:col-span-3 md:col-span-6 sm:col-span-12">
-                  <h4 class="text-2xl w-full font-bold text-white capitalize mb-[30px] relative">Company</h4>
-                  <ul>
-                    <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">About us</a></li>
-                    <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Our services</a></li>
-                    <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Privacy policy</a></li>
-                    <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Affiliate Program</a></li>
-                  </ul>
-                </div>
-  
-                <div class="footer-col col-span-12 w-full mb-8 p-3 lg:col-span-3 md:col-span-6 sm:col-span-12">
-                  <h4 class="text-2xl font-bold text-white capitalize mb-[30px] relative">Get Help</h4>
-                  <ul>
-                    <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">FAQ</a></li>
-                    <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Shipping</a></li>
-                    <li> <a class="text-lg capitalize text-gray-500 md-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Returns</a></li>
-                    <li> <a class="text-lg capitalize text-gray-500 md-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Payment Options</a></li>
-                  </ul>
-                </div>
-  
-                <div class="footer-col col-span-12 w-full mb-8 p-3 lg:col-span-3 md:col-span-6 sm:col-span-12">
-                  <h4 class="text-2xl font-bold text-white capitalize mb-[30px] relative">Office Hours</h4>
-                  <ul>
-                    <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Monday - Friday: 9:00 - 23:00</a></li>
-                    <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Saturday: 9:00 - 22:00</a></li>
-                    <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Sunday: 9:00 - 17:00</a></li>
-                  </ul>
-                </div>
-  
-                <div class="footer-col col-span-12 w-full mb-8 p-3 lg:col-span-3 md:col-span-6 sm:col-span-12">
-                  <h4 class="text-2xl font-bold text-white capitalize mb-[30px] relative">Follow Us</h4>
-                  <div class="social-links">
-                    <a class="inline-block bg-white/20 h-10 w-10 text-center leading-10 rounded-[50%] text-white hover:bg-primary hover:text-white transition-all duration-500 ease-in-out" href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a class="inline-block bg-white/20 h-10 w-10 text-center leading-10 rounded-[50%] text-white hover:bg-primary hover:text-white transition-all duration-500 ease-in-out" href="#"><i class="fab fa-twitter"></i></a>
-                    <a class="inline-block bg-white/20 h-10 w-10 text-center leading-10 rounded-[50%] text-white hover:bg-primary hover:text-white transition-all duration-500 ease-in-out" href="#"><i class="fab fa-instagram"></i></a>
-                    <a class="inline-block bg-white/20 h-10 w-10 text-center leading-10 rounded-[50%] text-white hover:bg-primary hover:text-white transition-all duration-500 ease-in-out" href="#"><i class="fab fa-linkedin-in"></i></a>
-                  </div>
-                </div>
+      <div class="container bg-dvt-black-2 mx-auto max-w-7xl w-11/12">
+        <div class="row grid grid-cols-12">
+          <div
+            class="footer-col col-span-12 w-full mb-8 p-3 lg:col-span-3 md:col-span-6 sm:col-span-12"
+          >
+            <h4
+              class="text-2xl w-full font-bold text-white capitalize mb-[30px] relative"
+            >
+              Company
+            </h4>
+            <ul>
+              <li>
+                <a
+                  class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2"
+                  href="#"
+                  >About us</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2"
+                  href="#"
+                  >Our services</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2"
+                  href="#"
+                  >Privacy policy</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2"
+                  href="#"
+                  >Affiliate Program</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="footer-col col-span-12 w-full mb-8 p-3 lg:col-span-3 md:col-span-6 sm:col-span-12"
+          >
+            <h4
+              class="text-2xl font-bold text-white capitalize mb-[30px] relative"
+            >
+              Get Help
+            </h4>
+            <ul>
+              <li>
+                <a
+                  class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2"
+                  href="#"
+                  >FAQ</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2"
+                  href="#"
+                  >Shipping</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-lg capitalize text-gray-500 md-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2"
+                  href="#"
+                  >Returns</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-lg capitalize text-gray-500 md-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2"
+                  href="#"
+                  >Payment Options</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="footer-col col-span-12 w-full mb-8 p-3 lg:col-span-3 md:col-span-6 sm:col-span-12"
+          >
+            <h4
+              class="text-2xl font-bold text-white capitalize mb-[30px] relative"
+            >
+              Office Hours
+            </h4>
+            <ul>
+              <li>
+                <a
+                  class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2"
+                  href="#"
+                  >Monday - Friday: 9:00 - 23:00</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2"
+                  href="#"
+                  >Saturday: 9:00 - 22:00</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2"
+                  href="#"
+                  >Sunday: 9:00 - 17:00</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="footer-col col-span-12 w-full mb-8 p-3 lg:col-span-3 md:col-span-6 sm:col-span-12"
+          >
+            <h4
+              class="text-2xl font-bold text-white capitalize mb-[30px] relative"
+            >
+              Follow Us
+            </h4>
+            <div class="social-links">
+              <a
+                class="inline-block bg-white/20 h-10 w-10 text-center leading-10 rounded-[50%] text-white hover:bg-primary hover:text-white transition-all duration-500 ease-in-out"
+                href="#"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a
+                class="inline-block bg-white/20 h-10 w-10 text-center leading-10 rounded-[50%] text-white hover:bg-primary hover:text-white transition-all duration-500 ease-in-out"
+                href="#"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a
+                class="inline-block bg-white/20 h-10 w-10 text-center leading-10 rounded-[50%] text-white hover:bg-primary hover:text-white transition-all duration-500 ease-in-out"
+                href="#"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a
+                class="inline-block bg-white/20 h-10 w-10 text-center leading-10 rounded-[50%] text-white hover:bg-primary hover:text-white transition-all duration-500 ease-in-out"
+                href="#"
+                ><i class="fab fa-linkedin-in"></i
+              ></a>
             </div>
+          </div>
         </div>
+      </div>
     </footer>
-      <!-- End Footer -->
+    <!-- End Footer -->
 
     <script src="../Javascript/order.js"></script>
-</body>
+  </body>
 </html>
