@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#fad56a",
+              "dvt-black-1": "#2a303c",
+              "dvt-black-2": "#1b1a21",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style type="text/tailwindcss">
+      /* ví dụ cách dùng tailwindcss, làm bình thường vẫn được */
+      .page {
+        @apply bg-pink-500 h-screen;
+      }
+
+      .input-qty{
+        color: black;
+      }
+
+    </style>
+    <link rel="stylesheet" href="detail.css">
+    <title>Detail Product</title>
+
+</head>
+<body class="bg-dvt-black-1">
+    <div class="grid grid-cols-12 gap-6 m-0 max-w-7xl mx-auto rounded-md text-white bg-dvt-black-2 p-6">
+        <div class="image flex flex-col gap-1 col-span-12 lg:col-span-5">
+            <div class="main-image w-full aspect-square">
+                <img class="w-full h-full object-cover rounded-md" src="../assets/1.1.jpg">
+            </div>
+            <div class="hower-image grid grid-cols-5 gap-2">
+                <div class="border border-white hover:border-primary hover:border-2 col-span-1 aspect-square rounded-md ">
+                    <img class="w-full object-fill h-full rounded-md" src="../assets/39.2.jpg" >
+                </div>
+                <div class="border border-white hover:border-primary hover:border-2 col-span-1 aspect-square rounded-md">
+                    <img class="w-full object-fill h-full rounded-md" src="../assets/40.1.jpg">
+                </div>
+                <div class="border border-white hover:border-primary hover:border-2 col-span-1 aspect-square rounded-md">
+                    <img class="w-full object-fill h-full rounded-md" src="../assets/40.2.jpg">
+                </div>
+               
+            </div>
+        </div>
+
+        <div class="detail ml-20 pl-30 flex flex-col justify-center gap-4  col-span-12 lg:col-span-7">
+            <div class="title ">
+                <h2 class="capitalize font-bold text-5xl ">
+                    Kem ốc quế vani socola Celano cây 110ml (66g)
+                </h2>
+            </div>
+            <div class="price ">
+                <p class="text-3xl font-medium text-primary">20.300đ</p> 
+            </div>
+            <div class="rating  ">
+                <a class="text-orange-500" href="#"><i class="fa fa-star checked"></i></a>
+                <a class="text-orange-500" href="#"><i class="fa fa-star checked"></i></a>
+                <a class="text-orange-500" href="#"><i class="fa fa-star checked"></i></a>
+                <a class="text-orange-500" href="#"><i class="fa fa-star checked"></i></a>
+                <a class="text-orange-500" href="#"><i class="fa fa-star checked"></i></a>
+            </div>
+            <div class="description ">
+                <p class="text-2xl">
+                    Kem ốc quế Celano là một trong những dòng kem cao cấp, quen thuộc đối với người dùng. 
+                    Sản phẩm kem ốc quế vani socola Celano cây 110ml mang đến sự độc đáo, 
+                    mới lạ với kem bánh giòn cùng vị sô cô la ngọt ngào, vừa đậm đà đầy kích thích
+                </p>
+            </div>
+            <div class="order flex flex-row gap-20">
+                <div class="soluong mt-4">
+                    <input class="minus is-form" type="button" value="-">
+                    <input aria-label="quantity" class="input-qty" max="20" min="1" name="" type="number" value="">
+                    <input class="plus is-form" type="button" value="+">
+                </div>
+                <div class="button ">
+                    <button class="bg-primary pt-5 pb-5 pl-7 pr-7 mt-10 rounded-lg text-white text-xl hover:bg-orange-700"><i class="fa fa-shopping-cart" ></i>
+                        Add to cart
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        
+    </div>
+    <script src="../Javascript/detail.js"></script>
+</body>
+</html>
