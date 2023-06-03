@@ -1,6 +1,6 @@
 "use client";
 
-import { useGlobalContext } from "@/contexts/GlobalConext";
+import { useGlobalContext } from "@/contexts/GlobalContext";
 import {
   DashboardIcon,
   LogoutIcon,
@@ -42,15 +42,18 @@ const links = [
 ];
 
 export default function Nav({}: Props) {
-  const { selectedNav, setVerified } = useGlobalContext();
+  const { selectedNav, currentUser, setCurrentUser } = useGlobalContext();
   const [openMobileNav, setOpenMobileNav] = useState(false);
   const router = useRouter();
 
   return (
     <>
-      <div className="bg-inherit min-h-screen w-[280px] text-white p-4 pt-0 hidden lg:block">
-        <div className="flex items-center border-b-2 py-2 border-[#C2D0EA] max-auto justify-center">
-          <Image alt="logo" height={72} width={180} src={logo} />
+      <div className="bg-primary w-[280px] text-white p-4 pt-0 hidden lg:block">
+        <div className="flex items-center border-b-2 py-2 border-y-dvt-item max-auto justify-center">
+          {/* <Image alt="logo" height={72} width={180} src={logo} /> */}
+          <div className="h-[72px] w-[180px] text-5xl flex justify-center items-center">
+            LOGO
+          </div>
         </div>
 
         <ul className="flex flex-col mt-6">
@@ -76,7 +79,7 @@ export default function Nav({}: Props) {
             onClick={() => {
               googleLogout();
               sessionStorage.removeItem("dvt-auth");
-              setVerified(false);
+              setCurrentUser(null);
             }}
             className="cursor-pointer"
           >
@@ -86,6 +89,21 @@ export default function Nav({}: Props) {
             </div>
           </li>
         </ul>
+
+        <div className="flex flex-col items-center mt-24 text-slate-100">
+          <div className="relative">
+            <div className="bg-green-500 w-3 h-3 rounded-full absolute bottom-0 right-0"></div>
+            <Image
+              alt="avatar"
+              src={currentUser?.picture!}
+              height={48}
+              width={48}
+              className="rounded-full"
+            />
+          </div>
+          <h2 className="font-semibold text-lg line-clamp-1 my-2 text-">{currentUser?.name}</h2>
+          <p className="text-sm line-clamp-1">{currentUser?.email}</p>
+        </div>
       </div>
 
       <div className="lg:hidden py-4 text-dvt-white-1  flex justify-center items-center">
@@ -94,8 +112,8 @@ export default function Nav({}: Props) {
           onClick={() => setOpenMobileNav(true)}
         />
         <div className="flex items-center gap-4 max-auto justify-center">
-          <Image alt="logo" height={48} width={48} src={logo} />
-          <div className="md:text-2xl font-bold text-lg">DVT Admin</div>
+          <Image alt="logo" height={56} width={56} src={logo} />
+          {/* <div className="md:text-2xl font-bold text-lg">DVT Admin</div> */}
         </div>
       </div>
 
@@ -132,7 +150,7 @@ export default function Nav({}: Props) {
           onClick={() => {
             googleLogout();
             sessionStorage.removeItem("dvt-auth");
-            setVerified(false);
+            setCurrentUser(null);
           }}
           className="cursor-pointer"
         >

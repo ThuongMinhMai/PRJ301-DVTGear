@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import React, { useRef } from "react";
 
@@ -18,7 +18,11 @@ const ScrollableBlock = ({ children }: ScrollableBlockProps) => {
   };
 
   return (
-    <div className="w-full overflow-x-auto whitespace-nowrap overflow-y-hidden scrollbar-hidden pb-48" onWheel={handleScroll} ref={blockRef}>
+    <div
+      className="w-full overflow-x-auto whitespace-nowrap overflow-y-hidden scrollbar-hidden"
+      onWheel={handleScroll}
+      ref={blockRef}
+    >
       {children}
     </div>
   );

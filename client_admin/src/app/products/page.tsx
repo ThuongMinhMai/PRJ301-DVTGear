@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -10,7 +10,7 @@ import {
   MoreHorizIcon,
 } from "@/contexts/icons";
 import { useRouter } from "next/navigation";
-import { useGlobalContext } from "@/contexts/GlobalConext";
+import { useGlobalContext } from "@/contexts/GlobalContext";
 import axios from "axios";
 import { Loader, Scroll } from "@/components";
 
@@ -39,18 +39,34 @@ type ProductListProps = {};
 
 const ProductList = ({}: ProductListProps) => {
   const router = useRouter();
-  const { setEditedProduct } = useGlobalContext();
   const [productList, setProductList] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const { data } = await axios.get("http://localhost:8080/api/products");
+  const fetchProducts = useCallback(async () => {
+    try {
+      const { data } = await axios.get(
+        "http://localhost:8080/store/api/products"
+      );
       setProductList(data.products);
       setIsLoading(false);
-    };
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  }, []);
+
+  useEffect(() => {
     fetchProducts();
   }, []);
+
+  const handleDeleteProduct = async (id: number) => {
+    const deleteProduct = async () => {
+      axios.delete("http://localhost:8080/store/api/products", {
+        data: { id },
+      });
+    };
+    await deleteProduct();
+    fetchProducts();
+  };
 
   if (isLoading) {
     return <Loader />;
@@ -58,7 +74,7 @@ const ProductList = ({}: ProductListProps) => {
 
   return (
     <Scroll>
-      <table className="min-w-full border-spacing-y-3 border-separate whitespace-nowrap">
+      <table className="min-w-full border-spacing-y-3 border-separate whitespace-nowrap pb-24">
         <thead>
           <tr className="font-medium text-xs uppercase">
             <th className="pl-6 pr-4">ID</th>
@@ -93,10 +109,10 @@ const ProductList = ({}: ProductListProps) => {
                 <td className="px-4">{product.name}</td>
                 <td className="px-4">{product.category.name}</td>
                 <td className="px-4">{product.brand.name}</td>
-                <td className="px-4">đ{Number(product.price).toFixed(3)}</td>
-                <td className="text-end rounded-r-xl text-[#C2D0EA] pr-6 pl-4">
+                <td className="px-4">đ{Number(product.price).toLocaleString()}</td>
+                <td className="text-end rounded-r-xl text-white pr-6 pl-4">
                   <DropdownActions
-                    setEditedProduct={setEditedProduct}
+                    handleDeleteProduct={handleDeleteProduct}
                     product={product}
                   />
                 </td>
@@ -110,11 +126,15 @@ const ProductList = ({}: ProductListProps) => {
 };
 
 type DropdownActionsProps = {
-  setEditedProduct: (nav: Product) => void;
   product: Product;
+  handleDeleteProduct: (id: number) => void;
 };
 
-function DropdownActions({ setEditedProduct, product }: DropdownActionsProps) {
+function DropdownActions({
+  product,
+  handleDeleteProduct,
+}: DropdownActionsProps) {
+  const { setEditedProduct, setModal } = useGlobalContext();
   const router = useRouter();
   return (
     <div className="dropdown dropdown-end">
@@ -137,10 +157,20 @@ function DropdownActions({ setEditedProduct, product }: DropdownActionsProps) {
           </div>
         </li>
         <li>
-          <a>
+          <div
+            onClick={() => {
+              setModal({
+                message: product.name,
+                display: true,
+                handleModal: () => {
+                  handleDeleteProduct(product?.id!);
+                },
+              });
+            }}
+          >
             <DeleteIcon />
             Delete
-          </a>
+          </div>
         </li>
       </ul>
     </div>

@@ -1,4 +1,4 @@
-import { Nav } from "@/components";
+import { Modal, Nav } from "@/components";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import AuthAdmin from "@/utils/AuthAdmin";
@@ -21,7 +21,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <AuthAdmin>
-            <div className="flex flex-col lg:flex-row text-black bg-primary">
+            <div className="flex flex-col lg:flex-row text-black bg-dvt-white-1">
+              <Modal />
               <Nav />
               <div className="flex-1 bg-dvt-white-1 p-6 min-h-screen text-[#C2D0EA]">
                 {children}

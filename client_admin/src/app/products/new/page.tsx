@@ -15,7 +15,7 @@ export default function AddProductPage({}: Props) {
 
   const handleSubmit = async (form: Product) => {
     setIsCreating(true);
-    await axios.post("http://localhost:8080/api/products", {
+    await axios.post("http://localhost:8080/store/api/products", {
       ...form,
       category: Number(form.category),
       brand: Number(form.brand),

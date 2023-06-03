@@ -1,16 +1,35 @@
 "use client";
 
-import { ProductForm } from "@/components";
+import { Loader, ProductForm } from "@/components";
 import { ArrowBackIcon } from "@/contexts/icons";
+import axios from "axios";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 type Props = {};
 
 export default function EditProductPage({}: Props) {
-  const handleSubmit = (form: Product) => {
-    console.log(form);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const router = useRouter();
+
+  const handleSubmit = async (form: Product) => {
+    setIsUpdating(true);
+    await axios.put("http://localhost:8080/store/api/products", {
+      ...form,
+      images: JSON.parse(form.images),
+    });
+    router.push("/products");
   };
+
+  if (isUpdating) {
+    return (
+      <div>
+        <div>Please wait for adding new product...</div>
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col">

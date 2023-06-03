@@ -9,7 +9,7 @@ import { v4 } from "uuid";
 import { BounceLoader } from "react-spinners";
 import axios from "axios";
 import { FileUploadIcon } from "@/contexts/icons";
-import { useGlobalContext } from "@/contexts/GlobalConext";
+import { useGlobalContext } from "@/contexts/GlobalContext";
 import { useRouter } from "next/navigation";
 
 type Props = {
@@ -64,9 +64,11 @@ export default function ProductForm({ handleSubmit, edit }: Props) {
 
           <ImageField />
 
-          <CategoryField />
+          <div className="flex items-center gap-16">
+            <CategoryField />
 
-          <BrandField />
+            <BrandField />
+          </div>
 
           <TypoFiled
             type="textarea"
@@ -134,7 +136,9 @@ const CategoryField = ({}: CategoryFieldProps) => {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const { data } = await axios.get("http://localhost:8080/api/categories");
+      const { data } = await axios.get(
+        "http://localhost:8080/store/api/categories"
+      );
       setCategories(data.categories);
     };
     fetchCategories();
@@ -153,7 +157,7 @@ const CategoryField = ({}: CategoryFieldProps) => {
   }, [categories]);
 
   return (
-    <>
+    <div className="flex flex-col">
       <div className="flex items-center mb-2">
         <div className="text-base md:text-xl font-semibold">Category</div>
         <div className="text-red-500 ml-3">
@@ -161,18 +165,24 @@ const CategoryField = ({}: CategoryFieldProps) => {
         </div>
       </div>
       <Field
-        className="border-e-black-1 mb-3 md:mb-5 bg-e-white-1 rounded-lg border py-2 px-4 bg-inherit"
+        className="border-e-black-1 mb-3 md:mb-5 bg-e-white-1 rounded-lg border py-2 px-4 bg-dvt-white-1"
         component="select"
         name="category"
       >
-        <option className="bg-inherit" value="">No Category</option>
+        <option className="bg-dvt-white-1 py-2 px-4" value="">
+          No Category
+        </option>
         {options.map((option) => (
-          <option key={option.value} value={option.value}>
+          <option
+            key={option.value}
+            value={option.value}
+            className="bg-dvt-white-1 py-2 px-4"
+          >
             {option.label}
           </option>
         ))}
       </Field>
-    </>
+    </div>
   );
 };
 
@@ -184,7 +194,9 @@ const BrandField = ({}: BrandFieldProps) => {
 
   useEffect(() => {
     const fetchBrands = async () => {
-      const { data } = await axios.get("http://localhost:8080/api/brands");
+      const { data } = await axios.get(
+        "http://localhost:8080/store/api/brands"
+      );
       setBrands(data.brands);
     };
     fetchBrands();
@@ -203,7 +215,7 @@ const BrandField = ({}: BrandFieldProps) => {
   }, [brands]);
 
   return (
-    <>
+    <div className="flex flex-col">
       <div className="flex items-center mb-2">
         <div className="text-base md:text-xl font-semibold">Brand</div>
         <div className="text-red-500 ml-3">
@@ -211,18 +223,24 @@ const BrandField = ({}: BrandFieldProps) => {
         </div>
       </div>
       <Field
-        className="border-e-black-1 mb-3 md:mb-5 bg-inherit rounded-lg border py-2 px-4"
+        className="border-e-black-1 mb-3 md:mb-5 bg-inherit rounded-lg border py-2 px-4 bg-dvt-white-1"
         component="select"
         name="brand"
       >
-        <option className="bg-inherit" value="">No Brand</option>
+        <option className="bg-dvt-white-1 py-2 px-4" value="">
+          No Brand
+        </option>
         {options.map((option) => (
-          <option key={option.value} value={option.value}>
+          <option
+            key={option.value}
+            value={option.value}
+            className="bg-dvt-white-1 py-2 px-4"
+          >
             {option.label}
           </option>
         ))}
       </Field>
-    </>
+    </div>
   );
 };
 

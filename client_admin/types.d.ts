@@ -33,4 +33,11 @@ type Person = {
   name?: name;
   email?: email;
   role: "Admin" | "Customer";
+  picture: string | StaticImport;
+} | null;
+
+type ModalType = {
+  display: boolean;
+  message: string;
+  handleModal: () => void;
 };

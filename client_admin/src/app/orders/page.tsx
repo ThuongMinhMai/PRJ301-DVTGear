@@ -63,7 +63,7 @@ const OrderList = () => {
 
   // useEffect(() => {
   //   const fetchOrders = async () => {
-  //     const { data } = await axios.get("http://localhost:8080/api/orders");
+  //     const { data } = await axios.get("http://localhost:8080/store/api/orders");
   //     setOrderList(data.orders);
   //     setIsLoading(false);
   //   };
@@ -76,7 +76,7 @@ const OrderList = () => {
 
   return (
     <Scroll>
-      <table className="min-w-full border-spacing-y-3 border-separate">
+      <table className="min-w-full border-spacing-y-3 border-separate pb-9">
         <thead>
           <tr className="font-medium text-xs uppercase">
             <th className="pl-6 pr-4">ID</th>
@@ -100,7 +100,7 @@ const OrderList = () => {
                 </td>
                 <td className="px-4">{order.name}</td>
                 <td className="px-4">{formattedDate(order.date)}</td>
-                <td className="px-4">đ{order.total.toFixed(3)}</td>
+                <td className="px-4">đ{order.total.toFixed(0)}</td>
                 <td className="px-4">
                   <div
                     className={clsx(

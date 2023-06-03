@@ -1,6 +1,6 @@
 "use client";
 
-import { GlobalProvider } from "@/contexts/GlobalConext";
+import { GlobalProvider } from "@/contexts/GlobalContext";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
 type Props = { children: React.ReactNode };
