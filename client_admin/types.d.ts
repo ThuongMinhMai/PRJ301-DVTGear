@@ -5,7 +5,7 @@ type Product = {
   brand: Brand;
   description: string;
   price: number | string;
-  images: string; // any ->string     t
+  images: string; 
 };
 
 type Brand = {
