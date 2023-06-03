@@ -1,4 +1,4 @@
-**DVT GEAR PROJECT**
+**TOL GEAR PROJECT**
 
 Member:
 
@@ -7,6 +7,7 @@ Member:
 - Võ Nhật Trường Duy
 
 **1. Requirements**: 
+
 **Name of the system:** 
 
 TOL Gear
@@ -23,7 +24,7 @@ TOL Gear consists of two websites: TOL Store and TOL Admin. The TOL Store is an 
 
 **Features of the system (classified by user type):**
 
-- For Customers (*TOL *Store):
+- For Customers (TOL Store):
 
 \+ User registration and login: Customers can create an account and log in to the TOL Store.
 
@@ -33,7 +34,7 @@ TOL Gear consists of two websites: TOL Store and TOL Admin. The TOL Store is an 
 
 \+ Order management: Customers can update the status of their orders by clicking the "Has Received" button to mark it as "Complete" or the "Cancel" button to cancel the order.
 
-- For Administrators (*TOL *Admin):
+- For Administrators (TOL Admin):
 
 \+ Admin login: Only administrators with specific email credentials can log in to the TOL Admin system.
 
@@ -162,7 +163,7 @@ TOL Gear consists of two websites: TOL Store and TOL Admin. The TOL Store is an 
 
 
 
-- ` `**http://localhost:3000**
+- **http://localhost:3000**
 
 ![](./wireframe/Aspose.Words.1421c8ff-42c0-4d8a-abb8-a6b5f341b335.015.jpeg)
 
@@ -191,5 +192,13 @@ TOL Gear consists of two websites: TOL Store and TOL Admin. The TOL Store is an 
 - **http://localhost:3000/orders**
 
 ![](./wireframe/Aspose.Words.1421c8ff-42c0-4d8a-abb8-a6b5f341b335.019.jpeg)
+
+
+
+
+
+- **http://localhost:3000/settings**
+
+![](./wireframe/Aspose.Words.1421c8ff-42c0-4d8a-abb8-a6b5f341b335.020.jpeg)
 
 
