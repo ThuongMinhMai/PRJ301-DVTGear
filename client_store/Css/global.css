@@ -1,0 +1,57 @@
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #1b1a21;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #2a303c;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #fad56a;
+}
+body {
+  background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
+  background-color: #2a303c;
+}
+header.scrolled {
+  background: #1b1a21;
+  transition: 0.2s;
+}
+header.scrolled .header_nav ul li a {
+  color: white;
+}
+header.scrolled #icon_cart,
+header.scrolled #icon_login {
+  -webkit-filter: invert(100%);
+}
+.product {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.product:hover {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+.product:hover .name_product span {
+  color: #fad56a;
+}
+
+.footer-col h4::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  background-color: #fad56a;
+  height: 2px;
+  box-sizing: border-box;
+  width: 50px;
+}
+
+.footer-col ul li:not(:last-child) {
+  margin-bottom: 10px;
+}

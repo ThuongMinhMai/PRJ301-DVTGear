@@ -25,20 +25,13 @@
         },
       };
     </script>
-
+    <link rel="stylesheet" href="../Css/global.css" />
     <style type="text/tailwindcss">
-      body {
-        background-color: #2a303c;
-        background-image: url("../assets/cubes.png");
-      }
       input:focus ~ label {
-        top: -20px;
+        @apply -top-5;
       }
       input:valid ~ label {
-        top: -20px;
-      }
-      .icon {
-        -webkit-filter: invert(100%);
+        @apply -top-5;
       }
     </style>
     <title>DVT Login</title>
@@ -58,7 +51,7 @@
               class="input relative flex-row justify-center items-center mx-0 my-4 w-80 border-b-[2px] border-white"
             >
               <img
-                class="w-[6%] absolute right-2 text-white top-[-10px] icon"
+                class="w-[6%] absolute right-2 text-white top-[-10px] filter invert"
                 src="../assets/email.svg"
               />
               <input
@@ -76,7 +69,7 @@
               class="input relative flex-row justify-center items-center mx-0 mt-4 w-80 border-b-[2px] border-white"
             >
               <img
-                class="w-[6%] absolute right-2 text-white top-[-10px] icon"
+                class="w-[6%] absolute right-2 text-white top-[-10px] filter invert"
                 src="../assets/lock.svg"
               />
               <input
