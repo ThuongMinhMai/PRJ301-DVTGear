@@ -4,6 +4,7 @@ import { Scroll } from "@/components";
 import {
   AddCircleIcon,
   DeleteIcon,
+  EditIcon,
   FileUploadIcon,
   MoreHorizIcon,
 } from "@/contexts/icons";
@@ -164,22 +165,35 @@ type SettingBannerFormProps = {
 
 const SettingBannerForm = ({ handleSubmit }: SettingBannerFormProps) => {
   const [isUploading, setIsUploading] = useState(false);
-  const [imageUrl, setImageUrl] = useState(
-    "https://firebasestorage.googleapis.com/v0/b/dvtcream.appspot.com/o/images%2FTelefonino.net-IV-2160x1350-4-7.webp5bc5ebb1-0b2a-4282-860d-2dd276af9f66?alt=media&token=0c2d1499-dc7c-4c6f-a386-dfbda84749e3&_gl=1*1f9kotv*_ga*NzYyNTEwMTYxLjE2ODU2ODM2NjE.*_ga_CW55HF8NVT*MTY4NTY5NzE3MS4yLjEuMTY4NTY5NzIzMC4wLjAuMA.."
-  );
+  const [bannerUrl, setBannerUrl] = useState("");
   const [edit, setEdit] = useState(false);
+
+  useEffect(() => {
+    const fetchBanner = async () => {
+      const { data } = await axios.get(
+        "http://localhost:8080/store/api/banner"
+      );
+      setBannerUrl(data.bannerUrl);
+    };
+    fetchBanner();
+  }, []);
+
+  const handleUpdateBanner = async () => {
+    axios.put("http://localhost:8080/store/api/banner", { bannerUrl });
+  };
 
   return (
     <div className="flex flex-col rounded-2xl">
-      <div className="flex flex-col md:flex-row md:items-center mb-4 justify-between">
+      <div className="flex flex-col md:flex-row md:items-center mb-4 gap-4">
         <div className="text-base md:text-xl font-semibold">
           Banner Image {"( just one )"}
         </div>
         {!edit && (
           <button
             onClick={() => setEdit(true)}
-            className="btn btn-primary w-fit text-white mt-2"
+            className="btn btn-primary w-fit text-white"
           >
+            <EditIcon />
             Edit
           </button>
         )}
@@ -187,8 +201,8 @@ const SettingBannerForm = ({ handleSubmit }: SettingBannerFormProps) => {
       {edit ? (
         <>
           <ImageField
-            imageUrl={imageUrl}
-            setImageUrl={setImageUrl}
+            bannerUrl={bannerUrl}
+            setBannerUrl={setBannerUrl}
             isUploading={isUploading}
             setIsUploading={setIsUploading}
           />
@@ -196,9 +210,9 @@ const SettingBannerForm = ({ handleSubmit }: SettingBannerFormProps) => {
           <div className="border-e-black-1 mb-3 md:mb-5 bg-e-white-1 rounded-lg border overflow-hidden">
             <input
               type="text"
-              value={imageUrl}
+              value={bannerUrl}
               onChange={(e) => {
-                setImageUrl(e.target.value);
+                setBannerUrl(e.target.value);
               }}
               placeholder="Enter url link..."
               className="py-3 px-4 w-full outline-none border-none bg-inherit"
@@ -210,6 +224,7 @@ const SettingBannerForm = ({ handleSubmit }: SettingBannerFormProps) => {
             type="submit"
             className="btn btn-primary text-white w-fit ml-auto"
             onClick={() => {
+              handleUpdateBanner();
               setEdit(false);
             }}
           >
@@ -218,12 +233,12 @@ const SettingBannerForm = ({ handleSubmit }: SettingBannerFormProps) => {
         </>
       ) : (
         <div className="flex flex-col">
-          {imageUrl ? (
+          {bannerUrl ? (
             <div className="overflow-hidden">
               <img
-                className="w-full object-cover rounded-lg"
-                src={imageUrl}
-                alt={imageUrl}
+                className="max-w-full object-cover rounded-lg"
+                src={bannerUrl}
+                alt={bannerUrl}
               />
             </div>
           ) : (
@@ -238,14 +253,14 @@ const SettingBannerForm = ({ handleSubmit }: SettingBannerFormProps) => {
 type ImageFieldProps = {
   isUploading: boolean;
   setIsUploading: (val: boolean) => void;
-  imageUrl: string;
-  setImageUrl: (val: string) => void;
+  bannerUrl: string;
+  setBannerUrl: (val: string) => void;
 };
 function ImageField({
   isUploading,
   setIsUploading,
-  imageUrl,
-  setImageUrl,
+  bannerUrl,
+  setBannerUrl,
 }: ImageFieldProps) {
   const uploadImages = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsUploading(true);
@@ -260,15 +275,15 @@ function ImageField({
 
     const url = await getDownloadURL(imageRef);
 
-    setImageUrl(url);
+    setBannerUrl(url);
 
     setIsUploading(false);
   };
   return (
     <>
       <div className="flex flex-wrap items-center">
-        <div key={imageUrl} className="mr-2 rounded-lg overflow-hidden mb-2">
-          <img className="h-24 object-cover" src={imageUrl} alt={imageUrl} />
+        <div key={bannerUrl} className="mr-2 rounded-lg overflow-hidden mb-2">
+          <img className="h-24 object-cover" src={bannerUrl} alt={bannerUrl} />
         </div>
 
         {isUploading && (

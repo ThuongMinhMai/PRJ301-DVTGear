@@ -14,9 +14,107 @@
 ::-webkit-scrollbar-thumb:hover {
   background-color: #fad56a;
 }
+
 body {
   background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
   background-color: #2a303c;
+}
+
+#banner_nav .category_list::-webkit-scrollbar-thumb {
+  background-color: #fad56a;
+  border-radius: 6px;
+}
+#banner_nav .brand_list::-webkit-scrollbar-thumb {
+  background-color: #1b1a21;
+  border-radius: 6px;
+}
+
+#banner_nav .category_list::-webkit-scrollbar,
+#banner_nav .brand_list::-webkit-scrollbar {
+  width: 4px;
+}
+
+#banner_nav .category_list::-webkit-scrollbar-track,
+#banner_nav .brand_list::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+#banner_nav.active_brand {
+  background-color: #fad56a;
+}
+#banner_nav.active_brand nav {
+  background-color: #1b1a21;
+}
+#banner_nav.active_brand nav #nav_brand {
+  position: relative;
+}
+
+#banner_nav.active_brand nav #nav_brand::after {
+  content: "";
+  width: 48px;
+  height: 48px;
+  background-color: transparent;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-radius: 50%;
+  transform: translateX(-100%);
+  box-shadow: 24px 24px 0 0 #fad56a;
+}
+
+#banner_nav.active_brand nav #nav_category::after {
+  content: "";
+  width: 48px;
+  height: 48px;
+  background-color: transparent;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-radius: 50%;
+  transform: translateY(100%);
+  box-shadow: -24px -24px 0 0 #1b1a21;
+}
+
+#banner_nav.active_brand .category_list {
+  display: none;
+}
+
+#banner_nav.active_category {
+  background-color: #1b1a21;
+}
+#banner_nav.active_category nav {
+  background-color: #fad56a;
+}
+#banner_nav.active_category nav #nav_category {
+  position: relative;
+}
+#banner_nav.active_category nav #nav_category::after {
+  content: "";
+  width: 48px;
+  height: 48px;
+  background-color: transparent;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  border-radius: 50%;
+  transform: translateX(100%);
+  box-shadow: -24px 24px 0 0 #1b1a21;
+}
+#banner_nav.active_category nav #nav_brand::after {
+  content: "";
+  width: 48px;
+  height: 48px;
+  background-color: transparent;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  border-radius: 50%;
+  transform: translateY(100%);
+  box-shadow: 24px -24px 0 0 #fad56a;
+}
+
+#banner_nav.active_category .brand_list {
+  display: none;
 }
 
 .product {
