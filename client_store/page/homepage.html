@@ -30,66 +30,7 @@
       };
     </script>
 
-    <style type="text/tailwindcss">
-      /* ví dụ cách dùng tailwindcss, làm bình thường vẫn được */
-      ::-webkit-scrollbar {
-        width: 12px;
-      }
-
-      ::-webkit-scrollbar-track {
-        background-color: #1b1a21;
-      }
-
-      ::-webkit-scrollbar-thumb {
-        background-color: #2a303c;
-        border-radius: 6px;
-      }
-
-      ::-webkit-scrollbar-thumb:hover {
-        background-color: #fad56a;
-      }
-      body {
-        background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
-        background-color: #2a303c;
-      }
-      header.scrolled {
-        background: #1b1a21;
-        transition: 0.2s;
-      }
-      header.scrolled .header_nav ul li a {
-        color: white;
-      }
-      header.scrolled #icon_cart,
-      header.scrolled #icon_login {
-        @apply filter invert;
-      }
-      .product {
-        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-      }
-      .product:hover {
-        box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
-          rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
-          rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-      }
-      .product:hover .name_product span {
-        color: #fad56a;
-      }
-
-      .footer-col h4::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        bottom: -10px;
-        background-color: #fad56a;
-        height: 2px;
-        box-sizing: border-box;
-        width: 50px;
-      }
-
-      .footer-col ul li:not(:last-child) {
-        margin-bottom: 10px;
-      }
-    </style>
+    <link rel="stylesheet" href="../Css/global.css" />
     <link rel="icon" href="../assets/DVTLogo-Short.png" type="icon" />
     <title>DVT Cream</title>
   </head>
@@ -97,7 +38,7 @@
   <body class="text-white">
     <!-- Start header  -->
     <header
-      class="flex justify-between items-center bg-transparent fixed top-0 left-0 right-0 z-50 transition-all scrolled py-4"
+      class="flex justify-between items-center fixed top-0 left-0 right-0 z-50 transition-all py-4 bg-dvt-black-2"
     >
       <div
         class="mx-auto w-11/12 max-w-7xl flex justify-between items-center bg-transparent gap-6"
@@ -110,39 +51,6 @@
             alt="icon_DVT"
           />
         </div>
-        <!-- Nav -->
-        <!-- <nav class="pl-0 header_nav">
-          <ul class="flex list-none pl-3">
-            <li>
-              <a
-                class="no-underline text-xl py-[10px] px-[15px] rounded-[20px] transition-colors duration-300 ease-linear hover:bg-[#fad56a] hover:text-white font-semibold uppercase text-[#1b1a21]"
-                href=""
-                >Trang chủ</a
-              >
-            </li>
-            <li>
-              <a
-                class="no-underline text-xl py-[10px] px-[15px] rounded-[20px] transition-colors duration-300 ease-linear hover:bg-[#fad56a] hover:text-white font-semibold uppercase text-[#1b1a21]"
-                href=""
-                >Tìm hiểu thêm</a
-              >
-            </li>
-            <li>
-              <a
-                class="no-underline text-xl py-[10px] px-[15px] rounded-[20px] transition-colors duration-300 ease-linear hover:bg-[#fad56a] hover:text-white font-semibold uppercase text-[#1b1a21]"
-                href=""
-                >Liên hệ</a
-              >
-            </li>
-            <li>
-              <a
-                class="no-underline text-xl py-[10px] px-[15px] rounded-[20px] transition-colors duration-300 ease-linear hover:bg-[#fad56a] hover:text-white font-semibold uppercase text-[#1b1a21]"
-                href=""
-                >Hỗ Trợ</a
-              >
-            </li>
-          </ul>
-        </nav> -->
         <!-- Search box -->
         <div class="flex-1 flex justify-end items-center relative">
           <input
@@ -159,17 +67,15 @@
         <!-- Cart and login -->
         <div class="flex cart_login items-center gap-3">
           <img
-            class="w-12 h-12 cursor-pointer"
+            class="w-12 h-12 cursor-pointer filter invert"
             src="../assets/cart.svg"
             alt="icon_cart"
-            id="icon_cart"
           />
 
           <img
-            class="w-12 h-12 cursor-pointer"
+            class="w-12 h-12 cursor-pointer filter invert"
             src="../assets/user.svg"
             alt="icon_login"
-            id="icon_login"
           />
         </div>
       </div>
@@ -177,11 +83,18 @@
     <!-- End header  -->
 
     <!-- Start banner -->
-    <img
-      class="w-[100%] object-cover relative block"
-      src="../assets/banner2.jpg"
-      alt="Banner picture"
-    />
+    <div class="flex p-6 gap-6 mt-24">
+      <div class="w-96 bg-black overflow-y-auto">
+        <!-- Mai Thị Minh Thương -->
+      </div>
+      <div className="flex-1">
+        <img
+          class="w-full aspect-[2.65/1] object-fill relative block rounded-3xl"
+          src="../assets/banner2.jpg"
+          alt="Banner picture"
+        />
+      </div>
+    </div>
     <!-- End Banner -->
     <!-- Start productList -->
     <div class="relative">
@@ -389,23 +302,6 @@
       <!--Commit productList-->
       <div class="commit h-[500px]"></div>
     </div>
-    <script>
-      const header = document.querySelector("header");
-
-      const handleHeader = () => {
-        if (window.scrollY > 50) {
-          header.classList.add("scrolled");
-        } else {
-          header.classList.remove("scrolled");
-        }
-      };
-
-      handleHeader();
-
-      window.addEventListener("scroll", () => {
-        handleHeader();
-      });
-    </script>
     <!-- End body -->
     <!-- Start Footer -->
     <footer class="footer bg-dvt-black-2 py-[50px]">

@@ -18,17 +18,7 @@ body {
   background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
   background-color: #2a303c;
 }
-header.scrolled {
-  background: #1b1a21;
-  transition: 0.2s;
-}
-header.scrolled .header_nav ul li a {
-  color: white;
-}
-header.scrolled #icon_cart,
-header.scrolled #icon_login {
-  -webkit-filter: invert(100%);
-}
+
 .product {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
