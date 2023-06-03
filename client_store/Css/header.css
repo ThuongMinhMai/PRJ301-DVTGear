@@ -157,17 +157,8 @@ header.scrolled .header_nav ul li a {
   color: white;
 }
 
-.cart_login {
-  display: flex;
-}
 
-.cart {
-  height: 55px;
-  width: 55px;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-}
+
 
 header.scrolled .cart_login .cart img,
 header.scrolled .cart_login .user img {

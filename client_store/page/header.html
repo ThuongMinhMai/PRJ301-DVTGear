@@ -6,7 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
       rel="stylesheet"
@@ -56,9 +59,9 @@
       header.scrolled .header_nav ul li a {
         color: white;
       }
-      header.scrolled .cart_login .cart img,
-      header.scrolled .cart_login .user img {
-        -webkit-filter: invert(100%);
+      header.scrolled #icon_cart,
+      header.scrolled #icon_login {
+        @apply filter invert;
       }
       .product {
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -72,8 +75,8 @@
         color: #fad56a;
       }
 
-      .footer-col h4::before{
-        content: '';
+      .footer-col h4::before {
+        content: "";
         position: absolute;
         left: 0;
         bottom: -10px;
@@ -83,10 +86,9 @@
         width: 50px;
       }
 
-      .footer-col ul li:not(:last-child){
+      .footer-col ul li:not(:last-child) {
         margin-bottom: 10px;
       }
-
     </style>
     <link rel="icon" href="../assets/DVTLogo-Short.png" type="icon" />
     <title>DVT Cream</title>
@@ -95,75 +97,82 @@
   <body class="text-white">
     <!-- Start header  -->
     <header
-      class="flex justify-around items-center bg-transparent fixed top-0 left-0 right-0 z-50 transition duration-200 scrolled"
+      class="flex justify-between items-center bg-transparent fixed top-0 left-0 right-0 z-50 transition-all scrolled py-4"
     >
-      <!-- Start Logo DVT -->
-      <div>
-        <img
-          class="h-24 object-cover"
-          src="../assets/demo.png"
-          alt="icon_DVT"
-        />
-      </div>
-      <!-- Nav -->
-      <nav class="pl-0 header_nav">
-        <ul class="flex list-none pl-3">
-          <li>
-            <a
-              class="no-underline text-xl py-[10px] px-[15px] rounded-[20px] transition-colors duration-300 ease-linear hover:bg-[#fad56a] hover:text-white font-semibold uppercase text-[#1b1a21]"
-              href=""
-              >Trang chủ</a
-            >
-          </li>
-          <li>
-            <a
-              class="no-underline text-xl py-[10px] px-[15px] rounded-[20px] transition-colors duration-300 ease-linear hover:bg-[#fad56a] hover:text-white font-semibold uppercase text-[#1b1a21]"
-              href=""
-              >Tìm hiểu thêm</a
-            >
-          </li>
-          <li>
-            <a
-              class="no-underline text-xl py-[10px] px-[15px] rounded-[20px] transition-colors duration-300 ease-linear hover:bg-[#fad56a] hover:text-white font-semibold uppercase text-[#1b1a21]"
-              href=""
-              >Liên hệ</a
-            >
-          </li>
-          <li>
-            <a
-              class="no-underline text-xl py-[10px] px-[15px] rounded-[20px] transition-colors duration-300 ease-linear hover:bg-[#fad56a] hover:text-white font-semibold uppercase text-[#1b1a21]"
-              href=""
-              >Hỗ Trợ</a
-            >
-          </li>
-        </ul>
-      </nav>
-      <!-- Search box -->
-      <div class="flex items-center relative">
-        <input
-          class="h-[40px] w-[250px] rounded-[20px] px-[15px] py-0 border-none outline-none bg-[#fad56a] text-white placeholder-white"
-          type="text"
-          placeholder="Tìm kiếm ...."
-        />
-        <div
-          class="flex justify-center items-center absolute top-[50%] right-[5px] transform -translate-y-1/2 w-[30px] h-[30px] bg-cover cursor-pointer bg-white rounded-[30px]"
-        >
-          <img class="w-[20px] h-[20px]" src="../assets/search.svg" alt="" />
+      <div
+        class="mx-auto w-11/12 max-w-7xl flex justify-between items-center bg-transparent gap-6"
+      >
+        <!-- Start Logo DVT -->
+        <div>
+          <!-- có logo rồi thì thay vào đây -->
+          <!-- <img
+            class="h-24 object-cover"
+            src="../assets/demo.png"
+            alt="icon_DVT"
+          /> -->
+          <div class="text-5xl">LOGO</div>
         </div>
-      </div>
-      <!-- Cart and login -->
-      <div class="flex cart_login">
-        <button
-          class="h-[55px] w-[55px] border-none bg-transparent cursor-pointer cart"
-        >
-          <img src="../assets/cart.svg" alt="icon_cart" />
-        </button>
-        <div
-          class="h-[50px] w-[50px] border-none bg-transparent cursor-pointer user"
-        >
-          <a href="">
-            <img src="../assets/user.svg" alt="icon_login" />
-          </a>
+        <!-- Nav -->
+        <!-- <nav class="pl-0 header_nav">
+          <ul class="flex list-none pl-3">
+            <li>
+              <a
+                class="no-underline text-xl py-[10px] px-[15px] rounded-[20px] transition-colors duration-300 ease-linear hover:bg-[#fad56a] hover:text-white font-semibold uppercase text-[#1b1a21]"
+                href=""
+                >Trang chủ</a
+              >
+            </li>
+            <li>
+              <a
+                class="no-underline text-xl py-[10px] px-[15px] rounded-[20px] transition-colors duration-300 ease-linear hover:bg-[#fad56a] hover:text-white font-semibold uppercase text-[#1b1a21]"
+                href=""
+                >Tìm hiểu thêm</a
+              >
+            </li>
+            <li>
+              <a
+                class="no-underline text-xl py-[10px] px-[15px] rounded-[20px] transition-colors duration-300 ease-linear hover:bg-[#fad56a] hover:text-white font-semibold uppercase text-[#1b1a21]"
+                href=""
+                >Liên hệ</a
+              >
+            </li>
+            <li>
+              <a
+                class="no-underline text-xl py-[10px] px-[15px] rounded-[20px] transition-colors duration-300 ease-linear hover:bg-[#fad56a] hover:text-white font-semibold uppercase text-[#1b1a21]"
+                href=""
+                >Hỗ Trợ</a
+              >
+            </li>
+          </ul>
+        </nav> -->
+        <!-- Search box -->
+        <div class="flex-1 flex justify-end items-center relative">
+          <input
+            class="rounded-3xl px-4 py-2 border-none outline-none bg-primary text-white placeholder-white flex-1 max-w-sm"
+            type="text"
+            placeholder="Tìm kiếm ...."
+          />
+          <div
+            class="flex justify-center items-center absolute top-[50%] right-[5px] transform -translate-y-1/2 w-[30px] h-[30px] bg-cover cursor-pointer bg-white rounded-[30px]"
+          >
+            <img class="w-[20px] h-[20px]" src="../assets/search.svg" alt="" />
+          </div>
+        </div>
+        <!-- Cart and login -->
+        <div class="flex cart_login items-center gap-3">
+          <img
+            class="w-12 h-12 cursor-pointer"
+            src="../assets/cart.svg"
+            alt="icon_cart"
+            id="icon_cart"
+          />
+
+          <img
+            class="w-12 h-12 cursor-pointer"
+            src="../assets/user.svg"
+            alt="icon_login"
+            id="icon_login"
+          />
         </div>
       </div>
     </header>
@@ -171,7 +180,7 @@
 
     <!-- Start banner -->
     <img
-      class="w-[100%] max-h-[90vh] object-fill relative block"
+      class="w-[100%] object-cover relative block"
       src="../assets/banner2.jpg"
       alt="Banner picture"
     />
@@ -218,11 +227,10 @@
           </div>
           <div class="info_product">
             <span class="h-16 py-0 px-5 text-xs line-clamp-4"
-              >Laptop ASUS TUF Gaming F15 FX506HC HN144W 
-              có thiết kế vô cùng độc đáo với màu Graphite 
-              Black huyền bí. Được trang bị cấu hình khủng từ 
-              những linh kiện hàng đầu cho ra một sản phẩm tuyệt vời. 
-              Hứa hẹn đây sẽ là sản phẩm oanh tạc thị trường game thủ sắp tới.</span
+              >Laptop ASUS TUF Gaming F15 FX506HC HN144W có thiết kế vô cùng độc
+              đáo với màu Graphite Black huyền bí. Được trang bị cấu hình khủng
+              từ những linh kiện hàng đầu cho ra một sản phẩm tuyệt vời. Hứa hẹn
+              đây sẽ là sản phẩm oanh tạc thị trường game thủ sắp tới.</span
             >
           </div>
           <button
@@ -256,11 +264,10 @@
           </div>
           <div class="info_product">
             <span class="h-16 py-0 px-5 text-xs line-clamp-4"
-              >Laptop ASUS TUF Gaming F15 FX506HC HN144W 
-              có thiết kế vô cùng độc đáo với màu Graphite 
-              Black huyền bí. Được trang bị cấu hình khủng từ 
-              những linh kiện hàng đầu cho ra một sản phẩm tuyệt vời. 
-              Hứa hẹn đây sẽ là sản phẩm oanh tạc thị trường game thủ sắp tới.</span
+              >Laptop ASUS TUF Gaming F15 FX506HC HN144W có thiết kế vô cùng độc
+              đáo với màu Graphite Black huyền bí. Được trang bị cấu hình khủng
+              từ những linh kiện hàng đầu cho ra một sản phẩm tuyệt vời. Hứa hẹn
+              đây sẽ là sản phẩm oanh tạc thị trường game thủ sắp tới.</span
             >
           </div>
           <button
@@ -294,11 +301,10 @@
           </div>
           <div class="info_product">
             <span class="h-16 py-0 px-5 text-xs line-clamp-4"
-              >Laptop ASUS TUF Gaming F15 FX506HC HN144W 
-              có thiết kế vô cùng độc đáo với màu Graphite 
-              Black huyền bí. Được trang bị cấu hình khủng từ 
-              những linh kiện hàng đầu cho ra một sản phẩm tuyệt vời. 
-              Hứa hẹn đây sẽ là sản phẩm oanh tạc thị trường game thủ sắp tới.</span
+              >Laptop ASUS TUF Gaming F15 FX506HC HN144W có thiết kế vô cùng độc
+              đáo với màu Graphite Black huyền bí. Được trang bị cấu hình khủng
+              từ những linh kiện hàng đầu cho ra một sản phẩm tuyệt vời. Hứa hẹn
+              đây sẽ là sản phẩm oanh tạc thị trường game thủ sắp tới.</span
             >
           </div>
           <button
@@ -332,11 +338,10 @@
           </div>
           <div class="info_product">
             <span class="h-16 py-0 px-5 text-xs line-clamp-4"
-              >Laptop ASUS TUF Gaming F15 FX506HC HN144W 
-              có thiết kế vô cùng độc đáo với màu Graphite 
-              Black huyền bí. Được trang bị cấu hình khủng từ 
-              những linh kiện hàng đầu cho ra một sản phẩm tuyệt vời. 
-              Hứa hẹn đây sẽ là sản phẩm oanh tạc thị trường game thủ sắp tới.</span
+              >Laptop ASUS TUF Gaming F15 FX506HC HN144W có thiết kế vô cùng độc
+              đáo với màu Graphite Black huyền bí. Được trang bị cấu hình khủng
+              từ những linh kiện hàng đầu cho ra một sản phẩm tuyệt vời. Hứa hẹn
+              đây sẽ là sản phẩm oanh tạc thị trường game thủ sắp tới.</span
             >
           </div>
           <button
@@ -370,11 +375,10 @@
           </div>
           <div class="info_product">
             <span class="h-16 py-0 px-5 text-xs line-clamp-4"
-              >Laptop ASUS TUF Gaming F15 FX506HC HN144W 
-              có thiết kế vô cùng độc đáo với màu Graphite 
-              Black huyền bí. Được trang bị cấu hình khủng từ 
-              những linh kiện hàng đầu cho ra một sản phẩm tuyệt vời. 
-              Hứa hẹn đây sẽ là sản phẩm oanh tạc thị trường game thủ sắp tới.</span
+              >Laptop ASUS TUF Gaming F15 FX506HC HN144W có thiết kế vô cùng độc
+              đáo với màu Graphite Black huyền bí. Được trang bị cấu hình khủng
+              từ những linh kiện hàng đầu cho ra một sản phẩm tuyệt vời. Hứa hẹn
+              đây sẽ là sản phẩm oanh tạc thị trường game thủ sắp tới.</span
             >
           </div>
           <button
@@ -408,48 +412,154 @@
     <!-- Start Footer -->
     <footer class="footer bg-dvt-black-2 py-[50px]">
       <div class="container bg-dvt-black-2 mx-auto max-w-7xl w-11/12">
-          <div class="row grid grid-cols-12">
-              <div class="footer-col col-span-12 w-full mb-8 p-3 lg:col-span-3 md:col-span-6 sm:col-span-12">
-                <h4 class="text-2xl w-full font-bold text-white capitalize mb-[30px] relative">Company</h4>
-                <ul>
-                  <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">About us</a></li>
-                  <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Our services</a></li>
-                  <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Privacy policy</a></li>
-                  <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Affiliate Program</a></li>
-                </ul>
-              </div>
-
-              <div class="footer-col col-span-12 w-full mb-8 p-3 lg:col-span-3 md:col-span-6 sm:col-span-12">
-                <h4 class="text-2xl font-bold text-white capitalize mb-[30px] relative">Get Help</h4>
-                <ul>
-                  <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">FAQ</a></li>
-                  <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Shipping</a></li>
-                  <li> <a class="text-lg capitalize text-gray-500 md-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Returns</a></li>
-                  <li> <a class="text-lg capitalize text-gray-500 md-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Payment Options</a></li>
-                </ul>
-              </div>
-
-              <div class="footer-col col-span-12 w-full mb-8 p-3 lg:col-span-3 md:col-span-6 sm:col-span-12">
-                <h4 class="text-2xl font-bold text-white capitalize mb-[30px] relative">Office Hours</h4>
-                <ul>
-                  <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Monday - Friday: 9:00 - 23:00</a></li>
-                  <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Saturday: 9:00 - 22:00</a></li>
-                  <li> <a class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2" href="#">Sunday: 9:00 - 17:00</a></li>
-                </ul>
-              </div>
-
-              <div class="footer-col col-span-12 w-full mb-8 p-3 lg:col-span-3 md:col-span-6 sm:col-span-12">
-                <h4 class="text-2xl font-bold text-white capitalize mb-[30px] relative">Follow Us</h4>
-                <div class="social-links">
-                  <a class="inline-block bg-white/20 h-10 w-10 text-center leading-10 rounded-[50%] text-white hover:bg-primary hover:text-white transition-all duration-500 ease-in-out" href="#"><i class="fab fa-facebook-f"></i></a>
-                  <a class="inline-block bg-white/20 h-10 w-10 text-center leading-10 rounded-[50%] text-white hover:bg-primary hover:text-white transition-all duration-500 ease-in-out" href="#"><i class="fab fa-twitter"></i></a>
-                  <a class="inline-block bg-white/20 h-10 w-10 text-center leading-10 rounded-[50%] text-white hover:bg-primary hover:text-white transition-all duration-500 ease-in-out" href="#"><i class="fab fa-instagram"></i></a>
-                  <a class="inline-block bg-white/20 h-10 w-10 text-center leading-10 rounded-[50%] text-white hover:bg-primary hover:text-white transition-all duration-500 ease-in-out" href="#"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-              </div>
+        <div class="row grid grid-cols-12">
+          <div
+            class="footer-col col-span-12 w-full mb-8 p-3 lg:col-span-3 md:col-span-6 sm:col-span-12"
+          >
+            <h4
+              class="text-2xl w-full font-bold text-white capitalize mb-[30px] relative"
+            >
+              Company
+            </h4>
+            <ul>
+              <li>
+                <a
+                  class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2"
+                  href="#"
+                  >About us</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2"
+                  href="#"
+                  >Our services</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2"
+                  href="#"
+                  >Privacy policy</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2"
+                  href="#"
+                  >Affiliate Program</a
+                >
+              </li>
+            </ul>
           </div>
+
+          <div
+            class="footer-col col-span-12 w-full mb-8 p-3 lg:col-span-3 md:col-span-6 sm:col-span-12"
+          >
+            <h4
+              class="text-2xl font-bold text-white capitalize mb-[30px] relative"
+            >
+              Get Help
+            </h4>
+            <ul>
+              <li>
+                <a
+                  class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2"
+                  href="#"
+                  >FAQ</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2"
+                  href="#"
+                  >Shipping</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-lg capitalize text-gray-500 md-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2"
+                  href="#"
+                  >Returns</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-lg capitalize text-gray-500 md-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2"
+                  href="#"
+                  >Payment Options</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="footer-col col-span-12 w-full mb-8 p-3 lg:col-span-3 md:col-span-6 sm:col-span-12"
+          >
+            <h4
+              class="text-2xl font-bold text-white capitalize mb-[30px] relative"
+            >
+              Office Hours
+            </h4>
+            <ul>
+              <li>
+                <a
+                  class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2"
+                  href="#"
+                  >Monday - Friday: 9:00 - 23:00</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2"
+                  href="#"
+                  >Saturday: 9:00 - 22:00</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-lg capitalize text-gray-500 mb-2 no-underline font-light block transition-all duration-300 ease-in-out hover:text-white hover:pl-2"
+                  href="#"
+                  >Sunday: 9:00 - 17:00</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="footer-col col-span-12 w-full mb-8 p-3 lg:col-span-3 md:col-span-6 sm:col-span-12"
+          >
+            <h4
+              class="text-2xl font-bold text-white capitalize mb-[30px] relative"
+            >
+              Follow Us
+            </h4>
+            <div class="social-links">
+              <a
+                class="inline-block bg-white/20 h-10 w-10 text-center leading-10 rounded-[50%] text-white hover:bg-primary hover:text-white transition-all duration-500 ease-in-out"
+                href="#"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a
+                class="inline-block bg-white/20 h-10 w-10 text-center leading-10 rounded-[50%] text-white hover:bg-primary hover:text-white transition-all duration-500 ease-in-out"
+                href="#"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a
+                class="inline-block bg-white/20 h-10 w-10 text-center leading-10 rounded-[50%] text-white hover:bg-primary hover:text-white transition-all duration-500 ease-in-out"
+                href="#"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a
+                class="inline-block bg-white/20 h-10 w-10 text-center leading-10 rounded-[50%] text-white hover:bg-primary hover:text-white transition-all duration-500 ease-in-out"
+                href="#"
+                ><i class="fab fa-linkedin-in"></i
+              ></a>
+            </div>
+          </div>
+        </div>
       </div>
-  </footer>
+    </footer>
     <!-- End Footer -->
   </body>
 </html>
