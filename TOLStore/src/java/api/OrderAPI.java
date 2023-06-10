@@ -1,0 +1,65 @@
+package api;
+
+import dao.OrderDAO;
+import entity.OrderAdmin;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.List;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+@WebServlet(name = "OrderServlet", urlPatterns = {"/api/orders"})
+public class OrderAPI extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+
+        OrderDAO dao = new OrderDAO();
+        List<OrderAdmin> orderList = dao.getAllOrdersAPI();
+
+        response.setStatus(HttpServletResponse.SC_OK);
+
+        JSONObject jsonResponse = new JSONObject();
+        jsonResponse.put("message", "Get orders succesfully!");
+        jsonResponse.put("orders", new JSONArray(orderList));
+
+        response.getWriter().write(jsonResponse.toString());
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
+        StringBuilder requestBody = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            requestBody.append(line);
+        }
+        reader.close();
+
+        JSONObject jsonObject = new JSONObject(requestBody.toString());
+
+        try {
+            OrderDAO dao = new OrderDAO();
+            dao.deleteOrder(jsonObject);
+
+            response.setStatus(HttpServletResponse.SC_OK);
+
+            JSONObject jsonResponse = new JSONObject();
+            jsonResponse.put("message", "Delete Order succesfully!!!");
+
+            response.getWriter().write(jsonResponse.toString());
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+    }
+
+}

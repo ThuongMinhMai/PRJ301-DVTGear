@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#ea1c00",
+              "dvt-black-1": "#2a303c",
+              "dvt-black-2": "#1b1a21",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style type="text/tailwindcss">
+      /* ví dụ cách dùng tailwindcss, làm bình thường vẫn được */
+      .page {
+        @apply bg-pink-500 h-screen;
+      }
+    </style>
+
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="page relative">
+      <div
+        class="text-primary bg-blue-500 hover:text-red-500 font-bold text-4xl cursor-pointer"
+      >
+        Hello
+      </div>
+      <div class="absolute inset-0 bg-black/50 z-10 flex justify-center items-center">
+          <div class="w-96 h-96 rounded-lg bg-white">Order</div>
+      </div>
+    </div>
+  </body>
+</html>
