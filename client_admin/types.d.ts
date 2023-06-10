@@ -5,7 +5,7 @@ type Product = {
   brand: Brand;
   description: string;
   price: number | string;
-  images: string; 
+  images: string;
 };
 
 type Brand = {
@@ -20,13 +20,13 @@ type Category = {
 
 type Order = {
   id?: number;
-  name: string;
-  date: Date;
-  total: number;
-  status: Status;
+  username: string;
+  date: string;
+  totalMoney: number;
+  status: string;
 };
 
-type Status = "Complete" | "Processing" | "Cancelled";
+type Status = "COMPLETE" | "PROCESSING" | "CANCELLED" | "DELIVERING";
 
 type Person = {
   id?: number;

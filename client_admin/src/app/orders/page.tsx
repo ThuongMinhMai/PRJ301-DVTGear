@@ -23,56 +23,31 @@ export default function OrdersPage({}: Props) {
 }
 
 const statusToColor: Record<Status, string> = {
-  Complete: "badge-success",
-  Processing: "badge-warning",
-  Cancelled: "badge-error",
+  COMPLETE: "badge-success",
+  PROCESSING: "badge-warning",
+  DELIVERING: "badge-info",
+  CANCELLED: "badge-error",
 };
 
 const OrderList = () => {
-  const [orderList, setOrderList] = useState<Order[]>([
-    {
-      id: 1,
-      name: "King Chen",
-      date: new Date(),
-      total: 69.96,
-      status: "Complete",
-    },
-    {
-      id: 2,
-      name: "King Chen",
-      date: new Date(),
-      total: 69.96,
-      status: "Processing",
-    },
-    {
-      id: 3,
-      name: "King Chen",
-      date: new Date(),
-      total: 69.96,
-      status: "Cancelled",
-    },
-    {
-      id: 4,
-      name: "King Chen",
-      date: new Date(),
-      total: 69.96,
-      status: "Processing",
-    },
-  ]);
-  // const [isLoading, setIsLoading] = useState(true);
+  const [orderList, setOrderList] = useState<Order[]>();
+  const [isLoading, setIsLoading] = useState(true);
 
-  // useEffect(() => {
-  //   const fetchOrders = async () => {
-  //     const { data } = await axios.get("http://localhost:8080/store/api/orders");
-  //     setOrderList(data.orders);
-  //     setIsLoading(false);
-  //   };
-  //   fetchOrders();
-  // }, []);
+  useEffect(() => {
+    const fetchOrders = async () => {
+      const { data } = await axios.get(
+        "http://localhost:8080/store/api/orders"
+      );
+      console.log(data.orders);
+      setOrderList(data.orders);
+      setIsLoading(false);
+    };
+    fetchOrders();
+  }, []);
 
-  // if (isLoading) {
-  //   return <Loader />;
-  // }
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <Scroll>
@@ -88,7 +63,7 @@ const OrderList = () => {
           </tr>
         </thead>
         <tbody>
-          {orderList.map((order, index) => {
+          {orderList?.map((order, index) => {
             return (
               <tr
                 key={order.id}
@@ -98,14 +73,14 @@ const OrderList = () => {
                   {"#"}
                   {index + 1}
                 </td>
-                <td className="px-4">{order.name}</td>
-                <td className="px-4">{formattedDate(order.date)}</td>
-                <td className="px-4">đ{order.total.toFixed(0)}</td>
+                <td className="px-4">{order.username}</td>
+                <td className="px-4">{order.date}</td>
+                <td className="px-4">đ{order.totalMoney.toLocaleString()}</td>
                 <td className="px-4">
                   <div
                     className={clsx(
                       "badge badge-lg text-lg font-medium text-white",
-                      statusToColor[order.status]
+                      statusToColor[order.status as Status]
                     )}
                   >
                     {order.status}
@@ -113,7 +88,10 @@ const OrderList = () => {
                 </td>
                 <td className="text-end pr-6 pl-4 rounded-r-xl text-white">
                   <div className="dropdown dropdown-end">
-                    <label tabIndex={0} className="btn btn-primary m-1 text-white">
+                    <label
+                      tabIndex={0}
+                      className="btn btn-primary m-1 text-white"
+                    >
                       <MoreHorizIcon />
                     </label>
                     <ul

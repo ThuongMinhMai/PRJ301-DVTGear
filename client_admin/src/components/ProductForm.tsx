@@ -286,7 +286,7 @@ function ImageField() {
 
         {isUploading && (
           <div className="w-24 h-24 flex justify-center items-center">
-            <BounceLoader color="#fad56a" />
+            <BounceLoader color="#ea1c00" />
           </div>
         )}
 

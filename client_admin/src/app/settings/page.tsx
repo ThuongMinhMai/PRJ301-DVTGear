@@ -32,6 +32,10 @@ export default function SettingsPage({}: Props) {
   }, []);
 
   const handleAddAdmin = async () => {
+    if (!inputAdmin) {
+      return;
+    }
+
     if (adminList.includes(inputAdmin.toLowerCase())) {
       alert("Admin already exists!");
       return;
@@ -288,7 +292,7 @@ function ImageField({
 
         {isUploading && (
           <div className="w-24 h-24 flex justify-center items-center">
-            <BounceLoader color="#fad56a" />
+            <BounceLoader color="#ea1c00" />
           </div>
         )}
 
