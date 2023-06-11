@@ -30,6 +30,12 @@
         },
       };
     </script>
+    <style>
+      .tab.selected {
+        border-bottom: 2px solid #ea1c00;
+        color: #ea1c00
+      }
+    </style>
     <link rel="stylesheet" href="../Css/global.css" />
     <title>Order Page</title>
   </head>
@@ -113,6 +119,15 @@
     </header>
     <!-- End header  -->
     <div class="h-24"></div>
+    <!--Test Tab-->
+    <div class="flex bg-dvt-black-2 mx-auto max-w-7xl w-11/12 my-3">
+      <div id="tab1" class="w-1/5 text-center text-lg cursor-pointer py-4 hover:text-primary tab">Tất cả</div>
+      <div id="tab2" class="w-1/5 text-center text-lg cursor-pointer py-4 hover:text-primary tab">Đang xử lí</div>
+      <div id="tab3" class="w-1/5 text-center text-lg cursor-pointer py-4 hover:text-primary tab">Đang giao</div>
+      <div id="tab4" class="w-1/5 text-center text-lg cursor-pointer py-4 hover:text-primary tab">Hoàn thành</div>
+      <div id="tab5" class="w-1/5 text-center text-lg cursor-pointer py-4 hover:text-primary tab">Đã hủy</div>
+    </div>
+    <!--End Test Tab-->
     <!--Start Order List-->
     <div class="mx-auto max-w-7xl w-11/12">
       <!--List 1-->
