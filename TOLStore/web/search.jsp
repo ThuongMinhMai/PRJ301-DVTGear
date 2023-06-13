@@ -16,23 +16,23 @@
 
     <div class="flex justify-center">
         <h2 class="text-2xl mx-2 font-medium mt-5">Sắp xếp theo: </h2>
-        <div class="sort-icon cursor-pointer" onclick="filterProductsBy('name')">
+        <div class="sort-icon cursor-pointer" onclick="sortProductsBy('name')">
             <div class="sortName flex items-center bg-dvt-black-2 justify-center w-14 h-14 m-2 rounded-full hover:bg-primary"><i class="fa-solid fa-arrow-up-a-z fa-2x"></i></div>
             <p class="name bg-primary text-white text-center rounded-xl opacity-0">Từ A-Z</p>
         </div>
-        <div class="sort-icon cursor-pointer" onclick="filterProductsBy('nameDesc')">
+        <div class="sort-icon cursor-pointer" onclick="sortProductsBy('nameDesc')">
             <div class="sortNameDesc flex items-center bg-dvt-black-2 justify-center w-14 h-14 m-2 rounded-full hover:bg-primary"><i class="fa-solid fa-arrow-down-z-a fa-2x"></i></div>
             <p class="name bg-primary text-white text-center rounded-xl opacity-0">Từ Z-A</p>
         </div>
-        <div class="sort-icon cursor-pointer" onclick="filterProductsBy('')">
+        <div class="sort-icon cursor-pointer" onclick="sortProductsBy('')">
             <div class="sortNewest flex items-center bg-dvt-black-2 justify-center w-14 h-14 m-2 rounded-full hover:bg-primary"><i class="fa-solid fa-calendar-days fa-2x"></i></div>
             <p class="name bg-primary text-white text-center rounded-xl opacity-0">Mới nhất</p>
         </div>
-        <div class="sort-icon cursor-pointer" onclick="filterProductsBy('price')">
+        <div class="sort-icon cursor-pointer" onclick="sortProductsBy('price')">
             <div class="sortPrice flex items-center bg-dvt-black-2 justify-center w-14 h-14 m-2 rounded-full hover:bg-primary"><i class="fa-solid fa-arrow-trend-up fa-2x"></i></div>
             <p class="name bg-primary text-white text-center rounded-xl opacity-0">Giá tăng</p>
         </div>
-        <div class="sort-icon cursor-pointer" onclick="filterProductsBy('priceDesc')">
+        <div class="sort-icon cursor-pointer" onclick="sortProductsBy('priceDesc')">
             <div class="sortPriceDesc flex items-center bg-dvt-black-2 justify-center w-14 h-14 m-2 rounded-full hover:bg-primary"><i class="fa-solid fa-arrow-trend-down fa-2x"></i></div>
             <p class="name bg-primary text-white text-center rounded-xl opacity-0">Giá giảm</p>
         </div>
@@ -55,16 +55,16 @@
 
 
     <div
-        class="relative justify-center grid grid-cols-12 gap-5 w-11/12 max-w-7xl mx-auto"
+        class="relative justify-center grid grid-cols-12 gap-5"
         >
         <%
 
             for (Product product : productList) {
         %>
         <div
-            class="bg-dvt-black-2 flex flex-col rounded-3xl overflow-hidden h-fit cursor-pointer col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3"
+            class="bg-dvt-black-2 flex flex-col rounded-3xl overflow-hidden cursor-pointer col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3"
             >
-            <div href="/store/products?id=<%= product.getId()%>"
+            <a href="/store/products?id=<%= product.getId()%>"
                  class="w-full overflow-hidden relative aspect-square"
                  >
                 <% String imageUrl = Utils.parseJSONStringArray(product.getImages()).get(0);%>
@@ -78,21 +78,16 @@
                     >
                     <%= Utils.formatNum(product.getPrice())%>₫
                 </div>
-            </div>
+            </a>
             <div class="px-5 py-0 my-2 mx-0 name_product">
                 <span class="font-bold line-clamp-2">
                     <%= product.getName()%>
                 </span>
             </div>
-            <!--            <div class="info_product">
-                            <span 
-                                class="h-16 py-0 px-5 text-xs line-clamp-4"
-                                ><%= product.getDescription()%>
-                            </span>
-                        </div>-->
+          
             <div
-                onclick="addToCart(<%= product.getId()%>, 1)"
-                class="mt-4 mx-auto px-4 py-2 rounded-[30px] bg-primary border-none uppercase cursor-pointer mb-4 hover:opacity-80"
+                onclick="addToCart(<%= product.getId()%>, 1,<%= product.getStorage() %>)"
+                class="mt-auto mx-auto px-4 py-2 rounded-[30px] bg-primary border-none uppercase cursor-pointer mb-4 hover:opacity-80"
                 >
                 Thêm vào giỏ hàng
             </div>
@@ -112,8 +107,8 @@
 // Create a URL object
         const url = new URL(currentUrl);
 
-// Get the value of the filterBy parameter
-        const filterByValue = url.searchParams.get("filterBy");
+// Get the value of the sortBy parameter
+        const sortByValue = url.searchParams.get("sortBy");
 
         const sortTypeToSortName = {
             name: "sortName",
@@ -122,7 +117,7 @@
             priceDesc: "sortPriceDesc"
         };
 
-        const sortName = filterByValue ? sortTypeToSortName[filterByValue] : "sortNewest";
+        const sortName = sortByValue ? sortTypeToSortName[sortByValue] : "sortNewest";
 
         const icon = document.querySelector('.sort-icon div.' + sortName);
 
@@ -131,7 +126,7 @@
 
     styleSelectedSort();
 
-    const filterProductsBy = (filterBy) =>
+    const sortProductsBy = (sortBy) =>
     {
         // Get the current URL
         const currentUrl = window.location.href;
@@ -141,8 +136,8 @@
 // Create a URL object
         const url = new URL(currentUrl);
 
-// Set the new filterBy value in the URL object
-        url.searchParams.set("filterBy", filterBy);
+// Set the new sortBy value in the URL object
+        url.searchParams.set("sortBy", sortBy);
 
 // Get the modified URL from the URL object
         const modifiedUrl = url.href;

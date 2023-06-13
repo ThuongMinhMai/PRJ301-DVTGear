@@ -209,7 +209,7 @@
             for (Product product : productList) {
         %>
         <div
-            class="bg-dvt-black-2 flex flex-col rounded-3xl overflow-hidden h-fit cursor-pointer col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3"
+            class="bg-dvt-black-2 flex flex-col rounded-3xl overflow-hidden cursor-pointer col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3"
             >
             <a href="/store/products?id=<%= product.getId()%>"
                class="w-full overflow-hidden relative aspect-square"
@@ -234,7 +234,7 @@
             
             <div
                 onclick="addToCart(<%= product.getId()%>,1,<%= product.getStorage() %>)"
-                class="mt-4 mx-auto px-4 py-2 rounded-[30px] bg-primary border-none uppercase cursor-pointer mb-4 hover:opacity-80"
+                class="mt-auto mx-auto px-4 py-2 rounded-[30px] bg-primary border-none uppercase cursor-pointer mb-4 hover:opacity-80"
                 >
                 Thêm vào giỏ hàng
             </div>

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import dao.ProductDAO;
 import entity.Product;
+import java.util.List;
 
 /**
  *
@@ -29,10 +30,11 @@ public class ProductController extends HttpServlet {
 
         ProductDAO productDao = new ProductDAO();
         Product product = productDao.getProductDetail(Integer.parseInt(productId));
-        
+        List<Product> sameProductList = productDao.getSameProducts(Integer.parseInt(productId));
 
         request.setAttribute("product", product);
-        
+        request.setAttribute("sameProductList", sameProductList);
+
         request.getRequestDispatcher("productDetail.jsp").forward(request, response);
 
     }

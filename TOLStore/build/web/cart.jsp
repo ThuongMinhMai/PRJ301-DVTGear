@@ -152,6 +152,7 @@
             });
             const data = await response.json();
             dataCartProducts = data.products;
+            console.log(dataCartProducts);
             calcTotalMoney();
             renderOrders();
         } catch (error) {
@@ -159,7 +160,6 @@
         }
     };
     const calcTotalMoney = () => {
-        console.log("calcTotalMoney");
         const total = dataCartProducts.reduce(function (acc, product) {
             var quantity = JSON.parse(localStorage.getItem("cart")).products[product.id] ?? 0;
                     return acc + Number(product.price) * Number(quantity);
@@ -235,9 +235,11 @@
 
     const increaseProduct = (id) => {
         const cart = JSON.parse(localStorage.getItem("cart"));
-        
-        const product = dataCartProducts.find(product=>product.id = id);
-        if(cart.products[id]>=product.storage)
+
+        const product = dataCartProducts.find(product => product.id === id);
+
+        console.log(product);
+        if (cart.products[id] >= product.storage)
         {
             console.log("FAIL");
             handleDisplayFailToost();
@@ -310,6 +312,7 @@
         const phone = document.getElementById("phoneInput").value;
         const address = document.getElementById("addressInput").value;
         const isSaveDataOrder = document.getElementById("isSaveDataOrderInput").value;
+        
         if (isSaveDataOrder)
         {
             localStorage.setItem("orderData", JSON.stringify({
@@ -317,7 +320,7 @@
                 address
             }));
         }
-        ;
+        
         const form = document.createElement('form');
 // Set form attributes
         form.method = 'POST'; // HTTP method

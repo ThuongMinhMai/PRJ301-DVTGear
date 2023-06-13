@@ -61,8 +61,45 @@ public class ProductDAO {
             System.out.println("getProductDetail5");
             System.err.println(e);
         }
-         System.out.println("getProductDetail6");
+        System.out.println("getProductDetail6");
         return product;
+    }
+
+    public List<Product> getSameProducts(int productId) {
+        List<Product> sameProducts = new ArrayList<>();
+
+        String query = "SELECT p.productId, p.name, c.name AS category, b.name AS brand, p.description, "
+                + "p.images, p.price, p.categoryId, p.brandId, p.storage "
+                + "FROM Product p "
+                + "INNER JOIN Brand b ON p.brandId = b.brandId "
+                + "INNER JOIN Category c ON p.categoryId = c.categoryId "
+                + "WHERE p.categoryId = (SELECT categoryId FROM Product WHERE productId = ?) "
+                + "AND p.productId != ?";
+
+        try (Connection conn = new DBContext().getConnection();
+                PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setInt(1, productId);
+            ps.setInt(2, productId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                sameProducts.add(new Product(
+                        rs.getInt("productId"),
+                        rs.getString("name"),
+                        new Category(rs.getInt("categoryId"), rs.getString("category")),
+                        new Brand(rs.getInt("brandId"), rs.getString("brand")),
+                        rs.getString("images"),
+                        rs.getInt("price"),
+                        rs.getString("description"),
+                        rs.getInt("storage")
+                ));
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return sameProducts;
     }
 
     public List<Product> getAllProducts() {

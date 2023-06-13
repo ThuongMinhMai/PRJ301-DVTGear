@@ -49,10 +49,10 @@ const OrderList = () => {
   }
 
   const handleApproveOrder = async (id: number) => {
-    await axios.put("http://localhost:8080/store/api/orders", {
+    const { data } = await axios.put("http://localhost:8080/store/api/orders", {
       orderId: id,
     });
-    alert("");
+    alert(data.message);
     fetchOrders();
   };
 
