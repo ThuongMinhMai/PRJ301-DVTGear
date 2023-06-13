@@ -29,9 +29,10 @@ public class ProductController extends HttpServlet {
 
         ProductDAO productDao = new ProductDAO();
         Product product = productDao.getProductDetail(Integer.parseInt(productId));
+        
 
         request.setAttribute("product", product);
-
+        
         request.getRequestDispatcher("productDetail.jsp").forward(request, response);
 
     }

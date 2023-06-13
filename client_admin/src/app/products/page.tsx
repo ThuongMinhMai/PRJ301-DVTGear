@@ -83,6 +83,7 @@ const ProductList = ({}: ProductListProps) => {
             <th className="px-4">Category</th>
             <th className="px-4">Brand</th>
             <th className="px-4">Price</th>
+            <th className="px-4">Storage</th>
             <th className="text-end pr-8 pl-4">Actions</th>
           </tr>
         </thead>
@@ -109,7 +110,12 @@ const ProductList = ({}: ProductListProps) => {
                 <td className="px-4">{product.name}</td>
                 <td className="px-4">{product.category.name}</td>
                 <td className="px-4">{product.brand.name}</td>
-                <td className="px-4">đ{Number(product.price).toLocaleString()}</td>
+                <td className="px-4">
+                  đ{Number(product.price).toLocaleString()}
+                </td>
+                <td className="px-4">
+                  {Number(product.storage).toLocaleString()}
+                </td>
                 <td className="text-end rounded-r-xl text-white pr-6 pl-4">
                   <DropdownActions
                     handleDeleteProduct={handleDeleteProduct}

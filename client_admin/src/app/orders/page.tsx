@@ -1,11 +1,11 @@
 "use client";
 
 import { Loader, Scroll } from "@/components";
-import { DeleteIcon, MoreHorizIcon } from "@/contexts/icons";
+import { DeleteIcon, MoreHorizIcon, ShippingIcon } from "@/contexts/icons";
 import formattedDate from "@/utils/formattedDate";
 import axios from "axios";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import clsx from "clsx";
 
 type Props = {};
@@ -33,15 +33,14 @@ const OrderList = () => {
   const [orderList, setOrderList] = useState<Order[]>();
   const [isLoading, setIsLoading] = useState(true);
 
+  const fetchOrders = useCallback(async () => {
+    const { data } = await axios.get("http://localhost:8080/store/api/orders");
+    console.log(data.orders);
+    setOrderList(data.orders);
+    setIsLoading(false);
+  }, []);
+
   useEffect(() => {
-    const fetchOrders = async () => {
-      const { data } = await axios.get(
-        "http://localhost:8080/store/api/orders"
-      );
-      console.log(data.orders);
-      setOrderList(data.orders);
-      setIsLoading(false);
-    };
     fetchOrders();
   }, []);
 
@@ -49,9 +48,17 @@ const OrderList = () => {
     return <Loader />;
   }
 
+  const handleApproveOrder = async (id: number) => {
+    await axios.put("http://localhost:8080/store/api/orders", {
+      orderId: id,
+    });
+    alert("");
+    fetchOrders();
+  };
+
   return (
     <Scroll>
-      <table className="min-w-full border-spacing-y-3 border-separate pb-9">
+      <table className="min-w-full border-spacing-y-3 border-separate pb-24">
         <thead>
           <tr className="font-medium text-xs uppercase">
             <th className="pl-6 pr-4">ID</th>
@@ -98,6 +105,18 @@ const OrderList = () => {
                       tabIndex={0}
                       className="dropdown-content menu p-2 shadow bg-primary rounded-box w-52"
                     >
+                      {order.status === "PROCESSING" && (
+                        <li
+                          onClick={() => {
+                            handleApproveOrder(order.id!);
+                          }}
+                        >
+                          <a>
+                            <ShippingIcon />
+                            Approve Order
+                          </a>
+                        </li>
+                      )}
                       <li>
                         <a>
                           <DeleteIcon />

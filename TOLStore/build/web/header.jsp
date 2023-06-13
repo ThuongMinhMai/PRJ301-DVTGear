@@ -196,16 +196,37 @@
                 width: 50px;
             }
 
+            .tab.selected {
+                border-bottom: 2px solid #ea1c00;
+                color: #ea1c00
+            }
 
             .footer-col ul li:not(:last-child) {
                 margin-bottom: 10px;
+            }
+
+            .sort-icon:hover p.name{
+                opacity: 1;
+            }
+
+            .sort-icon .selected{
+                background-color: #ea1c00;
+            }
+
+            .brand_list .brand {
+                filter: grayscale(100%) brightness(0) invert(100%);
+            }
+
+            .brand_list .brand:hover {
+                filter: grayscale(0%) brightness(100%) invert(0%);
             }
 
         </style>
         <title>TOL Store</title>
     </head>
 
-    <body class="text-white">
+    <body class="text-white relative">
+
         <!-- Start header  -->
         <header
             class="flex justify-between items-center fixed top-0 left-0 right-0 z-50 transition-all py-4 bg-dvt-black-2"
@@ -222,10 +243,11 @@
                         />
                 </a>
                 <!-- Search box -->
-                <div class="flex-1 flex justify-end items-center relative">
+                <form action="/store/search" action="POST" class="flex-1 flex justify-end items-center relative">
                     <input
                         class="rounded-3xl px-4 py-2 border-none outline-none bg-primary text-white placeholder-white flex-1 max-w-sm"
                         type="text"
+                        name="searchTerm"
                         placeholder="Tìm sản phẩm...."
                         />
                     <div
@@ -234,11 +256,11 @@
 
                         <ion-icon name="search-outline" class="w-5 h-5 filter invert"></ion-icon>
                     </div>
-                </div>
+                </form
                 <!-- Cart and login -->
                 <div class="flex cart_login items-center gap-3">
                     <a href="/store/cart" class="relative">
-                        <ion-icon name="cart-outline" class="w-9 h-9"></ion-icon>
+                        <img src="./assets/cart.png" class="w-9 h-9 filter invert" />
                         <div
                             id="cartTotalDisplay"
                             class="absolute bg-primary rounded-full w-5 h-5 text-xs top-0 -right-1 flex justify-center items-center"
@@ -248,11 +270,11 @@
                     </a>
 
                     <div class="relative" id="header-user">
-                        <ion-icon name="person-circle-outline" class="w-9 h-9 cursor-pointer"
-                                  <% if (request.getSession().getAttribute("currentUser") == null) { %>
-                                  onclick="moveToLogin()"
-                                  <% }%>
-                                  ></ion-icon>
+                        <img src="./assets/user.png" class="w-9 h-9 cursor-pointer filter invert"
+                             <% if (request.getSession().getAttribute("currentUser") == null) { %>
+                             onclick="moveToLogin()"
+                             <% }%>
+                             />
 
 
                         <% if (request.getSession().getAttribute("currentUser") != null) {%>

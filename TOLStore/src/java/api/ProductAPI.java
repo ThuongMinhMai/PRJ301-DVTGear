@@ -49,7 +49,7 @@ public class ProductAPI extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Handle POST request to create a new product
+       
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(request.getInputStream(), "UTF-8")); // Specify UTF-8 encoding
         StringBuilder requestBody = new StringBuilder();
@@ -75,7 +75,8 @@ public class ProductAPI extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(request.getInputStream(), "UTF-8")); // Specify UTF-8 encoding
         StringBuilder requestBody = new StringBuilder();
         String line;
         while ((line = reader.readLine()) != null) {
@@ -104,7 +105,8 @@ public class ProductAPI extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(request.getInputStream(), "UTF-8")); // Specify UTF-8 encoding
         StringBuilder requestBody = new StringBuilder();
         String line;
         while ((line = reader.readLine()) != null) {

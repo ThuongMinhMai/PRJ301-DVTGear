@@ -18,11 +18,16 @@ public class Product {
     private String images;
     private int price;
     private String description;
+    private int storage;
 
     public Product() {
     }
 
-    public Product(int id, String name, Category category, Brand brand, String description, String images, int price) {
+    public int getStorage() {
+        return storage;
+    }
+
+    public Product(int id, String name, Category category, Brand brand, String images, int price, String description, int storage) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -30,6 +35,11 @@ public class Product {
         this.images = images;
         this.price = price;
         this.description = description;
+        this.storage = storage;
+    }
+
+    public void setStorage(int storage) {
+        this.storage = storage;
     }
 
     public int getId() {
@@ -86,6 +96,11 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" + "id=" + id + ", name=" + name + ", category=" + category + ", brand=" + brand + ", images=" + images + ", price=" + price + ", description=" + description + ", storage=" + storage + '}';
     }
 
 }

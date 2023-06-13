@@ -22,7 +22,7 @@
 
 
     <div class="flex justify-between items-center my-4">
-        <div class="font-bold text-xl">Tổng Tiền:</div>
+        <div class="font-bold text-xl">Thành Tiền:</div>
         <div id='totalMoney' class="font-bold text-xl"></div>
     </div>
     <div class="flex justify-end my-4">
@@ -97,9 +97,11 @@
 
     const cartPage = document.getElementById("cartPage");
     updateCartPage = () => {
-        if (!JSON.parse(localStorage.getItem("cart")).productCount)
+        const cart = JSON.parse(localStorage.getItem("cart"));
+        if (!cart || (cart && !cart.productCount))
         {
-            cartPage.innerHTML = `<div class="w-full flex flex-col justify-center gap-8 items-center h-72 relative">
+            cartPage.innerHTML = `<div class="w-full flex flex-col justify-center gap-3 items-center relative py-6">
+            <img src="./assets/robot2.png" alt="robot2" class="h-64"/>
         <div class="font-bold text-3xl">Giỏ hàng rỗng</div>
         <div class="text-3xl">Hỏng lẻ hông ưng!</div>
         
@@ -233,6 +235,14 @@
 
     const increaseProduct = (id) => {
         const cart = JSON.parse(localStorage.getItem("cart"));
+        
+        const product = dataCartProducts.find(product=>product.id = id);
+        if(cart.products[id]>=product.storage)
+        {
+            console.log("FAIL");
+            handleDisplayFailToost();
+            return;
+        }
 //        if (cart.products[id] < 10) {
         cart.products[id] += 1;
         cart.productCount += 1;

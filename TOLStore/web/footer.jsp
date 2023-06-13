@@ -175,20 +175,99 @@
     };
     const cartTotalDisplay = document.getElementById("cartTotalDisplay");
     const updateCartTotalDisplay = () => {
-    cartTotalDisplay.innerHTML = cart.productCount;
+        cartTotalDisplay.innerHTML = cart.productCount;
     };
     updateCartTotalDisplay();
-    const addToCart = (id, quantity = 1) => {
-
-    cart.products[id] = cart.products[id]
-            ? cart.products[id] + Number(quantity)
-            : Number(quantity);
-    cart.productCount += Number(quantity);
-    updateCartTotalDisplay();
-    localStorage.setItem("cart", JSON.stringify(cart));
+    const addToCart = (id, quantity = 1, storage) => {
+        let flag = false;
+        if (cart.products[id])
+        {
+            if (cart.products[id] + quantity <= storage)
+            {
+                flag = true;
+            }
+        } else if (quantity <= storage) {
+            flag = true;
+        }
+        if (!flag)
+        {
+            handleDisplayFailToost();
+            return;
+        }
+        cart.products[id] = cart.products[id]
+                ? cart.products[id] + Number(quantity)
+                : Number(quantity);
+        cart.productCount += Number(quantity);
+        updateCartTotalDisplay();
+        localStorage.setItem("cart", JSON.stringify(cart));
+        handleDisplaySuccessToost();
     };
     const moveToLogin = () => {
-    window.location.href = "http://localhost:8080/store/login"
+        window.location.href = "http://localhost:8080/store/login"
+    }
+
+    const handleCloseSuccessToost = () =>
+    {
+        // Get the element with the ID 'toostAddToCart'
+        const element = document.querySelector('#toostSuccessAddToCart');
+// Check if the element exists
+        if (element) {
+            // Remove the element from the DOM
+            element.remove();
+        }
+
+    }
+
+    const handleCloseFailToost = () =>
+    {
+        // Get the element with the ID 'toostAddToCart'
+        const element = document.querySelector('#toostFailAddToCart');
+// Check if the element exists
+        if (element) {
+            // Remove the element from the DOM
+            element.remove();
+        }
+
+    }
+
+    const handleDisplayFailToost = () => {
+        // HTML code to be inserted
+        const htmlCode = `
+<div onclick="handleCloseFailToost()" id="toostFailAddToCart" class="fixed inset-0 bg-transparent flex justify-center items-center z-[999]">
+    <div class="bg-dvt-black-2/70 rounded-md p-6 flex flex-col gap-4 justify-center items-center">
+        <img src="./assets/fail.png" alt="check" class="w-20 h-20" />
+        <div class="font-medium text-xl">Không đủ hàng!</div>
+    </div>
+</div>`;
+// Insert the HTML code at the beginning of the body tag
+        document.body.insertAdjacentHTML('afterbegin', htmlCode);
+// Delayed removal after 3 seconds
+        setTimeout(function () {
+            const element = document.querySelector('#toostFailAddToCart');
+            if (element) {
+                element.remove();
+            }
+        }, 3000);
+    }
+
+    const handleDisplaySuccessToost = () => {
+        // HTML code to be inserted
+        const htmlCode = `
+<div onclick="handleCloseSuccessToost()" id="toostSuccessAddToCart" class="fixed inset-0 bg-transparent flex justify-center items-center z-[999]">
+    <div class="bg-dvt-black-2/70 rounded-md p-6 flex flex-col gap-4 justify-center items-center">
+        <img src="./assets/check.png" alt="check" class="w-20 h-20" />
+        <div class="font-medium text-xl">Sản phẩm đã được thêm vào Giỏ Hàng</div>
+    </div>
+</div>`;
+// Insert the HTML code at the beginning of the body tag
+        document.body.insertAdjacentHTML('afterbegin', htmlCode);
+// Delayed removal after 3 seconds
+        setTimeout(function () {
+            const element = document.querySelector('#toostSuccessAddToCart');
+            if (element) {
+                element.remove();
+            }
+        }, 3000);
     }
 
 </script>

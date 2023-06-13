@@ -19,12 +19,29 @@ public class Order {
     private Date date;
     private Status status;
     private List<OrderProduct> orderProducts;
+    private int totalMoney;
 
     public enum Status {
         COMPLETE,
         PROCESSING,
         DELIVERING,
-        CANCELLED,
+        CANCELLED;
+
+        public static String translateStatus(Status status) {
+            switch (status) {
+                case COMPLETE:
+                    return "Hoàn Thành";
+                case PROCESSING:
+                    return "Đang Chờ Xử Lý";
+                case DELIVERING:
+                    return "Đang Giao Hàng";
+                case CANCELLED:
+                    return "Đã Hủy";
+                default:
+                    return "";
+            }
+        }
+
     }
 
     public int getId() {
@@ -75,6 +92,14 @@ public class Order {
         this.orderProducts = orderProduct;
     }
 
+    public int getTotalMoney() {
+        return totalMoney;
+    }
+
+    public void setTotalMoney(int totalMoney) {
+        this.totalMoney = totalMoney;
+    }
+
     public static class OrderProduct {
 
         private Product product;
@@ -87,12 +112,12 @@ public class Order {
             this.price = price;
         }
 
-        public Product getProductId() {
+        public Product getProduct() {
             return product;
         }
 
-        public void setProductId(Product productId) {
-            this.product = productId;
+        public void setProduct(Product product) {
+            this.product = product;
         }
 
         public int getQuantity() {
@@ -109,6 +134,11 @@ public class Order {
 
         public void setPrice(int price) {
             this.price = price;
+        }
+
+        @Override
+        public String toString() {
+            return "OrderProduct{" + "product=" + product + ", quantity=" + quantity + ", price=" + price + '}';
         }
 
     }

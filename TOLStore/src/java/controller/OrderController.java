@@ -2,8 +2,12 @@ package controller;
 
 import dao.OrderDAO;
 import entity.Customer;
+import entity.Order;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,6 +23,7 @@ public class OrderController extends HttpServlet {
             throws ServletException, IOException {
 
         Customer customer = (Customer) request.getSession().getAttribute("currentUser");
+        String filterBy = request.getParameter("filter_by");
 
         if (customer == null) {
             response.sendRedirect("/store/login");
@@ -26,7 +31,9 @@ public class OrderController extends HttpServlet {
         }
 
         OrderDAO orderDAO = new OrderDAO();
-        request.setAttribute("orderList", orderDAO.getAllOrders(customer.getCustomerId()));
+        List<Order> orderList = orderDAO.getAllOrders(customer.getCustomerId(), filterBy);
+
+        request.setAttribute("orderList", orderList);
 
         request.getRequestDispatcher("orders.jsp").forward(request, response);
     }
@@ -35,12 +42,12 @@ public class OrderController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        if (request.getSession().getAttribute("currentUser") == null) {
+        Customer customer = (Customer) request.getSession().getAttribute("currentUser");
+
+        if (customer == null) {
             response.sendRedirect("/store/login");
             return;
         }
-
-        Customer customer = (Customer) request.getSession().getAttribute("currentUser");
 
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
@@ -56,6 +63,29 @@ public class OrderController extends HttpServlet {
         orderDAO.createOrder(jsonObject);
 
         response.sendRedirect("/store/orders");
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(request.getInputStream(), "UTF-8")); // Specify UTF-8 encoding
+        StringBuilder requestBody = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            requestBody.append(line);
+        }
+        reader.close();
+
+        JSONObject jsonObject = new JSONObject(requestBody.toString());
+
+        OrderDAO orderDAO = new OrderDAO();
+        orderDAO.updateStatusOrder(jsonObject.getInt("orderId"), jsonObject.getString("typeUpdate"));
+
+        JSONObject jsonResponse = new JSONObject();
+        jsonResponse.put("message", "Update orders status succesfully!");
+
+        response.getWriter().write(jsonResponse.toString());
+
     }
 
 }

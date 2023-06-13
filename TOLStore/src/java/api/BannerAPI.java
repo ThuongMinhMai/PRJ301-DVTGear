@@ -27,7 +27,6 @@ public class BannerAPI extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
 
         BannerDAO dao = new BannerDAO();
         String bannerUrl = dao.getBanner();
@@ -44,9 +43,9 @@ public class BannerAPI extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(request.getInputStream(), "UTF-8")); // Specify UTF-8 encoding
         StringBuilder requestBody = new StringBuilder();
         String line;
         while ((line = reader.readLine()) != null) {

@@ -20,7 +20,6 @@ public class OrderAPI extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
 
         OrderDAO dao = new OrderDAO();
         List<OrderAdmin> orderList = dao.getAllOrdersAPI();
@@ -35,9 +34,32 @@ public class OrderAPI extends HttpServlet {
     }
 
     @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(request.getInputStream(), "UTF-8")); // Specify UTF-8 encoding
+        StringBuilder requestBody = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            requestBody.append(line);
+        }
+        reader.close();
+
+        JSONObject jsonObject = new JSONObject(requestBody.toString());
+
+        OrderDAO orderDAO = new OrderDAO();
+        String message = orderDAO.approveOrder(jsonObject.getInt("orderId"));
+
+        JSONObject jsonResponse = new JSONObject();
+        jsonResponse.put("message", message);
+
+        response.getWriter().write(jsonResponse.toString());
+    }
+
+    @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(request.getInputStream(), "UTF-8")); // Specify UTF-8 encoding
         StringBuilder requestBody = new StringBuilder();
         String line;
         while ((line = reader.readLine()) != null) {

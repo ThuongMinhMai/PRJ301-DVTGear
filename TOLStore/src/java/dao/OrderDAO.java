@@ -100,14 +100,23 @@ public class OrderDAO {
         }
     }
 
-    public List<Order> getAllOrders(int id) {
+    public List<Order> getAllOrders(int id, String filterBy) {
+
+        System.out.println(filterBy);
+
         List<Order> orderList = new ArrayList<>();
         String query = "SELECT o.orderId, o.date, o.status, op.quantity, op.price, "
-                + "p.name AS productName, p.images AS productImages "
+                + "p.[name] AS productName, p.images AS productImages, p.productId, p.storage "
                 + "FROM [Order] o "
                 + "INNER JOIN OrderProducts op ON o.orderId = op.orderId "
-                + "INNER JOIN Product p ON op.productId = p.productId"
+                + "INNER JOIN Product p ON op.productId = p.productId "
                 + "WHERE o.customerId = " + id;
+
+        if (filterBy != null) {
+            query += " AND o.status = '" + filterBy + "'";
+        }
+
+        query += " ORDER BY o.date DESC";
 
         try (Connection conn = new DBContext().getConnection();
                 PreparedStatement ps = conn.prepareStatement(query);
@@ -119,22 +128,26 @@ public class OrderDAO {
                 Status status = Status.valueOf(rs.getString("status"));
                 int quantity = rs.getInt("quantity");
                 int price = rs.getInt("price");
-
+                int totalMoney = quantity * price;
+//public Product(int id, String name, Category category, Brand brand, String images, int price, String description, int storage)
                 Product product = new Product(
-                        0, // You don't need productId in this case, so set it to 0 or any default value
+                        rs.getInt("productId"), // You don't need productId in this case, so set it to 0 or any default value
                         rs.getString("productName"),
                         null, // You don't need category information, so set it to null
                         null, // You don't need brand information, so set it to null
-                        // You don't need the current price, so set it to 0 or any default value
-                        null,
                         rs.getString("productImages"),
-                        0 // Assuming you don't need the description for this method
+                        0,// You don't need the current price, so set it to 0 or any default value
+                        null,
+                        0 // You don't need the storages
                 );
 
-                Order order = orderList.stream()
-                        .filter(o -> o.getId() == orderId)
-                        .findFirst()
-                        .orElse(null);
+                Order order = null;
+                for (Order o : orderList) {
+                    if (o.getId() == orderId) {
+                        order = o;
+                        break;
+                    }
+                }
 
                 if (order == null) {
                     order = new Order(orderId, null, date, status, new ArrayList<>());
@@ -142,6 +155,7 @@ public class OrderDAO {
                 }
 
                 order.getOrderProducts().add(new OrderProduct(product, quantity, price));
+                order.setTotalMoney(order.getTotalMoney() + totalMoney);
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -210,6 +224,121 @@ public class OrderDAO {
             }
         }
         return 0; // Default value if price is not found or an error occurs
+    }
+
+    public void updateStatusOrder(int orderId, String type) {
+
+        System.out.println(orderId);
+        System.out.println(type);
+
+        String updateQuery = "UPDATE [Order] SET [status] = ? WHERE orderId = ?";
+        try (Connection conn = new DBContext().getConnection();
+                PreparedStatement updatePs = conn.prepareStatement(updateQuery)) {
+
+            String currentStatus = getCurrentStatus(conn, orderId);
+
+            if (type.equals("CANCELLED") && currentStatus.equals("PROCESSING")) {
+                updatePs.setString(1, "CANCELLED");
+                updatePs.setInt(2, orderId);
+                int rowsUpdated = updatePs.executeUpdate();
+                if (rowsUpdated > 0) {
+                    System.out.println("Order status updated to CANCELLED.");
+                } else {
+                    System.out.println("Failed to update order status.");
+                }
+            } else if (type.equals("COMPLETE") && currentStatus.equals("DELIVERING")) {
+                updatePs.setString(1, "COMPLETE");
+                updatePs.setInt(2, orderId);
+                int rowsUpdated = updatePs.executeUpdate();
+                if (rowsUpdated > 0) {
+                    System.out.println("Order status updated to COMPLETE.");
+                } else {
+                    System.out.println("Failed to update order status.");
+                }
+            } else if (type.equals("DELIVERING") && currentStatus.equals("PROCESSING")) {
+                updatePs.setString(1, "DELIVERING");
+                updatePs.setInt(2, orderId);
+                int rowsUpdated = updatePs.executeUpdate();
+                if (rowsUpdated > 0) {
+                    System.out.println("Order status updated to DELIVERING.");
+                } else {
+                    System.out.println("Failed to update order status.");
+                }
+            } else {
+                System.out.println("Invalid update type or order status.");
+            }
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+    }
+
+    private String getCurrentStatus(Connection conn, int orderId) throws SQLException {
+        String statusQuery = "SELECT [status] FROM [Order] WHERE orderId = ?";
+        try (PreparedStatement statusPs = conn.prepareStatement(statusQuery)) {
+            statusPs.setInt(1, orderId);
+            try (ResultSet rs = statusPs.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("status");
+                }
+            }
+        }
+        throw new IllegalArgumentException("Invalid order ID: " + orderId);
+    }
+
+    public String approveOrder(int orderId) {
+        String getProductQuery = "SELECT op.productId, op.quantity, p.storage "
+                + "FROM OrderProducts op "
+                + "INNER JOIN Product p ON op.productId = p.productId "
+                + "WHERE op.orderId = ?";
+
+        String updateStorageQuery = "UPDATE Product "
+                + "SET storage = storage - ? "
+                + "WHERE productId = ?";
+
+        try (Connection conn = new DBContext().getConnection();
+                PreparedStatement getProductPs = conn.prepareStatement(getProductQuery);
+                PreparedStatement updateStoragePs = conn.prepareStatement(updateStorageQuery)) {
+            conn.setAutoCommit(false); // Enable transaction
+
+            getProductPs.setInt(1, orderId);
+            ResultSet rs = getProductPs.executeQuery();
+
+            boolean storageSuitable = true;
+
+            while (rs.next()) {
+                int productId = rs.getInt("productId");
+                int quantity = rs.getInt("quantity");
+                int storage = rs.getInt("storage");
+
+                // Check if the available storage is sufficient
+                if (storage < quantity) {
+                    storageSuitable = false;
+                    break;
+                }
+
+                // Update the storage for the product
+                updateStoragePs.setInt(1, quantity);
+                updateStoragePs.setInt(2, productId);
+                updateStoragePs.addBatch();
+            }
+
+            rs.close();
+
+            // If the storage is suitable, update the order status to "DELIVERING" and update the storage
+            if (storageSuitable) {
+                updateStatusOrder(orderId, "DELIVERING");
+                updateStoragePs.executeBatch(); // Move the executeBatch() here
+                conn.commit(); // Commit the transaction
+                return "Order approved and storage updated successfully.";
+            } else {
+                // Handle the situation where storage is not suitable (e.g., display an error message)
+                conn.rollback(); // Rollback the transaction
+                return "Insufficient storage for some products. Order cannot be approved.";
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            return "An error occurred during order approval.";
+        }
     }
 
 }

@@ -37,6 +37,7 @@ export default function ProductForm({ handleSubmit, edit }: Props) {
           images: "",
           category: "",
           brand: "",
+          storage,
         };
 
   const validationSchema = Yup.object().shape({
@@ -46,6 +47,7 @@ export default function ProductForm({ handleSubmit, edit }: Props) {
     images: Yup.string().required("Required"),
     category: Yup.number().required("Required"),
     brand: Yup.number().required("Required"),
+    storage: Yup.number().required("Required"),
   });
 
   if (edit && !editedProduct) {
@@ -70,6 +72,10 @@ export default function ProductForm({ handleSubmit, edit }: Props) {
             <BrandField />
           </div>
 
+          <TypoFiled type="number" title="Storage" name="storage" />
+
+          <TypoFiled type="number" title="Price (in VNĐ)" name="price" />
+
           <TypoFiled
             type="textarea"
             title="Description"
@@ -77,8 +83,6 @@ export default function ProductForm({ handleSubmit, edit }: Props) {
             component="textarea"
             rows={3}
           />
-
-          <TypoFiled type="number" title="Price (in VNĐ)" name="price" />
 
           <button
             type="submit"

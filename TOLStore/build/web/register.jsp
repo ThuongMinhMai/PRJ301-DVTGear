@@ -79,7 +79,7 @@
                                 autocomplete="off"
                                 />
                             <label
-                                class="absolute text-white top-[10%] left-1 mb-[-10px] pointer-events-none transition-all"
+                                class="absolute text-white top-[10%] left-0 mb-[-10px] pointer-events-none transition-all"
                                 for=""
                                 >Username</label
                             >
@@ -96,7 +96,7 @@
                                 required
                                 />
                             <label
-                                class="absolute text-white top-[10%] left-1 mb-[-10px] pointer-events-none transition-all"
+                                class="absolute text-white top-[10%] left-0 mb-[-10px] pointer-events-none transition-all"
                                 for=""
                                 >Password</label
                             >
@@ -113,7 +113,7 @@
                                 required
                                 />
                             <label
-                                class="absolute text-white top-[10%] left-1 mb-[-10px] pointer-events-none transition-all"
+                                class="absolute text-white top-[10%] left-0 mb-[-10px] pointer-events-none transition-all"
                                 for=""
                                 >Confirm Password</label
                             >
