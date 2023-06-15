@@ -24,7 +24,7 @@ export default function RootLayout({
             <div className="flex flex-col lg:flex-row text-black bg-dvt-white-1">
               <Modal />
               <Nav />
-              <div className="flex-1 bg-dvt-white-1 p-6 min-h-screen text-[#C2D0EA]">
+              <div className="flex-1 bg-dvt-white-1 p-6 min-h-screen text-[#C2D0EA] overflow-x-auto">
                 {children}
               </div>
             </div>

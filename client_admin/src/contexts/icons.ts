@@ -11,6 +11,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import InventoryIcon from "@mui/icons-material/Inventory";
+import DetailsIcon from '@mui/icons-material/Details';
 
 export {
   SignalCellularAltIcon as DashboardIcon,
@@ -26,4 +27,5 @@ export {
   ArrowBackIcon,
   FileUploadOutlinedIcon as FileUploadIcon,
   LocalShippingIcon as ShippingIcon,
+  DetailsIcon
 };

@@ -4,6 +4,7 @@
     Author     : Kingc
 --%>
 
+<%@page import="entity.OrderProduct"%>
 <%@page import="utils.Utils"%>
 <%@page import="entity.Product"%>
 <%@page import="entity.Order"%>
@@ -13,7 +14,7 @@
 
 <jsp:include page="./header.jsp" />
 
-<div class="mx-auto max-w-7xl w-11/12 mt-32 mb-8">
+<div class="mx-auto max-w-6xl w-11/12 mt-32 mb-8">
 
     <div class="flex bg-dvt-black-2 mb-4 rounded-md">
         <a href="?" id="tab1" class="w-1/5 text-center text-lg cursor-pointer py-4 hover:text-primary tab">Tất cả</a>
@@ -42,7 +43,7 @@
     <%
 
         for (Order order : orderList) {
-            List<Order.OrderProduct> orderProductList = order.getOrderProducts();
+            List<OrderProduct> orderProductList = order.getOrderProducts();
     %>
 
     <div class="bg-dvt-black-2 px-6 text-white rounded-md mb-4 py-6">
@@ -56,7 +57,7 @@
         </div>
         <hr />
         <%
-            for (Order.OrderProduct orderProduct : orderProductList) {
+            for (OrderProduct orderProduct : orderProductList) {
                 Product product = orderProduct.getProduct();
         %>
         <div class="flex my-5">
@@ -67,7 +68,7 @@
                     alt="product"
                     />
             </a>
-            <div class="flex flex-col ml-4 w-[100%]">
+            <div class="flex flex-col ml-4 flex-1">
                 <span class="pb-1 text-lg line-clamp-1"
                       ><%= product.getName()%></span
                 >
@@ -77,21 +78,42 @@
                       >Bảo hành 1 năm</span
                 >
             </div>
-            <div class="flex text-primary flex-col justify-center">
+            <div class="flex text-primary flex-col items-end justify-center gap-3">
                 <%= Utils.formatNum(orderProduct.getPrice())%>₫
+
+
+                <%if (order.getStatus().equals(Order.Status.COMPLETE)) {%>
+                <%if (!orderProduct.isIsRated()) {%>
+                <button
+                    onclick='renderRatingForm("<%= Utils.parseJSONStringArray(product.getImages()).get(0)%>", "<%= product.getName()%>", "<%= product.getId()%>")'
+                    class="bg-primary text-white px-6 py-2 rounded-sm hover:opacity-70"
+                    >
+                    Đánh Giá
+                </button>
+                <%} else {%>
+
+                <div
+                    class="bg-transparent text-primary border border-primary px-6 py-2 rounded-sm"
+                    >
+                    Đã Đánh Giá
+                </div>
+                <%}
+                    }%>
+
             </div>
         </div>
         <% }%>
         <hr />
-        <div>
-            <div class="flex items-center justify-end my-7 gap-2">
-                <span class="">Thành tiền:</span>
-                <span class="text-primary text-2xl"><%= Utils.formatNum(order.getTotalMoney())%>₫</span>
-            </div>
-            <div class="flex justify-between">
-                <div class="opacity-50 text-xs"
-                     >Vui lòng chỉ nhấn "Đã nhận được hàng" khi đơn hàng đã được giao
-                    đến bạn và sản phẩm nhận được không có vấn đề nào.
+        <div class="flex pt-6">
+
+            
+            <div class="flex-1 text-slate-400 text-sm flex items-center">Đơn hàng sẽ tới tay bạn trong vòng từ 2-3 ngày.</div>
+
+
+            <div class="flex flex-col items-end justify-end gap-2">
+                <div class="flex items-center gap-2">
+                    <span class="">Thành tiền:</span>
+                    <span class="text-primary text-2xl"><%= Utils.formatNum(order.getTotalMoney())%>₫</span>
                 </div>
                 <div>
 
@@ -100,17 +122,17 @@
                             case PROCESSING:%>
                     <button
                         onclick="cancelOrder(<%= order.getId()%>)"
-                        class ="border-x-[1px] bg-primary border-y-[1px] border-black px-12 py-2 rounded-sm hover:opacity-70"
+                        class ="border bg-primary border-black px-12 py-2 rounded-sm hover:opacity-70"
                         >
-                        Hủy đơn
+                        Hủy Đơn
                     </button>
                     <%       break;
                         case DELIVERING:%>
                     <button
                         onclick="completeOrder(<%= order.getId()%>)"
-                        class="border-x-[1px] bg-primary border-y-[1px] border-black px-12 py-2 rounded-sm hover:opacity-70"
+                        class="border bg-primary border-black px-12 py-2 rounded-sm hover:opacity-70"
                         >
-                        Đã nhận hàng
+                        Đã Nhận Hàng
                     </button>
 
                     <%
@@ -121,6 +143,7 @@
 
                 </div>
             </div>
+
         </div>
     </div>
 
@@ -147,7 +170,7 @@
             body: JSON.stringify(payload)
         })
                 .then(response => {
-                    location.reload();
+                    window.location.href = "http://localhost:8080/store/orders?filter_by=CANCELLED";
                 })
                 .catch(error => {
                     // Handle any errors
@@ -171,7 +194,7 @@
             body: JSON.stringify(payload)
         })
                 .then(response => {
-                    location.reload();
+                    window.location.href = "http://localhost:8080/store/orders?filter_by=COMPLETE";
                 })
                 .catch(error => {
                     // Handle any errors
@@ -180,12 +203,12 @@
 
 
 
-// Tab
+    // Tab
 
-// Get all the tab elements
+    // Get all the tab elements
     const tabs = document.querySelectorAll('.tab');
 
-// Function to handle tab click event
+    // Function to handle tab click event
     function handleTabClick() {
         // Remove the 'selected' class from all tabs
         tabs.forEach(tab => tab.classList.remove('selected'));
@@ -194,15 +217,15 @@
         this.classList.add('selected');
     }
 
-// Set the 'selected' class to the default tab (Tất cả
+    // Set the 'selected' class to the default tab (Tất cả
 
-// Get the current URL
+    // Get the current URL
     const url = window.location.href;
 
-// Create a new URLSearchParams object by passing the URL's query string
+    // Create a new URLSearchParams object by passing the URL's query string
     const searchParams = new URLSearchParams(new URL(url).search);
 
-// Get the value of the 'filter_by' parameter
+    // Get the value of the 'filter_by' parameter
     const filterByValue = searchParams.get('filter_by');
 
     console.log(filterByValue); // Output: The value of 'filter_by' parameter from the current URL
@@ -218,9 +241,140 @@
     const defaultTab = document.getElementById(filterByValue ? filterByToTab[filterByValue] : 'tab1');
     defaultTab.classList.add('selected');
 
-// Attach click event listeners to each tab
+    // Attach click event listeners to each tab
     tabs.forEach(tab => tab.addEventListener('click', handleTabClick));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const renderRatingForm = (image, name, productId) => {
+        // Create a new div element
+        const div = document.createElement("div");
+        div.id = "ratingForm";
+        div.className = "fixed inset-0 flex justify-center items-center z-[999] bg-black/50";
+
+        // Set the inner HTML of the div
+        div.innerHTML =
+                `<form action="http://localhost:8080/store/rate" method="POST" class="flex flex-col bg-dvt-black-2 rounded-xl p-6 w-11/12 max-w-2xl">
+        <input type="hidden" name="productId" value="\${productId}">
+    <h1 class="text-xl font-semibold">Đánh giá sản phẩm</h1>
+    <div>
+        <div class="flex my-4">
+            <img class="h-20 aspect-square rounded-xl" src="\${image}" alt="sản phẩm" />
+            <div class="ml-4 w-[100%]">
+                \${name}
+            </div>
+        </div>
+    </div>
+    <div class="flex items-center gap-4 mb-4" id="rating-form">
+        <div class="text-sm">
+            Chất lượng sản phẩm:
+        </div>
+        <div class="rating flex flex-row-reverse justify-center items-center gap-2 ">
+            <input class="hidden" type="radio" name="rateValue" id="rate-5" value="5" checked>
+            <label class="cursor-pointer" for="rate-5"><img class="aspect-square h-8" src="./assets/start.png"></label>
+            <input class="hidden" type="radio" name="rateValue" id="rate-4" value="4">
+            <label class="cursor-pointer" for="rate-4"><img class="aspect-square h-8" src="./assets/start.png"></label>
+            <input class="hidden" type="radio" name="rateValue" id="rate-3" value="3">
+            <label class="cursor-pointer" for="rate-3"><img class="aspect-square h-8" src="./assets/start.png"></label>
+            <input class="hidden" type="radio" name="rateValue" id="rate-2" value="2">
+            <label class="cursor-pointer" for="rate-2"><img class="aspect-square h-8" src="./assets/start.png"></label>
+            <input class="hidden" type="radio" name="rateValue" id="rate-1" value="1">
+            <label class="cursor-pointer" for="rate-1"><img class="aspect-square h-8" src="./assets/start.png"></label>
+        </div>
+        <p class="text-center" id="rating-text">Yêu Thích</p>
+    </div>
+    <textarea name="rateContent" class="p-4 rounded-md text-lg text-white bg-transparent border border-slate-200" rows="7" placeholder="Nhận xét..."></textarea>
+    <div class="flex justify-end mt-4">
+        <div onclick="removeRatingForm()" class="px-6 py-2 rounded-md border-primary text-primary border-2 text-xl mr-4 hover:opacity-70 cursor-pointer">Trở về</div>
+        <button class="px-6 py-2 rounded-md bg-primary text-xl hover:opacity-70" type="submit">Hoàn thành</button>
+    </div>
+</form>`
+                ;
+
+        // Get the <body> element
+        const body = document.getElementsByTagName("body")[0];
+
+        // Insert the new div element at the beginning of the <body> tag
+        body.insertBefore(div, body.firstChild);
+
+
+
+
+
+        const ratingInputs = document.querySelectorAll('input[name="rateValue"]');
+        const ratingImages = document.querySelectorAll('input[name="rateValue"] + label img');
+        const ratingText = document.getElementById('rating-text');
+
+
+        ratingInputs.forEach((input, index) => {
+
+
+
+
+            input.addEventListener('change', () => {
+                const selectedRating = index + 1;
+
+                ratingImages.forEach((image, imageIndex) => {
+                    if (imageIndex >= index) {
+                        image.src = "./assets/start.png";
+                    } else {
+                        image.src = "./assets/no-start.png";
+                    }
+                });
+
+                displayRatingText(selectedRating);
+            });
+        });
+        function displayRatingText(rating) {
+            let text = '';
+            switch (rating) {
+                case 5:
+                    text = 'Thất vọng';
+                    break;
+                case 4:
+                    text = "Chưa tốt";
+                    break;
+                case 3:
+                    text = 'Tạm ổn';
+                    break;
+                case 2:
+                    text = 'Tốt';
+                    break;
+                case 1:
+                    text = 'Yêu thích';
+                    break;
+                default:
+                    text = '';
+                    break;
+            }
+            ratingText.textContent = text;
+        }
+
+    };
+
+    const removeRatingForm = () => {
+        const ratingForm = document.getElementById("ratingForm");
+        if (ratingForm) {
+            ratingForm.parentNode.removeChild(ratingForm);
+        }
+    };
+
 
 </script>
 
 <jsp:include page="./footer.jsp" />
+
+

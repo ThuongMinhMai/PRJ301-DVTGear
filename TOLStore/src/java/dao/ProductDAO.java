@@ -35,14 +35,10 @@ public class ProductDAO {
                 + "INNER JOIN Category c ON p.categoryId = c.categoryId "
                 + "WHERE p.productId = ?";
 
-        System.out.println("getProductDetail1");
-
         try (Connection conn = new DBContext().getConnection();
                 PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, id);
-            System.out.println("getProductDetail2");
             ResultSet rs = ps.executeQuery();
-            System.out.println("getProductDetail3");
             if (rs.next()) {
                 int productId = rs.getInt("productId");
                 String productName = rs.getString("name");
@@ -56,12 +52,9 @@ public class ProductDAO {
                 // Create a new Product instance
                 product = new Product(productId, productName, category, brand, images, price, description, storage);
             }
-            System.out.println("getProductDetail4");
         } catch (Exception e) {
-            System.out.println("getProductDetail5");
             System.err.println(e);
         }
-        System.out.println("getProductDetail6");
         return product;
     }
 
@@ -212,6 +205,40 @@ public class ProductDAO {
         }
 
         return searchedProducts;
+    }
+
+    public List<Product> getFavoriteProducts(int customerId) {
+        List<Product> favoriteProducts = new ArrayList<>();
+        String query = "SELECT p.productId, p.name, c.name AS category, b.name AS brand, p.description, p.images, p.price, p.categoryId, p.brandId, p.storage\n"
+                + "FROM Product p\n"
+                + "INNER JOIN Brand b ON p.brandId = b.brandId\n"
+                + "INNER JOIN Category c ON p.categoryId = c.categoryId\n"
+                + "INNER JOIN Favorite f ON p.productId = f.productId\n"
+                + "WHERE f.customerId = ?";
+
+        try (Connection conn = new DBContext().getConnection();
+                PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setInt(1, customerId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                favoriteProducts.add(new Product(
+                        rs.getInt("productId"),
+                        rs.getString("name"),
+                        new Category(rs.getInt("categoryId"), rs.getString("category")),
+                        new Brand(rs.getInt("brandId"), rs.getString("brand")),
+                        rs.getString("images"),
+                        rs.getInt("price"),
+                        rs.getString("description"),
+                        rs.getInt("storage")
+                ));
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return favoriteProducts;
     }
 
     public List<Product> getCartProducts(JSONObject jsonObject) {

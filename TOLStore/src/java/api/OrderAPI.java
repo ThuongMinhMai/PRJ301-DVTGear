@@ -1,7 +1,7 @@
 package api;
 
 import dao.OrderDAO;
-import entity.OrderAdmin;
+import entity.Order;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,8 +21,22 @@ public class OrderAPI extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        OrderDAO dao = new OrderDAO();
-        List<OrderAdmin> orderList = dao.getAllOrdersAPI();
+        String orderId = request.getParameter("orderId");
+
+        if (orderId != null) {
+            OrderDAO orderDAO = new OrderDAO();
+//            OrderAdmin order = orderDAO.getOrderDetail(Integer.parseInt(orderId));
+
+            JSONObject jsonResponse = new JSONObject();
+            jsonResponse.put("message", "Get order succesfully!");
+//            jsonResponse.put("order", order);
+
+            response.getWriter().write(jsonResponse.toString());
+            return;
+        }
+
+        OrderDAO orderDao = new OrderDAO();
+        List<Order> orderList = orderDao.getAllOrders();
 
         response.setStatus(HttpServletResponse.SC_OK);
 
@@ -71,7 +85,7 @@ public class OrderAPI extends HttpServlet {
 
         try {
             OrderDAO dao = new OrderDAO();
-            dao.deleteOrder(jsonObject);
+//            dao.deleteOrder(jsonObject);
 
             response.setStatus(HttpServletResponse.SC_OK);
 

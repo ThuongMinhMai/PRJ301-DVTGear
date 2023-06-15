@@ -19,7 +19,7 @@ const ScrollableBlock = ({ children }: ScrollableBlockProps) => {
 
   return (
     <div
-      className="w-full overflow-x-auto whitespace-nowrap overflow-y-hidden scrollbar-hidden"
+      className="overflow-x-auto whitespace-nowrap scrollbar-hidden max-w-full"
       onWheel={handleScroll}
       ref={blockRef}
     >

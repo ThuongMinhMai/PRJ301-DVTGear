@@ -26,10 +26,6 @@ public class RegisterController extends HttpServlet {
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirmPassword");
 
-        System.out.println(username);
-        System.out.println(password);
-        System.out.println(confirmPassword);
-
         if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             request.setAttribute("errorMessage", "Missing username or/and password or/and confirm password!");
             request.getRequestDispatcher("register.jsp").forward(request, response);

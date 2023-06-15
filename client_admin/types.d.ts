@@ -4,9 +4,9 @@ type Product = {
   category: Category;
   brand: Brand;
   description: string;
-  price: number | string;
+  price: number;
   images: string;
-  storage: number | string;
+  storage: number;
 };
 
 type Brand = {
@@ -21,21 +21,24 @@ type Category = {
 
 type Order = {
   id?: number;
-  username: string;
+  customer: string;
   date: string;
   totalMoney: number;
-  status: string;
+  status: Status;
+  receiver: string;
+  address: string;
+  phone: string;
+  orderProducts: OrderProduct[];
+};
+
+type OrderProduct = {
+  product: Product;
+  quantity: number;
+  price: number; //price at order have created
+  isRated: boolean;
 };
 
 type Status = "COMPLETE" | "PROCESSING" | "CANCELLED" | "DELIVERING";
-
-type Person = {
-  id?: number;
-  name?: name;
-  email?: email;
-  role: "Admin" | "Customer";
-  picture: string | StaticImport;
-} | null;
 
 type ModalType = {
   display: boolean;

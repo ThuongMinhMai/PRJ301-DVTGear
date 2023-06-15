@@ -131,45 +131,40 @@
                 <span class="ml-3"> Router Wi-fi</span>
             </a>
         </div>
-        <div class="brand_list overflow-y-auto px-3 flex flex-col gap-y-2 pb-4">
-            <div class="brand_list overflow-y-auto px-3 flex flex-col gap-y-2 pb-4">
-                <div>
-                    <div class="grid grid-cols-2 text-center gap-7">
-                        <a href="http://localhost:8080/store/search?brand=1"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
-                                                                                                                                   src="./assets/acer.png" alt="acer"></div></a>
-                        <a href="http://localhost:8080/store/search?brand=2"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
-                                                                                                                                   src="./assets/akko.png" alt="akko"></div></a>
-                        <a href="http://localhost:8080/store/search?brand=3"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
-                                                                                                                                   src="./assets/asus.png" alt="asus"></div></a>
-                        <a href="http://localhost:8080/store/search?brand=4"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
-                                                                                                                                   src="./assets/corsair.png" alt="corsair"></div></a>
-                        <a href="http://localhost:8080/store/search?brand=5"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
-                                                                                                                                   src="./assets/dare-u.png" alt="dare-u"></div></a>
-                        <a href="http://localhost:8080/store/search?brand=6"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
-                                                                                                                                   src="./assets/iqunix.png" alt="iqunix"></div></a>
-                        <a href="http://localhost:8080/store/search?brand=7"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
-                                                                                                                                   src="./assets/lenovo.png" alt="lenovo"></div></a>
-                        <a href="http://localhost:8080/store/search?brand=8"><div class="flex justify-center cursor-pointer"> <img class="brand h-14 object-contain"
-                                                                                                                                   src="./assets/logitech.png" alt="logitech"></div></a>
-                        <a href="http://localhost:8080/store/search?brand=9"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
-                                                                                                                                   src="./assets/msi.png" alt="msi"></div></a>
-                        <a href="http://localhost:8080/store/search?brand=10"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
-                                                                                                                                    src="./assets/rapoo.png" alt="rapoo"></div></a>
-                        <a href="http://localhost:8080/store/search?brand=11"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
-                                                                                                                                    src="./assets/razer.png" alt="razer"></div></a>
-                        <a href="http://localhost:8080/store/search?brand=12"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
-                                                                                                                                    src="./assets/samsung.png" alt="samsung"></div></a>
-                        <a href="http://localhost:8080/store/search?brand=13"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
-                                                                                                                                    src="./assets/sony.png" alt="sony"></div></a>
-                        <a href="http://localhost:8080/store/search?brand=14"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
-                                                                                                                                    src="./assets/tplink.png" alt="tplink"></div></a>
-                        <a href="http://localhost:8080/store/search?brand=15"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
-                                                                                                                                    src="./assets/viewsonic.png" alt="viewsonic"></div></a>
-                        <a href="http://localhost:8080/store/search?brand=16"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
-                                                                                                                                    src="./assets/logo.png" alt="tol"></div></a>
-                    </div>
-                </div>
-            </div>
+        <div class="brand_list overflow-y-auto px-4 pb-5 grid grid-cols-2 text-center gap-7">
+
+            <a href="http://localhost:8080/store/search?brand=1"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
+                                                                                                                       src="./assets/acer.png" alt="acer"></div></a>
+            <a href="http://localhost:8080/store/search?brand=2"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
+                                                                                                                       src="./assets/akko.png" alt="akko"></div></a>
+            <a href="http://localhost:8080/store/search?brand=3"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
+                                                                                                                       src="./assets/asus.png" alt="asus"></div></a>
+            <a href="http://localhost:8080/store/search?brand=4"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
+                                                                                                                       src="./assets/corsair.png" alt="corsair"></div></a>
+            <a href="http://localhost:8080/store/search?brand=5"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
+                                                                                                                       src="./assets/dare-u.png" alt="dare-u"></div></a>
+            <a href="http://localhost:8080/store/search?brand=6"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
+                                                                                                                       src="./assets/iqunix.png" alt="iqunix"></div></a>
+            <a href="http://localhost:8080/store/search?brand=7"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
+                                                                                                                       src="./assets/lenovo.png" alt="lenovo"></div></a>
+            <a href="http://localhost:8080/store/search?brand=8"><div class="flex justify-center cursor-pointer"> <img class="brand h-14 object-contain"
+                                                                                                                       src="./assets/logitech.png" alt="logitech"></div></a>
+            <a href="http://localhost:8080/store/search?brand=9"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
+                                                                                                                       src="./assets/msi.png" alt="msi"></div></a>
+            <a href="http://localhost:8080/store/search?brand=10"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
+                                                                                                                        src="./assets/rapoo.png" alt="rapoo"></div></a>
+            <a href="http://localhost:8080/store/search?brand=11"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
+                                                                                                                        src="./assets/razer.png" alt="razer"></div></a>
+            <a href="http://localhost:8080/store/search?brand=12"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
+                                                                                                                        src="./assets/samsung.png" alt="samsung"></div></a>
+            <a href="http://localhost:8080/store/search?brand=13"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
+                                                                                                                        src="./assets/sony.png" alt="sony"></div></a>
+            <a href="http://localhost:8080/store/search?brand=14"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
+                                                                                                                        src="./assets/tplink.png" alt="tplink"></div></a>
+            <a href="http://localhost:8080/store/search?brand=15"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
+                                                                                                                        src="./assets/viewsonic.png" alt="viewsonic"></div></a>
+            <a href="http://localhost:8080/store/search?brand=16"><div class="flex justify-center cursor-pointer"> <img class="brand h-10 object-contain"
+                                                                                                                        src="./assets/logo.png" alt="tol"></div></a>
         </div>
     </div>
     <div class="flex-1">
@@ -188,7 +183,7 @@
 <div class="relative pb-16">
     <img class="w-full absolute z-[-10]" src="./assets/preorder-bg.png" />
     <!--Title productList-->
-    <div class="flex items-center w-11/12 max-w-7xl mx-auto py-12">
+    <div class="flex items-center w-11/12 max-w-6xl mx-auto py-12">
         <div class="grow border-t-[3px] border-white"></div>
 
         <p class="px-5 py-0 text-2xl font-bold uppercase text-white">
@@ -199,7 +194,7 @@
     </div>
 
     <div
-        class="relative justify-center grid grid-cols-12 gap-5 w-11/12 max-w-7xl mx-auto"
+        class="relative justify-center grid grid-cols-12 gap-5 w-11/12 max-w-6xl mx-auto"
         >
 
 
@@ -231,9 +226,9 @@
                     <%= product.getName()%>
                 </span>
             </div>
-            
+
             <div
-                onclick="addToCart(<%= product.getId()%>,1,<%= product.getStorage() %>)"
+                onclick="addToCart(<%= product.getId()%>, 1,<%= product.getStorage()%>)"
                 class="mt-auto mx-auto px-4 py-2 rounded-[30px] bg-primary border-none uppercase cursor-pointer mb-4 hover:opacity-80"
                 >
                 Thêm vào giỏ hàng

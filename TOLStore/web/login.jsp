@@ -239,9 +239,8 @@
 
 
 
-                    <% String existingErrorMessage = (String) request.getAttribute("errorMessage"); %>
-
-                    <% if (existingErrorMessage != null && !existingErrorMessage.isEmpty()) {%>
+                    <% String existingErrorMessage = (String) request.getAttribute("errorMessage");
+                        if (existingErrorMessage != null && !existingErrorMessage.isEmpty()) {%>
                     <div class="text-red-500 py-2 px-4 rounded-lg border-red-500 border bg-red-200 mt-3 w-80">
                         <%= existingErrorMessage%>
                     </div>
@@ -280,3 +279,4 @@
     ></script>
 </body>
 </html>
+

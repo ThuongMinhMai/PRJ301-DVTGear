@@ -1,15 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import context.DBContext;
-import entity.Brand;
-import entity.Category;
 import entity.Order.Status;
-import entity.OrderAdmin;
 import entity.Product;
 import java.sql.Connection;
 import java.sql.Date;
@@ -18,52 +10,81 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import entity.Order;
-import entity.Order.OrderProduct;
+import entity.OrderProduct;
 import java.sql.SQLException;
 import java.sql.Statement;
 import org.json.JSONObject;
 
-/**
- *
- * @author Kingc
- */
 public class OrderDAO {
 
     Connection conn = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
 
-    public List<OrderAdmin> getAllOrdersAPI() {
-        List<OrderAdmin> orderList = new ArrayList<>();
-        String query = "SELECT \n"
-                + "    [Order].orderId,\n"
-                + "    Customer.username,\n"
-                + "    [Order].[date],\n"
-                + "    [Order].[status],\n"
-                + "    SUM(OrderProducts.quantity * Product.price) AS total_money\n"
-                + "FROM [Order]\n"
-                + "JOIN Customer ON [Order].customerId = Customer.customerId\n"
-                + "JOIN OrderProducts ON [Order].orderId = OrderProducts.orderId\n"
-                + "JOIN Product ON OrderProducts.productId = Product.productId\n"
-                + "GROUP BY\n"
-                + "    [Order].orderId,\n"
-                + "    Customer.username,\n"
-                + "    [Order].[date],\n"
-                + "    [Order].[status];";
+//    public OrderAdmin getOrderDetail(int orderId)
+//    {
+//        return null;
+//    }
+    public List<Order> getAllOrders() {
+        List<Order> orderList = new ArrayList<>();
+        String query = "SELECT o.orderId, cus.username, o.date, o.receiver, o.address, o.phone, o.status, op.quantity, op.price, "
+                + "p.[name] AS productName, p.images AS productImages, p.productId, p.storage, "
+                + "CASE WHEN r.productId IS NOT NULL THEN 1 ELSE 0 END AS isRated "
+                + "FROM [Order] o "
+                + "INNER JOIN OrderProducts op ON o.orderId = op.orderId "
+                + "INNER JOIN Customer cus ON o.customerId = cus.customerId "
+                + "INNER JOIN Product p ON op.productId = p.productId "
+                + "LEFT JOIN Rate r ON r.productId = p.productId AND r.customerId = cus.customerId "
+                + "ORDER BY o.date DESC";
 
         try (Connection conn = new DBContext().getConnection();
                 PreparedStatement ps = conn.prepareStatement(query);
                 ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
+                int orderId = rs.getInt("orderId");
+                String receiver = rs.getString("receiver");
+                String phone = rs.getString("phone");
+                String address = rs.getString("address");
+                String username = rs.getString("username");
+                Date date = rs.getDate("date");
+                Status status = Status.valueOf(rs.getString("status"));
 
-                orderList.add(new OrderAdmin(
-                        rs.getInt("orderId"),
-                        rs.getString("username"),
-                        rs.getDate("date"),
-                        Status.valueOf(rs.getString("status")),
-                        rs.getInt("total_money")
-                ));
+                int quantity = rs.getInt("quantity");
+                int price = rs.getInt("price");
+                int totalMoney = quantity * price;
+                boolean isRated = rs.getInt("isRated") == 1;
+
+                Product product = new Product(
+                        rs.getInt("productId"),
+                        rs.getString("productName"),
+                        null,
+                        null,
+                        rs.getString("productImages"),
+                        0,
+                        null,
+                        0
+                );
+
+                Order order = null;
+                for (Order o : orderList) {
+                    if (o.getId() == orderId) {
+                        order = o;
+                        break;
+                    }
+                }
+
+                if (order == null) {
+                    order = new Order(orderId, username, date, status, receiver, address, phone);
+                    order.setOrderProducts(new ArrayList<>());
+                    orderList.add(order);
+                }
+
+                OrderProduct orderProduct = new OrderProduct(product, quantity, price);
+                orderProduct.setIsRated(isRated);
+
+                order.getOrderProducts().add(orderProduct);
+                order.setTotalMoney(order.getTotalMoney() + totalMoney);
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -72,45 +93,19 @@ public class OrderDAO {
         return orderList;
     }
 
-    public void deleteOrder(JSONObject jsonObject) {
-        int orderId = jsonObject.getInt("id");
-
-        String deleteOrderProductsQuery = "DELETE FROM OrderProducts WHERE orderId = ?";
-        String deleteOrderQuery = "DELETE FROM [Order] WHERE orderId = ?";
-
-        try (Connection conn = new DBContext().getConnection();
-                PreparedStatement psDeleteOrderProducts = conn.prepareStatement(deleteOrderProductsQuery);
-                PreparedStatement psDeleteOrder = conn.prepareStatement(deleteOrderQuery)) {
-
-            // Delete the corresponding records in OrderProducts table
-            psDeleteOrderProducts.setInt(1, orderId);
-            psDeleteOrderProducts.executeUpdate();
-
-            // Delete the order from Order table
-            psDeleteOrder.setInt(1, orderId);
-            int rowsUpdated = psDeleteOrder.executeUpdate();
-
-            if (rowsUpdated > 0) {
-                System.out.println("Order and related records deleted successfully.");
-            } else {
-                System.out.println("Failed to delete the order.");
-            }
-        } catch (Exception e) {
-            System.err.println(e);
-        }
-    }
-
-    public List<Order> getAllOrders(int id, String filterBy) {
-
+    public List<Order> getAllCustomerOrders(int customerId, String filterBy) {
         System.out.println(filterBy);
 
         List<Order> orderList = new ArrayList<>();
-        String query = "SELECT o.orderId, o.date, o.status, op.quantity, op.price, "
-                + "p.[name] AS productName, p.images AS productImages, p.productId, p.storage "
+        String query = "SELECT o.orderId, cus.username ,o.date, o.receiver, o.address, o.phone, o.status, op.quantity, op.price, "
+                + "p.[name] AS productName, p.images AS productImages, p.productId, p.storage, "
+                + "CASE WHEN r.productId IS NOT NULL THEN 1 ELSE 0 END AS isRated "
                 + "FROM [Order] o "
                 + "INNER JOIN OrderProducts op ON o.orderId = op.orderId "
+                + "INNER JOIN Customer cus ON o.customerId = cus.customerId "
                 + "INNER JOIN Product p ON op.productId = p.productId "
-                + "WHERE o.customerId = " + id;
+                + "LEFT JOIN Rate r ON r.productId = p.productId AND r.customerId = " + customerId
+                + " WHERE o.customerId = " + customerId;
 
         if (filterBy != null) {
             query += " AND o.status = '" + filterBy + "'";
@@ -124,21 +119,27 @@ public class OrderDAO {
 
             while (rs.next()) {
                 int orderId = rs.getInt("orderId");
+                String receiver = rs.getString("receiver");
+                String phone = rs.getString("phone");
+                String address = rs.getString("address");
+                String customer = rs.getString("username");
                 Date date = rs.getDate("date");
                 Status status = Status.valueOf(rs.getString("status"));
+
                 int quantity = rs.getInt("quantity");
                 int price = rs.getInt("price");
                 int totalMoney = quantity * price;
-//public Product(int id, String name, Category category, Brand brand, String images, int price, String description, int storage)
+                boolean isRated = rs.getInt("isRated") == 1;
+
                 Product product = new Product(
-                        rs.getInt("productId"), // You don't need productId in this case, so set it to 0 or any default value
+                        rs.getInt("productId"),
                         rs.getString("productName"),
-                        null, // You don't need category information, so set it to null
-                        null, // You don't need brand information, so set it to null
-                        rs.getString("productImages"),
-                        0,// You don't need the current price, so set it to 0 or any default value
                         null,
-                        0 // You don't need the storages
+                        null,
+                        rs.getString("productImages"),
+                        0,
+                        null,
+                        0
                 );
 
                 Order order = null;
@@ -150,12 +151,20 @@ public class OrderDAO {
                 }
 
                 if (order == null) {
-                    order = new Order(orderId, null, date, status, new ArrayList<>());
+                    //Order(int id, String customer, Date date, Status status, String receiver, String address, String phone)
+
+                    order = new Order(orderId, customer, date, status, receiver, address, phone);
+                    order.setOrderProducts(new ArrayList<>());
                     orderList.add(order);
                 }
 
-                order.getOrderProducts().add(new OrderProduct(product, quantity, price));
+                //public OrderProduct(Product product, int quantity, int price)
+                OrderProduct orderProuduct = new OrderProduct(product, quantity, price);
+                orderProuduct.setIsRated(isRated);
+
+                order.getOrderProducts().add(orderProuduct);
                 order.setTotalMoney(order.getTotalMoney() + totalMoney);
+
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -166,12 +175,13 @@ public class OrderDAO {
 
     public void createOrder(JSONObject jsonObject) {
         String address = jsonObject.getString("address");
+        String receiver = jsonObject.getString("receiver");
         String phone = jsonObject.getString("phone");
         int customerId = jsonObject.getInt("customerId");
         JSONObject productsObj = jsonObject.getJSONObject("products");
 
         // Create the Order entry in the database
-        String orderQuery = "INSERT INTO [Order] (customerId, phone, address, [date], [status]) VALUES (?, ?, ?, GETDATE(), 'PROCESSING')";
+        String orderQuery = "INSERT INTO [Order] (customerId, phone, address, [date], [status], receiver) VALUES (?, ?, ?, GETDATE(), 'PROCESSING',?)";
         try (Connection conn = new DBContext().getConnection();
                 PreparedStatement orderPs = conn.prepareStatement(orderQuery, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -179,6 +189,7 @@ public class OrderDAO {
             orderPs.setInt(1, customerId);
             orderPs.setString(2, phone);
             orderPs.setString(3, address);
+            orderPs.setString(4, receiver);
 
             int rowsInserted = orderPs.executeUpdate();
             if (rowsInserted > 0) {
@@ -326,6 +337,7 @@ public class OrderDAO {
 
             // If the storage is suitable, update the order status to "DELIVERING" and update the storage
             if (storageSuitable) {
+                System.out.println("suitable");
                 updateStatusOrder(orderId, "DELIVERING");
                 updateStoragePs.executeBatch(); // Move the executeBatch() here
                 conn.commit(); // Commit the transaction

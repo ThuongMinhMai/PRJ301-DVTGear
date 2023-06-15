@@ -15,11 +15,26 @@ import java.util.List;
 public class Order {
 
     private int id;
-    private Customer customer;
+    private String customer;
     private Date date;
     private Status status;
-    private List<OrderProduct> orderProducts;
+    private String receiver;
+    private String address;
+    private String phone;
+
+    //expand atribute
     private int totalMoney;
+    private List<OrderProduct> orderProducts;
+
+    public Order(int id, String customer, Date date, Status status, String receiver, String address, String phone) {
+        this.id = id;
+        this.customer = customer;
+        this.date = date;
+        this.status = status;
+        this.receiver = receiver;
+        this.address = address;
+        this.phone = phone;
+    }
 
     public enum Status {
         COMPLETE,
@@ -52,11 +67,11 @@ public class Order {
         this.id = id;
     }
 
-    public Customer getCustomer() {
+    public String getCustomer() {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
+    public void setCustomer(String customer) {
         this.customer = customer;
     }
 
@@ -76,20 +91,28 @@ public class Order {
         this.status = status;
     }
 
-    public List<OrderProduct> getOrderProducts() {
-        return orderProducts;
+    public String getReceiver() {
+        return receiver;
     }
 
-    public void setOrderProduct(List<OrderProduct> orderProduct) {
-        this.orderProducts = orderProduct;
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 
-    public Order(int id, Customer customerId, Date date, Status status, List<OrderProduct> orderProduct) {
-        this.id = id;
-        this.customer = customerId;
-        this.date = date;
-        this.status = status;
-        this.orderProducts = orderProduct;
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public int getTotalMoney() {
@@ -100,46 +123,12 @@ public class Order {
         this.totalMoney = totalMoney;
     }
 
-    public static class OrderProduct {
-
-        private Product product;
-        private int quantity;
-        private int price;
-
-        public OrderProduct(Product productId, int quantity, int price) {
-            this.product = productId;
-            this.quantity = quantity;
-            this.price = price;
-        }
-
-        public Product getProduct() {
-            return product;
-        }
-
-        public void setProduct(Product product) {
-            this.product = product;
-        }
-
-        public int getQuantity() {
-            return quantity;
-        }
-
-        public void setQuantity(int quantity) {
-            this.quantity = quantity;
-        }
-
-        public int getPrice() {
-            return price;
-        }
-
-        public void setPrice(int price) {
-            this.price = price;
-        }
-
-        @Override
-        public String toString() {
-            return "OrderProduct{" + "product=" + product + ", quantity=" + quantity + ", price=" + price + '}';
-        }
-
+    public List<OrderProduct> getOrderProducts() {
+        return orderProducts;
     }
+
+    public void setOrderProducts(List<OrderProduct> orderProducts) {
+        this.orderProducts = orderProducts;
+    }
+
 }

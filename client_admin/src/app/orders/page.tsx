@@ -1,12 +1,13 @@
 "use client";
 
 import { Loader, Scroll } from "@/components";
-import { DeleteIcon, MoreHorizIcon, ShippingIcon } from "@/contexts/icons";
+import { DeleteIcon, DetailsIcon, MoreHorizIcon, ShippingIcon } from "@/contexts/icons";
 import formattedDate from "@/utils/formattedDate";
 import axios from "axios";
 import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 
 type Props = {};
 
@@ -32,6 +33,7 @@ const statusToColor: Record<Status, string> = {
 const OrderList = () => {
   const [orderList, setOrderList] = useState<Order[]>();
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
   const fetchOrders = useCallback(async () => {
     const { data } = await axios.get("http://localhost:8080/store/api/orders");
@@ -58,12 +60,13 @@ const OrderList = () => {
 
   return (
     <Scroll>
-      <table className="min-w-full border-spacing-y-3 border-separate pb-24">
+      <table className="border-spacing-y-3 border-separate pb-24 w-full">
         <thead>
           <tr className="font-medium text-xs uppercase">
             <th className="pl-6 pr-4">ID</th>
-            <th className="px-4">Name</th>
-            <th className="px-4">DATE</th>
+            <th className="px-4">Customer</th>
+            <th className="px-4">Receiver</th>
+            <th className="px-4">Phone</th>
             <th className="px-4">TOTAL</th>
             <th className="px-4">STATUS</th>
             <th className="text-end pr-8 pl-4">Actions</th>
@@ -80,8 +83,9 @@ const OrderList = () => {
                   {"#"}
                   {index + 1}
                 </td>
-                <td className="px-4">{order.username}</td>
-                <td className="px-4">{order.date}</td>
+                <td className="px-4">{order.customer}</td>
+                <td className="px-4">{order.receiver}</td>
+                <td className="px-4">{order.phone}</td>
                 <td className="px-4">đ{order.totalMoney.toLocaleString()}</td>
                 <td className="px-4">
                   <div
@@ -105,6 +109,14 @@ const OrderList = () => {
                       tabIndex={0}
                       className="dropdown-content menu p-2 shadow bg-primary rounded-box w-52"
                     >
+                      <li onClick={()=>{
+                        router.push(`/orders/${order.id}`)
+                      }}>
+                        <a>
+                          <DetailsIcon />
+                          Detail
+                        </a>
+                      </li>
                       {order.status === "PROCESSING" && (
                         <li
                           onClick={() => {

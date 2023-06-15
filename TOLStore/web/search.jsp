@@ -12,7 +12,7 @@
 
 
 
-<div class="relative pb-16 mt-32 w-11/12 max-w-7xl mx-auto">
+<div class="relative pb-16 mt-32 w-11/12 max-w-6xl mx-auto">
 
     <div class="flex justify-center">
         <h2 class="text-2xl mx-2 font-medium mt-5">Sắp xếp theo: </h2>

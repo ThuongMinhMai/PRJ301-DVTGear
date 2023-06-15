@@ -49,7 +49,6 @@ public class ProductAPI extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-       
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(request.getInputStream(), "UTF-8")); // Specify UTF-8 encoding
         StringBuilder requestBody = new StringBuilder();

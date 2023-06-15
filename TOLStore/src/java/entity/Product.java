@@ -5,6 +5,8 @@
  */
 package entity;
 
+import java.util.List;
+
 /**
  *
  * @author Kingc
@@ -20,12 +22,8 @@ public class Product {
     private String description;
     private int storage;
 
-    public Product() {
-    }
-
-    public int getStorage() {
-        return storage;
-    }
+    //expand atribute
+    private List<Rate> rateList;
 
     public Product(int id, String name, Category category, Brand brand, String images, int price, String description, int storage) {
         this.id = id;
@@ -36,6 +34,18 @@ public class Product {
         this.price = price;
         this.description = description;
         this.storage = storage;
+    }
+
+    public List<Rate> getRateList() {
+        return rateList;
+    }
+
+    public void setRateList(List<Rate> rateList) {
+        this.rateList = rateList;
+    }
+
+    public int getStorage() {
+        return storage;
     }
 
     public void setStorage(int storage) {

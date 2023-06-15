@@ -11,7 +11,7 @@
 
 <div
     id="cartPage"
-    class="bg-dvt-black-2 text-white p-6 mx-auto max-w-7xl w-11/12 rounded-md mt-32 mb-8"
+    class="bg-dvt-black-2 text-white p-6 mx-auto max-w-6xl w-11/12 rounded-md mt-32 mb-8"
     >
 
 
@@ -28,7 +28,14 @@
     <div class="flex justify-end my-4">
         <div
             id="orderButton"
+
+            <% if (request.getSession().getAttribute("currentUser") == null) { %>
+            onclick="moveToLogin()"
+            <% } else {%>
+
             onclick="displayOrderForm()"
+
+            <%}%>
             class="py-1 px-6 rounded-md cursor-pointer border-2 border-primary text-white bg-primary ml-4 hover:opacity-70"
             >
             Thanh Toán
@@ -37,6 +44,16 @@
 
     <div id="orderForm" class="hidden">
         <div>
+            <label class="text-white mb-3 block">
+                <div class="font-bold">Tên người nhận hàng</div>
+                <input
+                    class="mt-1 block border py-1 border-white outline-none px-2 rounded w-72 max-w-[90%] bg-transparent"
+                    type="text"
+                    name="receiver"
+                    id="receiverInput"
+                    required
+                    />
+            </label>
             <label class="text-white mb-3 block">
                 <div class="font-bold">Số điện thoại</div>
                 <input
@@ -191,39 +208,42 @@
         dataCartProducts.forEach((product) => {
             if (JSON.parse(localStorageCartProducts).products[product.id] >= 1) {
                 //gặp vấn đề khi dùng template literals của js nên phải đành dùng cách này
-                htmlContent += '<div class="flex justify-between items-center py-4 border-b-[3px] border-primary">' +
-                        '<div class="flex gap-4 items-center">' +
-                        '<a href="http://localhost:8080/store/products?id=' + product.id + '" class="h-20 w-20 min-w-[80px] overflow-hidden">' +
-                        '<img src="' + JSON.parse(product.images)[0] + '" alt="" class="h-full w-full object-cover rounded-lg border border-primary" />' +
-                        '</a>' +
-                        '<div>' +
-                        '<div class="font-bold text-xl mb-2 line-clamp-1">' +
-                        product.name +
-                        '</div>' +
-                        '<div>' +
-                        '<div class="inline-block font-bold text-primary w-32">' +
-                        formatNum(product.price) + 'đ' +
-                        '</div>' +
-                        '<div class="inline-block px-3 bg-dvt-black-1 rounded-sm shadow-lg">' +
-                        'x' + JSON.parse(localStorageCartProducts).products[product.id] +
-                        '</div>' +
-                        '</div>' +
-                        '</div>' +
-                        '</div>' +
-                        '<div class="flex flex-col justify-between self-stretch">' +
-                        '<div onclick="deleteProduct(' + product.id + ')" class="ml-auto cursor-pointer">' +
-                        '<ion-icon name="close-outline" class="w-6 h-6"></ion-icon>' +
-                        '</div>' +
-                        '<div class="flex">' +
-                        '<div onclick="decreaseProduct(' + product.id + ')" class="flex justify-center px-4 rounded-md cursor-pointer border-2 border-primary text-primary hover:text-white hover:bg-primary">' +
-                        '-' +
-                        '</div>' +
-                        '<div onclick="increaseProduct(' + product.id + ')" class="flex justify-center px-4 rounded-md cursor-pointer border-2 border-primary text-primary hover:text-white hover:bg-primary ml-4">' +
-                        '+' +
-                        '</div>' +
-                        '</div>' +
-                        '</div>' +
-                        '</div>';
+                htmlContent +=
+                        `<div class="flex justify-between items-center py-4 border-b-[3px] border-primary">
+    <div class="flex gap-4 items-center">
+        <a href="http://localhost:8080/store/products?id=\${product.id}" class="h-20 w-20 min-w-[80px] overflow-hidden">
+            <img src="\${JSON.parse(product.images)[0]}" alt="" class="h-full w-full object-cover rounded-lg border border-primary" />
+        </a>
+        <div>
+            <div class="font-bold text-xl mb-2 line-clamp-1">
+                \${product.name}
+            </div>
+            <div>
+                <div class="inline-block font-bold text-primary w-32">
+                    \${formatNum(product.price)}đ
+                </div>
+                <div class="inline-block px-3 bg-dvt-black-1 rounded-sm shadow-lg">
+                    x\${JSON.parse(localStorageCartProducts).products[product.id]}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex flex-col justify-between self-stretch">
+        <div onclick="deleteProduct(\${product.id})" class="ml-auto cursor-pointer">
+            <ion-icon name="close-outline" class="w-6 h-6"></ion-icon>
+        </div>
+        <div class="flex">
+            <div onclick="decreaseProduct(\${product.id})" class="flex justify-center px-4 rounded-md cursor-pointer border-2 border-primary text-primary hover:text-white hover:bg-primary">
+                -
+            </div>
+            <div onclick="increaseProduct(\${product.id})" class="flex justify-center px-4 rounded-md cursor-pointer border-2 border-primary text-primary hover:text-white hover:bg-primary ml-4">
+                +
+            </div>
+        </div>
+    </div>
+</div>`
+
+                        ;
             }
 
         });
@@ -285,6 +305,7 @@
         {
             const orderData = JSON.parse(localStorageOderData);
             document.getElementById("phoneInput").value = orderData.phone;
+            document.getElementById("receiverInput").value = orderData.receiver;
             document.getElementById("addressInput").value = orderData.address;
         }
     };
@@ -310,17 +331,19 @@
     const handleSubmitOrder = () => {
 
         const phone = document.getElementById("phoneInput").value;
+        const receiver = document.getElementById("receiverInput").value;
         const address = document.getElementById("addressInput").value;
-        const isSaveDataOrder = document.getElementById("isSaveDataOrderInput").value;
-        
+        const isSaveDataOrder = document.getElementById("isSaveDataOrderInput").checked;
+
         if (isSaveDataOrder)
         {
             localStorage.setItem("orderData", JSON.stringify({
                 phone,
-                address
+                address,
+                receiver
             }));
         }
-        
+
         const form = document.createElement('form');
 // Set form attributes
         form.method = 'POST'; // HTTP method
@@ -331,6 +354,10 @@
         phoneElement.type = 'text';
         phoneElement.name = 'phone';
         phoneElement.value = phone;
+        const receiverElement = document.createElement('input');
+        receiverElement.type = 'text';
+        receiverElement.name = 'receiver';
+        receiverElement.value = receiver;
         const addressElement = document.createElement('input');
         addressElement.type = 'text';
         addressElement.name = 'address';
@@ -341,6 +368,7 @@
         productsElement.value = JSON.stringify(JSON.parse(localStorage.getItem("cart")).products);
 // Add form fields to the form
         form.appendChild(phoneElement);
+        form.appendChild(receiverElement);
         form.appendChild(addressElement);
         form.appendChild(productsElement);
 // Append the form to the document body

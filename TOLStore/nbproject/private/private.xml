@@ -4,47 +4,35 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/controller/OrderController.java</file>
+            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/controller/FavoriteController.java</file>
             <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/footer.jsp</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/dao/ProductDAO.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/assets/rapoo.png</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/login.jsp</file>
             <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/api/CategoryAPI.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/assets/iqunix.png</file>
+            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/login.jsp</file>
             <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/entity/Order.java</file>
             <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/header.jsp</file>
+            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/entity/OrderAdmin.java</file>
             <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/home.jsp</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/assets/corsair.png</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/dao/CustomerDAO.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/api/ProductAPI.java</file>
             <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/register.jsp</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/assets/preorder-bg.png</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/assets/cart.png</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/META-INF/context.xml</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/assets/logo.png</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/assets/dare-u.png</file>
+            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/api/ProductAPI.java</file>
             <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/controller/RegisterController.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/controller/LogoutController.java</file>
             <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/controller/ProductController.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/controller/HomeController.java</file>
+            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/controller/LogoutController.java</file>
             <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/productDetail.jsp</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/assets/lenovo.png</file>
+            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/controller/HomeController.java</file>
+            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/dao/FavoriteDAO.java</file>
             <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/entity/Product.java</file>
             <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/api/BrandAPI.java</file>
             <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/orders.jsp</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/assets/robot.png</file>
             <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/search.jsp</file>
             <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/controller/SearchController.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/assets/robot2.png</file>
             <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/controller/LoginController.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/entity/Customer.java</file>
             <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/cart.jsp</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/api/AdminAPI.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/assets/check.png</file>
+            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/context/DBContext.java</file>
             <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/dao/OrderDAO.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/assets/user.png</file>
             <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/api/OrderAPI.java</file>
             <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/api/BannerAPI.java</file>
             <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/api/CorsFilter.java</file>
+            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/favorite.jsp</file>
         </group>
     </open-files>
 </project-private>

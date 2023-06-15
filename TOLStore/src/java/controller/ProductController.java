@@ -5,6 +5,7 @@
  */
 package controller;
 
+import dao.FavoriteDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import dao.ProductDAO;
+import entity.Customer;
 import entity.Product;
 import java.util.List;
 
@@ -26,13 +28,20 @@ public class ProductController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String productId = request.getParameter("id");
+        int productId = Integer.parseInt(request.getParameter("id"));
 
         ProductDAO productDao = new ProductDAO();
-        Product product = productDao.getProductDetail(Integer.parseInt(productId));
-        List<Product> sameProductList = productDao.getSameProducts(Integer.parseInt(productId));
+        Product product = productDao.getProductDetail(productId);
+        System.out.println(product);
+        List<Product> sameProductList = productDao.getSameProducts(productId);
+
+        FavoriteDAO favoriteDAO = new FavoriteDAO();
+        Customer customer = (Customer) request.getSession().getAttribute("currentUser");
+
+        boolean isFavorite = favoriteDAO.isFavorite(productId, (customer != null) ? customer.getCustomerId() : 0);
 
         request.setAttribute("product", product);
+        request.setAttribute("isFavorite", isFavorite);
         request.setAttribute("sameProductList", sameProductList);
 
         request.getRequestDispatcher("productDetail.jsp").forward(request, response);

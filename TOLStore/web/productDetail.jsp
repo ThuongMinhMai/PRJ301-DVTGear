@@ -3,10 +3,33 @@
 
 <jsp:include page="./header.jsp" />
 
+<style>
+    #favouriteBtn:hover #favouriteMessage{
+        opacity:1;
+    }
+
+    svg {
+        margin-bottom: 2em;
+    }
+
+    .rating__background {
+        fill: gray;
+        stroke: red;
+        stroke-width: 1;
+        height: 100%;
+        width: 100%;
+    }
+
+    .rating__value {
+        fill: #ea1c00;
+        height: 100%;
+    }
+</style>
+
 <% Product product = (Product) request.getAttribute("product");%> <% List<String> imageUrlList = Utils.parseJSONStringArray(product.getImages());%>
 
 <div
-    class="grid grid-cols-12 gap-6 mt-32 max-w-7xl mx-auto rounded-md text-white bg-dvt-black-2 p-6"
+    class="grid grid-cols-12 gap-6 mt-32 max-w-6xl mx-auto rounded-md text-white bg-dvt-black-2 p-6"
     >
     <div class="image flex flex-col gap-1 col-span-12 lg:col-span-5">
         <div class="main-image w-full aspect-square">
@@ -30,73 +53,173 @@
         </div>
     </div>
 
-    <div class="detail flex flex-col gap-4 col-span-12 lg:col-span-7 p-6">
-        <div class="title">
-            <h2 class="capitalize font-bold text-5xl line-clamp-3">
-                <%= product.getName()%>
-            </h2>
-        </div>
-        <div class="price">
-            <p class="text-3xl font-medium text-primary">
-                <%= Utils.formatNum(product.getPrice())%>₫
-            </p>
+    <div class="flex gap-4 col-span-12 lg:col-span-7 ">
+
+        <div class="flex flex-col flex-1">
+
+            <div class="mb-3 text-slate-300"><span class="text-primary">Danh Mục:</span> <%= product.getCategory().getName()%></div>
+
+            <div class="title">
+
+                <h2 class="capitalize font-medium text-3xl line-clamp-2">
+                    <%= product.getName()%>
+                </h2>
+            </div>
+
+
+
+            <div class="flex items-center gap-2">
+
+                <div class="text-primary text-lg border-b border-primary">3.7</div>
+
+                <svg viewBox="0 0 1000 200" class='rating my-4 h-4'>
+                <defs>
+
+                <polygon id="star" points="100,0 131,66 200,76 150,128 162,200 100,166 38,200 50,128 0,76 69,66 "/>
+
+                <clipPath id="stars">
+                    <use xlink:href="#star"/>
+                    <use xlink:href="#star" x="20%"/>
+                    <use xlink:href="#star" x="40%"/>
+                    <use xlink:href="#star" x="60%"/>
+                    <use xlink:href="#star" x="80%"/>
+                </clipPath>
+
+                </defs>
+
+                <rect class='rating__background' clip-path="url(#stars)"></rect>
+
+                <!-- Change the width of this rect to change the rating -->
+                <rect width="72%" class='rating__value' clip-path="url(#stars)"></rect>
+
+                </svg>
+
+                <div class="h-[60%] w-[1px] bg-slate-500 mx-1"></div>
+
+                <div class="text-slate-300 mr-2"><span class="text-lg border-b border-slate-300">5</span> Đánh Giá</div>
+
+                <div class="h-[60%] w-[1px] bg-slate-500 mx-1"></div>
+
+                <%if (product.getStorage() > 0) {%>
+
+                <div class="rounded-xl bg-success py-1 px-2 text-white w-fit my-4 text-sm font-semibold">Còn hàng</div>
+
+                <%} else {%>
+
+                <div class="rounded-xl bg-danger py-1 px-2 text-white w-fit my-4 text-sm font-semibold">Hết hàng</div>
+
+                <%  }%>
+            </div>
+
+
+
+
+
+
+            <div class="price">
+                <p class="text-2xl font-medium text-primary">
+                    <%= Utils.formatNum(product.getPrice())%>₫
+                </p>
+            </div>
+
+
+
+
+
+
+
+
+            <div class="order flex flex-col mt-4">
+                <div class="flex items-center gap-4 mb-4">
+                    <div
+                        class="quantity-display flex justify-start h-fit text-xl font-bold"
+                        >
+                        <button
+                            id="decrement"
+                            class="bg-inherit text-white py-2 px-4 border border-primary rounded-l-md hover:bg-primary"
+                            >
+                            -
+                        </button>
+                        <input
+                            type="number"
+                            id="quantity"
+                            min="1"
+                            class="text-center text-white border border-primary outline-none py-2 w-16 bg-inherit"
+                            max= <%= product.getStorage()%>
+                            />
+                        <button
+                            id="increment"
+                            class="bg-inherit text-white py-2 px-4 border border-primary rounded-r-md hover:bg-primary"
+                            >
+                            +
+                        </button>
+                    </div>
+                    <div class="text-lg font-medium"><%= product.getStorage()%> sản phẩm có sẵn</div>
+                </div>
+
+                <div class="flex items-stretch gap-4">
+                    <div
+                        id="addToCartBtn"
+                        class="py-3 px-5 rounded-lg text-primary text-lg border border-primary hover:opacity-70 cursor-pointer"
+                        >
+                        <i class="fa fa-shopping-cart"></i>
+                        Thêm vào giỏ hàng
+                    </div>
+                    <button
+                        id="buyNowBtn"
+                        class="bg-primary py-3 px-5 rounded-lg text-white text-lg hover:opacity-70 cursor-pointer"
+                        >
+                        Mua ngay
+                    </button>
+                </div>
+            </div>
         </div>
 
-        <div class="order flex flex-col">
-            <div class="flex items-center mb-6 gap-4">
-                <div
-                    class="quantity-display flex justify-start h-fit text-xl font-bold"
-                    >
-                    <button
-                        id="decrement"
-                        class="bg-inherit text-white py-2 px-4 border border-primary rounded-l-2xl hover:bg-primary"
-                        >
-                        -
-                    </button>
-                    <input
-                        type="number"
-                        id="quantity"
-                        min="1"
-                        max= <%= product.getStorage()%>
-                        class="text-center text-white border border-primary outline-none py-2 w-16 bg-inherit"
-                        />
-                        <button
-                        id="increment"
-                        class="bg-inherit text-white py-1 px-4 border border-primary rounded-r-2xl hover:bg-primary"
-                        >
-                        +
-                    </button>
-                </div>
-                <div class="text-lg font-medium"><%= product.getStorage()%> sản phẩm có sẵn</div>
-            </div>
-            <div class="flex items-stretch gap-4">
-                <div
-                    id="addToCartBtn"
-                    class="py-4 px-6 rounded-lg text-primary text-xl border border-primary hover:opacity-70 cursor-pointer"
-                    >
-                    <i class="fa fa-shopping-cart"></i>
-                    Thêm vào giỏ hàng
-                </div>
-                <button
-                    id="buyNowBtn"
-                    class="bg-primary py-4 px-6 rounded-lg text-white text-xl hover:opacity-70 cursor-pointer"
-                    >
-                    Mua ngay
-                </button>
-            </div>
+
+        <div>
+
+
+            <% boolean isFavorite = (boolean) request.getAttribute("isFavorite");
+
+                if (isFavorite) {%>
+
+            <form action="http://localhost:8080/store/favorite" method="POST" id="favouriteBtn" class="p-3 rounded-full bg-dvt-black-1 w-fit ml-auto cursor-pointer relative">
+                <input type="hidden" name="productId" value="<%= product.getId()%>"/>
+                <input type="hidden" name="action" value="remove"/>
+                <label class="cursor-pointer">
+                    <img src="./assets/heart.png" alt="no-favourite"  class="w-6 h-6"/>
+                    <input type="submit" class="hidden" />
+                    <div id="favouriteMessage" class="opacity-0 z-40 absolute bg-dvt-black-1 py-1 px-2 rounded-md text-sm left-1/2 -translate-x-1/2 -bottom-8 whitespace-nowrap">Bỏ Yêu Thích</div>
+                </label>
+            </form>
+
+            <%} else {%>
+
+            <form action="http://localhost:8080/store/favorite" method="POST" id="favouriteBtn" class="p-3 rounded-full bg-dvt-black-1 w-fit ml-auto cursor-pointer relative">
+                <input type="hidden" name="productId" value="<%= product.getId()%>"/>
+                <input type="hidden" name="action" value="add"/>
+                <label class="cursor-pointer">
+                    <img src="./assets/no-heart.png" alt="no-favourite"  class="w-6 h-6"/>
+                    <input type="submit" class="hidden" />
+                    <div id="favouriteMessage" class="opacity-0 z-40 absolute bg-dvt-black-1 py-1 px-2 rounded-md text-sm left-1/2 -translate-x-1/2 -bottom-8 whitespace-nowrap">Yêu Thích</div>
+                </label>
+            </form>
+
+            <%  }%>
+
         </div>
     </div>
 </div>
 
 <div
     id="contentDescription"
-    class="mx-auto max-w-7xl w-11/12 text-white bg-dvt-black-2 rounded-md p-8 mt-8"
+    class="mx-auto max-w-6xl w-11/12 text-white bg-dvt-black-2 rounded-md p-8 mt-8"
     >
     <%= product.getDescription()%>
 </div>
 
 
-<div class="flex items-center w-11/12 max-w-7xl mx-auto py-12 relative">
+<div class="flex items-center w-11/12 max-w-6xl mx-auto py-12 relative">
 
     <div class="grow border-t-[3px] border-white"></div>
 
@@ -115,7 +238,7 @@
 
 
 
-<div class="flex flex-col justify-center gap-3 items-center relative bg-dvt-black-2 rounded-md py-12 mb-8 mx-auto max-w-7xl w-11/12">
+<div class="flex flex-col justify-center gap-3 items-center relative bg-dvt-black-2 rounded-md py-12 mb-8 mx-auto max-w-6xl w-11/12">
     <img src="./assets/robot2.png" alt="robot2" class="h-64"/>
     <div class="font-bold text-3xl">Không tìm thấy sản phẩm nào!</div>
 </div>
@@ -124,7 +247,7 @@
 
 
 <div
-    class="relative justify-center grid grid-cols-12 gap-5 mx-auto max-w-7xl w-11/12 mb-8"
+    class="relative justify-center grid grid-cols-12 gap-5 mx-auto max-w-6xl w-11/12 mb-8"
     >
 
 
@@ -238,7 +361,37 @@
         addToCart(productId, Number(quantityInput.value),<%= product.getStorage()%>);
         window.location.href = "http://localhost:8080/store/cart";
     });
+
+
+    const ratingContainer = document.querySelector('.rating-container');
+    const stars = ratingContainer.querySelectorAll('.star');
+
+    function setRating(rating) {
+        const filledStars = Math.floor(rating);
+        const decimalPart = rating - filledStars;
+
+        stars.forEach((star, index) => {
+            star.classList.remove('filled');
+
+            if (index < filledStars) {
+                star.classList.add('filled');
+            } else if (index === filledStars) {
+                star.style.background = 'linear-gradient(to right, gold ' + (decimalPart * 100) + '%, gray ' + (decimalPart * 100) + '%)';
+            } else {
+                star.classList.add('no-filled');
+            }
+
+        });
+    }
+
+// Example usage
+    setRating(3.7); // Sets the rating to 3.5 stars
+
+
+
+
+
+
 </script>
 
 <jsp:include page="./footer.jsp" />
-</String>

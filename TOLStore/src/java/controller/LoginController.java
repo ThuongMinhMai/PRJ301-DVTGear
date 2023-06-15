@@ -16,7 +16,8 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("login");
+        
+        
         request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
@@ -34,6 +35,8 @@ public class LoginController extends HttpServlet {
 
         CustomerDAO dao = new CustomerDAO();
         Customer customer = dao.getCustomerByName(username);
+        
+        
         if (customer == null) {
             request.setAttribute("errorMessage", "This username is not registered!");
             request.getRequestDispatcher("login.jsp").forward(request, response);
