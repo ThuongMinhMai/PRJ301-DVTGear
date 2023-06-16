@@ -209,7 +209,7 @@ TOL Gear consists of two websites: TOL Store and TOL Admin. The TOL Store is an 
 **3. Database Design** 
 
 
-![](./wireframe/Aspose.Words.1421c8ff-42c0-4d8a-abb8-a6b5f341b335.021.png)
+![](./wireframe/dbTOLGear.jpg)
 
 
 
