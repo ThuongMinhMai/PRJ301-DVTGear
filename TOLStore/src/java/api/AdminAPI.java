@@ -1,22 +1,19 @@
 package api;
 
 import dao.AdminDAO;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.JSONArray;
 import org.json.JSONObject;
+import utils.Utils;
 
 @WebServlet(name = "AdminServlet", urlPatterns = {"/api/admins"})
 public class AdminAPI extends HttpServlet {
 
+    //get admins
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -24,38 +21,27 @@ public class AdminAPI extends HttpServlet {
         AdminDAO dao = new AdminDAO();
         String admins = dao.getAllAdmins();
 
-        response.setStatus(HttpServletResponse.SC_OK);
-
         JSONObject jsonResponse = new JSONObject();
         jsonResponse.put("message", "Get admins succesfully!");
         jsonResponse.put("admins", admins);
 
+        response.setStatus(HttpServletResponse.SC_OK);
         response.getWriter().write(jsonResponse.toString());
     }
 
+    //update admin
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(request.getInputStream(), "UTF-8")); // Specify UTF-8 encoding
-        StringBuilder requestBody = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            requestBody.append(line);
-        }
-        reader.close();
-
-        JSONObject jsonObject = new JSONObject(requestBody.toString());
+        JSONObject requestBody = Utils.getRequestBody(request);
 
         AdminDAO dao = new AdminDAO();
-        dao.updateAdmins(jsonObject);
-
-        response.setStatus(HttpServletResponse.SC_CREATED);
+        dao.updateAdmins(requestBody);
 
         JSONObject jsonResponse = new JSONObject();
         jsonResponse.put("message", "Update Admin's Email succesfully!!!");
 
+        response.setStatus(HttpServletResponse.SC_CREATED);
         response.getWriter().write(jsonResponse.toString());
     }
 

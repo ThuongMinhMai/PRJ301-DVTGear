@@ -6,14 +6,17 @@
 package dao;
 
 import context.DBContext;
-import entity.Brand;
-import entity.Category;
-import entity.Product;
+import model.Brand;
+import model.Category;
+import model.Customer;
+import model.Product;
+import model.Rate;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import model.FetchResult;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -29,10 +32,12 @@ public class ProductDAO {
 
     public Product getProductDetail(int id) {
         Product product = null;
-        String query = "SELECT p.productId, p.name, c.name AS category, b.name AS brand, p.description, p.images, p.price, p.categoryId, p.brandId ,p.storage "
+        String query = "SELECT p.productId, p.name, c.name AS category, b.name AS brand, p.description, p.images, p.price, p.categoryId, p.brandId, p.storage, r.content, r.value, cust.customerId, cust.avatarUrl, cust.username, cust.password "
                 + "FROM Product p "
                 + "INNER JOIN Brand b ON p.brandId = b.brandId "
                 + "INNER JOIN Category c ON p.categoryId = c.categoryId "
+                + "LEFT JOIN Rate r ON p.productId = r.productId "
+                + "LEFT JOIN Customer cust ON r.customerId = cust.customerId "
                 + "WHERE p.productId = ?";
 
         try (Connection conn = new DBContext().getConnection();
@@ -48,9 +53,39 @@ public class ProductDAO {
                 String images = rs.getString("images");
                 int price = rs.getInt("price");
                 int storage = rs.getInt("storage");
-//public Product(int id, String name, Category category, Brand brand, String images, int price, String description, int storage)
+
                 // Create a new Product instance
                 product = new Product(productId, productName, category, brand, images, price, description, storage);
+
+                // Create a list to store rate objects
+                List<Rate> rateList = new ArrayList<>();
+
+                // Retrieve rate and customer details from the result set
+                do {
+                    String content = rs.getString("content");
+                    int value = rs.getInt("value");
+
+                    // Retrieve customer details
+                    int customerId = rs.getInt("customerId");
+                    String avatarUrl = rs.getString("avatarUrl");
+                    String username = rs.getString("username");
+
+//                    do not need password
+//                    String password = rs.getString("password");
+                    // Create a new Customer instance
+                    Customer customer = new Customer(customerId, username, null, avatarUrl);
+
+                    // Create a new Rate instance
+                    Rate rate = new Rate(customer, product, content, value);
+
+                    // Add the rate to the rate list
+                    if (customerId != 0) {
+                        rateList.add(rate);
+                    }
+                } while (rs.next());
+
+                // Set the rate list of the product
+                product.setRateList(rateList);
             }
         } catch (Exception e) {
             System.err.println(e);
@@ -58,15 +93,17 @@ public class ProductDAO {
         return product;
     }
 
+    //get products that same category or brand. Maximum 8 products.
     public List<Product> getSameProducts(int productId) {
         List<Product> sameProducts = new ArrayList<>();
 
-        String query = "SELECT p.productId, p.name, c.name AS category, b.name AS brand, p.description, "
+        String query = "SELECT TOP 8 p.productId, p.name, c.name AS category, b.name AS brand, p.description, "
                 + "p.images, p.price, p.categoryId, p.brandId, p.storage "
                 + "FROM Product p "
                 + "INNER JOIN Brand b ON p.brandId = b.brandId "
                 + "INNER JOIN Category c ON p.categoryId = c.categoryId "
-                + "WHERE p.categoryId = (SELECT categoryId FROM Product WHERE productId = ?) "
+                + "WHERE (p.categoryId = (SELECT categoryId FROM Product WHERE productId = ?) "
+                + "OR p.brandId = (SELECT brandId FROM Product WHERE productId = ?)) "
                 + "AND p.productId != ?";
 
         try (Connection conn = new DBContext().getConnection();
@@ -74,6 +111,7 @@ public class ProductDAO {
 
             ps.setInt(1, productId);
             ps.setInt(2, productId);
+            ps.setInt(3, productId);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -95,56 +133,74 @@ public class ProductDAO {
         return sameProducts;
     }
 
-    public List<Product> getAllProducts() {
+    public FetchResult<Product> getAllProducts(int pageNumber, int pageSize) {
         List<Product> productList = new ArrayList<>();
-        String query = "select p.productId,p.name,c.name as category,b.name as brand,p.description,p.images,p.price,p.categoryId,p.brandId, p.storage\n"
-                + "from Product p\n"
-                + "inner join Brand b on p.brandId=b.brandId\n"
-                + "inner join Category c on p.categoryId = c.categoryId";
+        int totalProducts = 0;
+
+        String countQuery = "SELECT COUNT(*) AS total FROM Product";
 
         try (Connection conn = new DBContext().getConnection();
-                PreparedStatement ps = conn.prepareStatement(query);
-                ResultSet rs = ps.executeQuery()) {
+                PreparedStatement countPs = conn.prepareStatement(countQuery);
+                ResultSet countRs = countPs.executeQuery()) {
 
-            while (rs.next()) {
-//public Product(int id, String name, Category category, Brand brand, String images, int price, String description, int storage)
-                productList.add(new Product(
-                        rs.getInt("productId"),
-                        rs.getString("name"),
-                        new Category(rs.getInt("categoryId"), rs.getString("category")),
-                        new Brand(rs.getInt("brandId"), rs.getString("brand")),
-                        rs.getString("images"),
-                        rs.getInt("price"),
-                        rs.getString("description"),
-                        rs.getInt("storage")
-                ));
+            if (countRs.next()) {
+                totalProducts = countRs.getInt("total");
+            }
+
+            String query = "SELECT p.productId, p.name, c.name AS category, b.name AS brand, p.description, p.images, p.price, p.categoryId, p.brandId, p.storage\n"
+                    + "FROM Product p\n"
+                    + "INNER JOIN Brand b ON p.brandId = b.brandId\n"
+                    + "INNER JOIN Category c ON p.categoryId = c.categoryId\n"
+                    + "ORDER BY p.productId\n"
+                    + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                int offset = (pageNumber - 1) * pageSize;
+                ps.setInt(1, offset);
+                ps.setInt(2, pageSize);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        productList.add(new Product(
+                                rs.getInt("productId"),
+                                rs.getString("name"),
+                                new Category(rs.getInt("categoryId"), rs.getString("category")),
+                                new Brand(rs.getInt("brandId"), rs.getString("brand")),
+                                rs.getString("images"),
+                                rs.getInt("price"),
+                                rs.getString("description"),
+                                rs.getInt("storage")
+                        ));
+                    }
+                }
             }
         } catch (Exception e) {
             System.out.println(e);
         }
 
-        return productList;
+        return new FetchResult<>(productList, totalProducts);
     }
 
-    public List<Product> getSearchedProducts(String searchTerm, String categoryId, String brandId, String sortBy) {
+    public FetchResult<Product> getSearchedProducts(String searchTerm, String categoryId, String brandId, String sortBy, int page, int pageSize) {
         List<Product> searchedProducts = new ArrayList<>();
+        int totalCount = 0;
 
-        StringBuilder queryBuilder = new StringBuilder("select p.productId,p.name,c.name as category,b.name as brand,p.description,p.images,p.price,p.categoryId,p.brandId,p.storage\n")
-                .append("from Product p\n")
-                .append("inner join Brand b on p.brandId=b.brandId\n")
-                .append("inner join Category c on p.categoryId = c.categoryId\n")
-                .append("where 1=1");
+        StringBuilder queryBuilder = new StringBuilder("SELECT p.productId,p.name,c.name AS category,b.name AS brand,p.description,p.images,p.price,p.categoryId,p.brandId,p.storage\n")
+                .append("FROM Product p\n")
+                .append("INNER JOIN Brand b ON p.brandId=b.brandId\n")
+                .append("INNER JOIN Category c ON p.categoryId = c.categoryId\n")
+                .append("WHERE 1=1");
 
         if (searchTerm != null && !searchTerm.isEmpty()) {
-            queryBuilder.append(" and lower(p.name) like ?");
+            queryBuilder.append(" AND LOWER(p.name) LIKE ?");
         }
 
         if (categoryId != null && !categoryId.isEmpty()) {
-            queryBuilder.append(" and p.categoryId = ?");
+            queryBuilder.append(" AND p.categoryId = ?");
         }
 
         if (brandId != null && !brandId.isEmpty()) {
-            queryBuilder.append(" and p.brandId = ?");
+            queryBuilder.append(" AND p.brandId = ?");
         }
 
         if (sortBy != null && !sortBy.isEmpty()) {
@@ -186,25 +242,36 @@ public class ProductDAO {
             }
 
             ResultSet rs = ps.executeQuery();
-//public Product(int id, String name, Category category, Brand brand, String images, int price, String description, int storage)
+
+            // Count the total number of rows in the result set
+            // Apply pagination
+            int startIndex = (page - 1) * pageSize;
+            int endIndex = startIndex + pageSize - 1;
+            int currentRow = 0;
+
             while (rs.next()) {
-                searchedProducts.add(new Product(
-                        rs.getInt("productId"),
-                        rs.getString("name"),
-                        new Category(rs.getInt("categoryId"), rs.getString("category")),
-                        new Brand(rs.getInt("brandId"), rs.getString("brand")),
-                        rs.getString("images"),
-                        rs.getInt("price"),
-                        rs.getString("description"),
-                        rs.getInt("storage")
-                ));
+
+                if (currentRow >= startIndex && currentRow <= endIndex) {
+                    searchedProducts.add(new Product(
+                            rs.getInt("productId"),
+                            rs.getString("name"),
+                            new Category(rs.getInt("categoryId"), rs.getString("category")),
+                            new Brand(rs.getInt("brandId"), rs.getString("brand")),
+                            rs.getString("images"),
+                            rs.getInt("price"),
+                            rs.getString("description"),
+                            rs.getInt("storage")
+                    ));
+                }
+                currentRow++;
+                totalCount++;
             }
 
         } catch (Exception e) {
             System.out.println(e);
         }
 
-        return searchedProducts;
+        return new FetchResult<>(searchedProducts, totalCount);
     }
 
     public List<Product> getFavoriteProducts(int customerId) {
@@ -302,6 +369,8 @@ public class ProductDAO {
             ps.setInt(5, jsonObject.getInt("price"));
             ps.setString(6, jsonObject.getJSONArray("images").toString());
             ps.setInt(7, jsonObject.getInt("storage"));
+
+            System.out.println(ps.toString());
 
             int rowsInserted = ps.executeUpdate();
             if (rowsInserted > 0) {

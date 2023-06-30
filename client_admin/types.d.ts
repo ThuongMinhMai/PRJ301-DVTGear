@@ -23,11 +23,12 @@ type Order = {
   id?: number;
   customer: string;
   date: string;
-  totalMoney: number;
   status: Status;
   receiver: string;
   address: string;
   phone: string;
+
+  totalMoney: number;
   orderProducts: OrderProduct[];
 };
 
@@ -45,3 +46,9 @@ type ModalType = {
   message: string;
   handleModal: () => void;
 };
+
+interface IAlert {
+  status: boolean;
+  type: AlertType;
+  message: string;
+}

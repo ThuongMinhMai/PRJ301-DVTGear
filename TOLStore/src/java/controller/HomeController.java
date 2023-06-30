@@ -8,10 +8,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-  
+import model.FetchResult;
+import model.Product;
+
 @WebServlet(name = "HomeServlet", urlPatterns = {""})
 public class HomeController extends HttpServlet {
 
+    //get home page with 20 newest products
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -19,16 +22,11 @@ public class HomeController extends HttpServlet {
         ProductDAO productDAO = new ProductDAO();
         BannerDAO bannerDAO = new BannerDAO();
 
-        request.setAttribute("productList", productDAO.getAllProducts());
-        request.setAttribute("bannerUrl", bannerDAO.getBanner());
-
+        FetchResult<Product> fetchData = productDAO.getSearchedProducts(null, null, null, null, 1, 20);
+        
+        request.setAttribute("productList", fetchData.getItems());
+        request.setAttribute("bannerUrls", bannerDAO.getBanner());
         request.getRequestDispatcher("home.jsp").forward(request, response);
-
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
 
     }
 

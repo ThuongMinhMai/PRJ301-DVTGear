@@ -1,68 +1,47 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package api;
 
 import dao.BannerDAO;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
+import utils.Utils;
 
-/**
- *
- * @author Kingc
- */
 @WebServlet(name = "BannerServlet", urlPatterns = {"/api/banner"})
 public class BannerAPI extends HttpServlet {
 
+    //get banner
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         BannerDAO dao = new BannerDAO();
         String bannerUrl = dao.getBanner();
-
-        response.setStatus(HttpServletResponse.SC_OK);
 
         JSONObject jsonResponse = new JSONObject();
         jsonResponse.put("message", "Get banner image succesfully!");
         jsonResponse.put("bannerUrl", bannerUrl);
 
+        response.setStatus(HttpServletResponse.SC_OK);
         response.getWriter().write(jsonResponse.toString());
     }
 
+    //update banner
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(request.getInputStream(), "UTF-8")); // Specify UTF-8 encoding
-        StringBuilder requestBody = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            requestBody.append(line);
-        }
-        reader.close();
-
-        JSONObject jsonObject = new JSONObject(requestBody.toString());
-
+        JSONObject requestBody = Utils.getRequestBody(request);
         BannerDAO dao = new BannerDAO();
-        dao.updateBanner(jsonObject);
-
-        response.setStatus(HttpServletResponse.SC_CREATED);
+        dao.updateBanner(requestBody);
 
         JSONObject jsonResponse = new JSONObject();
         jsonResponse.put("message", "Update Banner succesfully!!!");
 
+        response.setStatus(HttpServletResponse.SC_CREATED);
         response.getWriter().write(jsonResponse.toString());
     }
 

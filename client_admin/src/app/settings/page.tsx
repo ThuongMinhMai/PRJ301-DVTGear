@@ -1,6 +1,7 @@
 "use client";
 
 import { Scroll } from "@/components";
+import { useGlobalContext } from "@/contexts/GlobalContext";
 import {
   AddCircleIcon,
   DeleteIcon,
@@ -9,6 +10,7 @@ import {
   MoreHorizIcon,
 } from "@/contexts/icons";
 import { storage } from "@/services/firebase";
+import { AlertType } from "@/utils/types";
 import axios from "axios";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import React, { useCallback, useEffect, useState } from "react";
@@ -21,6 +23,7 @@ export default function SettingsPage({}: Props) {
   const handleSubmit = (form: { urlPath: string }) => {};
   const [inputAdmin, setInputAdmin] = useState("");
   const [adminList, setAdminList] = useState<any>([]);
+  const { setShowAlert } = useGlobalContext();
 
   const fetchAdmins = useCallback(async () => {
     const { data } = await axios.get("http://localhost:8080/store/api/admins");
@@ -37,7 +40,11 @@ export default function SettingsPage({}: Props) {
     }
 
     if (adminList.includes(inputAdmin.toLowerCase())) {
-      alert("Admin already exists!");
+      setShowAlert({
+        status: true,
+        type: AlertType.failure,
+        message: "Admin already exists!",
+      } as IAlert);
       return;
     }
     setInputAdmin("");
@@ -169,7 +176,7 @@ type SettingBannerFormProps = {
 
 const SettingBannerForm = ({ handleSubmit }: SettingBannerFormProps) => {
   const [isUploading, setIsUploading] = useState(false);
-  const [bannerUrl, setBannerUrl] = useState("");
+  const [bannerUrls, setBannerUrls] = useState<string[]>([]);
   const [edit, setEdit] = useState(false);
 
   useEffect(() => {
@@ -177,13 +184,15 @@ const SettingBannerForm = ({ handleSubmit }: SettingBannerFormProps) => {
       const { data } = await axios.get(
         "http://localhost:8080/store/api/banner"
       );
-      setBannerUrl(data.bannerUrl);
+      setBannerUrls(data.bannerUrl ? JSON.parse(data.bannerUrl) : []);
     };
     fetchBanner();
   }, []);
 
   const handleUpdateBanner = async () => {
-    axios.put("http://localhost:8080/store/api/banner", { bannerUrl });
+    axios.put("http://localhost:8080/store/api/banner", {
+      bannerUrl: JSON.stringify(bannerUrls),
+    });
   };
 
   return (
@@ -202,27 +211,28 @@ const SettingBannerForm = ({ handleSubmit }: SettingBannerFormProps) => {
           </button>
         )}
       </div>
-      {edit ? (
+      {!edit ? (
+        bannerUrls.length !== 0 ? (
+          <div className="flex flex-wrap items-center">
+            {bannerUrls.map((url) => {
+              return (
+                <div key={url} className="mr-2 rounded-lg overflow-hidden mb-2">
+                  <img className="h-48 object-cover" src={url} alt={url} />
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="text-medium text-xl">No Image Available!</div>
+        )
+      ) : (
         <>
           <ImageField
-            bannerUrl={bannerUrl}
-            setBannerUrl={setBannerUrl}
+            bannerUrls={bannerUrls}
+            setBannerUrls={setBannerUrls}
             isUploading={isUploading}
             setIsUploading={setIsUploading}
           />
-          <div className="text-xs md:text-sm font-semibold my-2">Or</div>
-          <div className="border-e-black-1 mb-3 md:mb-5 bg-e-white-1 rounded-lg border overflow-hidden">
-            <input
-              type="text"
-              value={bannerUrl}
-              onChange={(e) => {
-                setBannerUrl(e.target.value);
-              }}
-              placeholder="Enter url link..."
-              className="py-3 px-4 w-full outline-none border-none bg-inherit"
-              disabled={isUploading}
-            />
-          </div>
 
           <button
             type="submit"
@@ -235,20 +245,6 @@ const SettingBannerForm = ({ handleSubmit }: SettingBannerFormProps) => {
             Save
           </button>
         </>
-      ) : (
-        <div className="flex flex-col">
-          {bannerUrl ? (
-            <div className="overflow-hidden">
-              <img
-                className="max-w-full object-cover rounded-lg"
-                src={bannerUrl}
-                alt={bannerUrl}
-              />
-            </div>
-          ) : (
-            <div>No banner image available!</div>
-          )}
-        </div>
       )}
     </div>
   );
@@ -257,14 +253,14 @@ const SettingBannerForm = ({ handleSubmit }: SettingBannerFormProps) => {
 type ImageFieldProps = {
   isUploading: boolean;
   setIsUploading: (val: boolean) => void;
-  bannerUrl: string;
-  setBannerUrl: (val: string) => void;
+  bannerUrls: string[];
+  setBannerUrls: (val: string[]) => void;
 };
 function ImageField({
   isUploading,
   setIsUploading,
-  bannerUrl,
-  setBannerUrl,
+  bannerUrls,
+  setBannerUrls,
 }: ImageFieldProps) {
   const uploadImages = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsUploading(true);
@@ -279,16 +275,20 @@ function ImageField({
 
     const url = await getDownloadURL(imageRef);
 
-    setBannerUrl(url);
+    setBannerUrls([...bannerUrls, url]);
 
     setIsUploading(false);
   };
   return (
     <>
       <div className="flex flex-wrap items-center">
-        <div key={bannerUrl} className="mr-2 rounded-lg overflow-hidden mb-2">
-          <img className="h-24 object-cover" src={bannerUrl} alt={bannerUrl} />
-        </div>
+        {bannerUrls.map((url) => {
+          return (
+            <div key={url} className="mr-2 rounded-lg overflow-hidden mb-2">
+              <img className="h-24 object-cover" src={url} alt={url} />
+            </div>
+          );
+        })}
 
         {isUploading && (
           <div className="w-24 h-24 flex justify-center items-center">

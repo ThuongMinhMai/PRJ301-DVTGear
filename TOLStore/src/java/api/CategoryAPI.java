@@ -1,7 +1,7 @@
 package api;
 
 import dao.CategoryDAO;
-import entity.Category;
+import model.Category;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -15,21 +15,18 @@ import org.json.JSONObject;
 @WebServlet(urlPatterns = {"/api/categories"})
 public class CategoryAPI extends HttpServlet {
 
+    //get categories
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-     
-
         CategoryDAO dao = new CategoryDAO();
         List<Category> categoryList = dao.getAllCategories();
-
-        response.setStatus(HttpServletResponse.SC_OK);
 
         JSONObject jsonResponse = new JSONObject();
         jsonResponse.put("message", "Get categories succesfully!");
         jsonResponse.put("categories", new JSONArray(categoryList));
 
+        response.setStatus(HttpServletResponse.SC_OK);
         response.getWriter().write(jsonResponse.toString());
     }
 

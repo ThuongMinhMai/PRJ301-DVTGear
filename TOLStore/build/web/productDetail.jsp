@@ -1,5 +1,9 @@
+<%@page import="org.json.JSONObject"%>
+<%@page import="org.json.JSONArray"%>
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="model.Rate"%>
 <%@page import="java.util.List"%> <%@page import="utils.Utils"%>
-<%@page import="entity.Product"%> <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="model.Product"%> <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <jsp:include page="./header.jsp" />
 
@@ -24,12 +28,24 @@
         fill: #ea1c00;
         height: 100%;
     }
+
+
+    .tabRate.selected {
+        border: 1px solid #ea1c00;
+        color: #ea1c00
+    }
+
+    table{
+        color: black;
+        background:white;
+    }
+
 </style>
 
 <% Product product = (Product) request.getAttribute("product");%> <% List<String> imageUrlList = Utils.parseJSONStringArray(product.getImages());%>
 
 <div
-    class="grid grid-cols-12 gap-6 mt-32 max-w-6xl mx-auto rounded-md text-white bg-dvt-black-2 p-6"
+    class="grid grid-cols-12 gap-6 mt-32 max-w-6xl w-11/12 mx-auto rounded-md text-white bg-dvt-black-2 p-6"
     >
     <div class="image flex flex-col gap-1 col-span-12 lg:col-span-5">
         <div class="main-image w-full aspect-square">
@@ -45,7 +61,7 @@
                 class="hover:border-primary hover:border-2 col-span-1 aspect-square rounded-md cursor-pointer"
                 >
                 <img
-                    class="w-full object-fill h-full rounded-md"
+                    class="w-full object-cover h-full rounded-md"
                     src="<%=imageUrl%>"
                     />
             </div>
@@ -53,12 +69,14 @@
         </div>
     </div>
 
-    <div class="flex gap-4 col-span-12 lg:col-span-7 ">
+    <div class="flex col-span-12 lg:col-span-7 gap-4">
 
         <div class="flex flex-col flex-1">
-
-            <div class="mb-3 text-slate-300"><span class="text-primary">Danh Mục:</span> <%= product.getCategory().getName()%></div>
-
+            <div class="flex items-center mb-3">
+                <div class="text-slate-300"><span class="text-primary">Danh Mục:</span> <a class="hover:underline" href="http://localhost:8080/store/search?category=<%= product.getCategory().getId()%>"><%= product.getCategory().getName()%></a></div>
+                <div class="h-[80%] w-[1px] bg-slate-500 mx-2"></div>
+                <div class="text-slate-300"><span class="text-primary">Thương Hiệu:</span> <a class="hover:underline" href="http://localhost:8080/store/search?brand=<%= product.getBrand().getId()%>"><%= product.getBrand().getName()%></a></div>
+            </div>
             <div class="title">
 
                 <h2 class="capitalize font-medium text-3xl line-clamp-2">
@@ -67,70 +85,103 @@
             </div>
 
 
+            <%
+                float sumRate = 0;
+                List<Rate> rateList = product.getRateList();
+            %>
 
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 mt-3">
+                <%
+                    String roundedRate = "0";
+                    int sumRate1 = 0;
+                    int sumRate2 = 0;
+                    int sumRate3 = 0;
+                    int sumRate4 = 0;
+                    int sumRate5 = 0;
+                %>
+                <% if (rateList.size() == 0) { %>
 
-                <div class="text-primary text-lg border-b border-primary">3.7</div>
+                <a href="#rateSection" class="scroll text-slate-300"><span class="text-lg">Chưa Có Đánh Giá</a>
 
-                <svg viewBox="0 0 1000 200" class='rating my-4 h-4'>
-                <defs>
+                <%} else {%>
 
-                <polygon id="star" points="100,0 131,66 200,76 150,128 162,200 100,166 38,200 50,128 0,76 69,66 "/>
+                <%  for (Rate rate : rateList) {
+                        sumRate += rate.getValue();
+                        switch (rate.getValue()) {
+                            case 1:
+                                sumRate1++;
+                                break;
+                            case 2:
+                                sumRate2++;
+                                break;
+                            case 3:
+                                sumRate3++;
+                                break;
+                            case 4:
+                                sumRate4++;
+                                break;
+                            case 5:
+                                sumRate5++;
+                                break;
+                        }
+                    }
+                    float averageRate = sumRate / rateList.size();
+                    DecimalFormat decimalFormat = new DecimalFormat("#.0");
+                    roundedRate = decimalFormat.format(averageRate);
+                %>
 
-                <clipPath id="stars">
-                    <use xlink:href="#star"/>
-                    <use xlink:href="#star" x="20%"/>
-                    <use xlink:href="#star" x="40%"/>
-                    <use xlink:href="#star" x="60%"/>
-                    <use xlink:href="#star" x="80%"/>
-                </clipPath>
+                <a href="#rateSection" class="scroll text-primary text-lg border-b border-primary"><%=roundedRate%></a>
+                <a href="#rateSection" class="scroll">
+                    <svg viewBox="0 0 1000 200" class='rating mb-0 h-4'>
+                    <defs>
 
-                </defs>
+                    <polygon id="star" points="100,0 131,66 200,76 150,128 162,200 100,166 38,200 50,128 0,76 69,66 "/>
 
-                <rect class='rating__background' clip-path="url(#stars)"></rect>
+                    <clipPath id="stars">
+                        <use xlink:href="#star"/>
+                        <use xlink:href="#star" x="20%"/>
+                        <use xlink:href="#star" x="40%"/>
+                        <use xlink:href="#star" x="60%"/>
+                        <use xlink:href="#star" x="80%"/>
+                    </clipPath>
 
-                <!-- Change the width of this rect to change the rating -->
-                <rect width="72%" class='rating__value' clip-path="url(#stars)"></rect>
+                    </defs>
 
-                </svg>
+                    <rect class='rating__background' clip-path="url(#stars)"></rect>
+
+                    <!-- Change the width of this rect to change the rating -->
+                    <rect width="<%= Float.parseFloat(roundedRate) * 20%>%" class='rating__value' clip-path="url(#stars)"></rect>
+
+                    </svg>
+                </a>
 
                 <div class="h-[60%] w-[1px] bg-slate-500 mx-1"></div>
+                <a href="#rateSection" class="text-slate-300 mr-2 scroll"><span class="text-lg border-b border-slate-300"><%= rateList.size()%></span> Đánh Giá</a>
 
-                <div class="text-slate-300 mr-2"><span class="text-lg border-b border-slate-300">5</span> Đánh Giá</div>
+                <%}%>
 
                 <div class="h-[60%] w-[1px] bg-slate-500 mx-1"></div>
 
                 <%if (product.getStorage() > 0) {%>
 
-                <div class="rounded-xl bg-success py-1 px-2 text-white w-fit my-4 text-sm font-semibold">Còn hàng</div>
+                <div class="rounded-xl bg-success py-1 px-2 text-white w-fit text-sm font-semibold">Còn hàng</div>
 
                 <%} else {%>
 
-                <div class="rounded-xl bg-danger py-1 px-2 text-white w-fit my-4 text-sm font-semibold">Hết hàng</div>
+                <div class="rounded-xl bg-danger py-1 px-2 text-white w-fit text-sm font-semibold">Hết hàng</div>
 
                 <%  }%>
             </div>
 
-
-
-
-
-
-            <div class="price">
-                <p class="text-2xl font-medium text-primary">
+            <div class="price my-5">
+                <p class="text-3xl font-medium text-primary">
                     <%= Utils.formatNum(product.getPrice())%>₫
                 </p>
             </div>
 
 
-
-
-
-
-
-
-            <div class="order flex flex-col mt-4">
-                <div class="flex items-center gap-4 mb-4">
+            <div class="order flex flex-col ">
+                <div class="flex items-center gap-4 mb-5">
                     <div
                         class="quantity-display flex justify-start h-fit text-xl font-bold"
                         >
@@ -175,15 +226,12 @@
             </div>
         </div>
 
-
         <div>
-
-
             <% boolean isFavorite = (boolean) request.getAttribute("isFavorite");
 
                 if (isFavorite) {%>
 
-            <form action="http://localhost:8080/store/favorite" method="POST" id="favouriteBtn" class="p-3 rounded-full bg-dvt-black-1 w-fit ml-auto cursor-pointer relative">
+            <form action="http://localhost:8080/store/favorite" method="POST" id="favouriteBtn" class="p-3 rounded-full bg-dvt-black-1 w-fit ml-auto relative">
                 <input type="hidden" name="productId" value="<%= product.getId()%>"/>
                 <input type="hidden" name="action" value="remove"/>
                 <label class="cursor-pointer">
@@ -195,7 +243,7 @@
 
             <%} else {%>
 
-            <form action="http://localhost:8080/store/favorite" method="POST" id="favouriteBtn" class="p-3 rounded-full bg-dvt-black-1 w-fit ml-auto cursor-pointer relative">
+            <form action="http://localhost:8080/store/favorite" method="POST" id="favouriteBtn" class="p-3 rounded-full bg-dvt-black-1 w-fit ml-auto relative">
                 <input type="hidden" name="productId" value="<%= product.getId()%>"/>
                 <input type="hidden" name="action" value="add"/>
                 <label class="cursor-pointer">
@@ -206,17 +254,98 @@
             </form>
 
             <%  }%>
-
         </div>
+
     </div>
 </div>
 
-<div
-    id="contentDescription"
-    class="mx-auto max-w-6xl w-11/12 text-white bg-dvt-black-2 rounded-md p-8 mt-8"
-    >
-    <%= product.getDescription()%>
+<div class="mx-auto max-w-6xl w-11/12 bg-dvt-black-2 relative">
+
+    <div
+        id="contentDescription"
+        class="text-white rounded-md p-6 mt-8"
+        >
+        <div class="uppercase text-xl font-medium">Mô tả sản phẩm</div>
+        <%= product.getDescription()%>
+    </div>
+
+    <div id="blurDescription" class="absolute z-40 bottom-0 w-full h-32 bg-dvt-black-2 blur-3xl"></div> 
+
+    <div id=viewMoreButton onclick="viewMoreDescription()" class="flex justify-center text-primary items-center gap-4 relative z-50 text-red font-medium text-xl py-8 cursor-pointer">
+        Đọc tiếp bài viết
+        <ion-icon name="chevron-down-outline"></ion-icon>
+    </div>
+    <div id=viewLessButton onclick="viewLessDescription()" class="flex justify-center text-primary items-center gap-4 relative z-50 text-red font-medium text-xl py-8 cursor-pointer">
+        Thu gọn bài viết
+        <ion-icon name="chevron-up-outline"></ion-icon>
+    </div>
 </div>
+
+<!--rating-->
+
+<div id="rateSection" class=" text-white flex flex-col bg-dvt-black-2 mt-4 p-6 rounded-md mx-auto max-w-6xl w-11/12">
+
+
+    <div class=" text-xl font-medium uppercase mb-2">
+        Đánh giá sản phẩm
+    </div>
+
+    <div class="flex p-5 bg-primary/5 mt-1 my-4">
+        <div class=" flex flex-col items-center">
+            <div class="text-3xl text-primary mb-2">
+                <%= roundedRate%> <span class="text-xl">trên 5</span>
+            </div>
+            <svg viewBox="0 0 1000 200" class='rating h-7 mb-0'>
+            <defs>
+
+            <polygon id="star" points="100,0 131,66 200,76 150,128 162,200 100,166 38,200 50,128 0,76 69,66 "/>
+
+            <clipPath id="stars">
+                <use xlink:href="#star"/>
+                <use xlink:href="#star" x="20%"/>
+                <use xlink:href="#star" x="40%"/>
+                <use xlink:href="#star" x="60%"/>
+                <use xlink:href="#star" x="80%"/>
+            </clipPath>
+
+            </defs>
+
+            <rect class='rating__background' clip-path="url(#stars)"></rect>
+
+            <!-- Change the width of this rect to change the rating -->
+            <rect width="<%= Float.parseFloat(roundedRate) * 20%>%" class='rating__value' clip-path="url(#stars)"></rect>
+
+            </svg>
+        </div>
+        <div class="flex flex-wrap ml-6 gap-2 h-fit">
+            <button onclick="renderRateList(0)" id="tabRate0" class="tabRate px-3 h-fit py-2 min-w-[6.25rem] border border-slate-600 rounded-sm hover:border-red-500">
+                Tất cả (<%= rateList.size()%>)
+            </button>
+            <button onclick="renderRateList(5)" id="tabRate5" class="tabRate px-3 h-fit py-2 min-w-[6.25rem] border border-slate-600 rounded-sm hover:border-red-500">
+                5 Sao (<%= sumRate5%>)
+            </button>
+            <button onclick="renderRateList(4)" id="tabRate4" class="tabRate px-3 h-fit py-2 min-w-[6.25rem] border border-slate-600 rounded-sm hover:border-red-500">
+                4 Sao (<%= sumRate4%>)
+            </button>
+            <button onclick="renderRateList(3)" id="tabRate3" class="tabRate px-3 h-fit py-2 min-w-[6.25rem] border border-slate-600 rounded-sm hover:border-red-500">
+                3 Sao (<%= sumRate3%>)
+            </button>
+            <button onclick="renderRateList(2)" id="tabRate2" class="tabRate px-3 h-fit py-2 min-w-[6.25rem] border border-slate-600 rounded-sm hover:border-red-500">
+                2 Sao (<%= sumRate2%>)
+            </button>
+            <button onclick="renderRateList(1)" id="tabRate1" class="tabRate px-3 h-fit py-2 min-w-[6.25rem] border border-slate-600 rounded-sm hover:border-red-500">
+                1 Sao (<%= sumRate1%>)
+            </button>
+
+        </div>
+    </div>
+
+
+    <div id="rateListContainer" class="flex flex-col px-2 mt-2 gap-2 max-h-[800px] overflow-y-auto"></div>
+
+
+</div>   
+<!--end rating-->
 
 
 <div class="flex items-center w-11/12 max-w-6xl mx-auto py-12 relative">
@@ -224,7 +353,7 @@
     <div class="grow border-t-[3px] border-white"></div>
 
     <p class="px-5 py-0 text-2xl font-bold uppercase text-white">
-        Các sản phẩm cùng loại
+        Các sản phẩm liên quan
     </p>
 
     <div class="grow border-t-[3px] border-white"></div>
@@ -293,14 +422,163 @@
 
 </div>
 
+<%
+    JSONArray jsRateList = new JSONArray();
+    for (Rate rate : rateList) {
+        JSONObject rateObject = new JSONObject();
+
+        // Set properties of the Rate object
+        rateObject.put("content", rate.getContent());
+        rateObject.put("value", rate.getValue());
+        rateObject.put("product", rate.getProduct());
+
+        // Handle the Customer object
+        if (rate.getCustomer() != null) {
+            JSONObject customerObject = new JSONObject();
+            customerObject.put("customerId", rate.getCustomer().getCustomerId());
+            customerObject.put("username", rate.getCustomer().getUsername());
+            customerObject.put("password", "");
+            customerObject.put("avatarUrl", rate.getCustomer().getAvatarUrl());
+            rateObject.put("customer", customerObject);
+        }
+
+        jsRateList.put(rateObject);
+    }
+
+
+%>
+
+<script>
+    // Add a click event listener to all elements with the 'scroll' class
+    const scrollLinks = document.querySelectorAll('.scroll');
+    scrollLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent default link behavior
+
+            const targetId = link.getAttribute('href'); // Get the target section's id
+            const targetSection = document.querySelector(targetId); // Get the target section element
+
+            if (targetSection) {
+                // Scroll smoothly to the target section using the 'scrollIntoView' method
+                targetSection.scrollIntoView({behavior: 'smooth'});
+            }
+        });
+    });
+</script>
+
+<script>
+    const contentDescription = document.getElementById("contentDescription");
+    const viewLessButton = document.getElementById("viewLessButton");
+    const viewMoreButton = document.getElementById("viewMoreButton");
+    const blurDescription = document.getElementById("blurDescription");
+
+
+    const viewLessDescription = () => {
+        blurDescription.classList.remove("hidden");
+        viewMoreButton.classList.remove("hidden");
+        viewLessButton.classList.add("hidden");
+        contentDescription.classList.add("max-h-[500px]");
+        contentDescription.classList.add("overflow-hidden");
+    };
+    viewLessDescription();
+    const viewMoreDescription = () => {
+        blurDescription.classList.add("hidden");
+        viewMoreButton.classList.add("hidden");
+        viewLessButton.classList.remove("hidden");
+        contentDescription.classList.remove("max-h-[500px]");
+        contentDescription.classList.remove("overflow-hidden");
+    };
+</script>
+
+<script>
+    const jsRateList = <%=jsRateList.toString()%>
+    const rateListContainer = document.getElementById("rateListContainer");
+    const renderRateList = (filterRate) => {
+
+        const filteredRateList = filterRate === 0 ? [...jsRateList] : jsRateList.filter(rate => rate.value === filterRate);
+
+        if (filteredRateList.length === 0)
+        {
+            rateListContainer.innerHTML = `
+                        <div class="w-full flex flex-col items-center p-8">
+                            <img src="./assets/rateIcon.png" class="h-36" />
+                            <div>Chưa có đánh giá</div>
+                        </div>`;
+            return;
+        }
+
+        let html = ``;
+
+        for (let i = 0; i < filteredRateList.length; ++i)
+        {
+            const rate = filteredRateList[i];
+            html += `
+        <div class="flex flex-col pb-2 border-b border-slate-100/20">
+            <div class="flex">
+                <img class="rounded-full w-10 h-10" src="\${rate.customer.avatarUrl}" alt="">
+
+                <div class="ml-4 flex flex-col">
+                    <div>
+                        <div class="text-lg line-clamp-1 mb-1">
+                            \${rate.customer.username}
+                        </div>
+                        <svg viewBox="0 0 1000 200" class='rating h-4 mb-0'>
+                        <defs>
+
+                        <polygon id="star" points="100,0 131,66 200,76 150,128 162,200 100,166 38,200 50,128 0,76 69,66 "/>
+
+                        <clipPath id="stars">
+                            <use xlink:href="#star"/>
+                            <use xlink:href="#star" x="20%"/>
+                            <use xlink:href="#star" x="40%"/>
+                            <use xlink:href="#star" x="60%"/>
+                            <use xlink:href="#star" x="80%"/>
+                        </clipPath>
+
+                        </defs>
+
+                        <rect class='rating__background' clip-path="url(#stars)"></rect>
+
+                        <!-- Change the width of this rect to change the rating -->
+                        <rect width="\${rate.value*20}%" class='rating__value' clip-path="url(#stars)"></rect>
+
+                        </svg>
+                    </div>
+
+                    <div class="text-sm mt-2">
+                        \${rate.content}
+                    </div>
+                </div>
+            </div>        
+        </div>`;
+        }
+        rateListContainer.innerHTML = html;
+    };
+
+    renderRateList(0);
+
+</script>
+
+<script>
+    const defaultTab = document.getElementById('tabRate0');
+    defaultTab.classList.add('selected');
+
+    const tabs = document.querySelectorAll('.tabRate');
+
+    function handleTabClick() {
+        tabs.forEach(tab => tab.classList.remove('selected'));
+        this.classList.add('selected');
+    }
+
+    tabs.forEach(tab => tab.addEventListener('click', handleTabClick));
+</script>
+
 <script>
     const allHowerImage = document.querySelectorAll(".hower-image div img");
     const imgMain = document.querySelector(".main-image");
-
     window.addEventListener("DOMContentLoaded", () => {
         allHowerImage[0].parentElement.classList.add("active");
     });
-
     allHowerImage.forEach((image) => {
         image.addEventListener("mouseover", () => {
             imgMain.querySelector("img").src = image.src;
@@ -308,7 +586,6 @@
             image.parentElement.classList.add("active");
         });
     });
-
     function resetActiveImg() {
         allHowerImage.forEach((img) => {
             img.parentElement.classList.remove("active");
@@ -318,23 +595,19 @@
     const decrementButton = document.getElementById("decrement");
     const incrementButton = document.getElementById("increment");
     const quantityInput = document.getElementById("quantity");
-
     quantityInput.value = 1;
-
     decrementButton.addEventListener("click", function () {
         if (parseInt(quantityInput.value) > 1) {
             quantityInput.value = parseInt(quantityInput.value) - 1;
             console.log(quantityInput.value);
         }
     });
-
     incrementButton.addEventListener("click", function () {
         if (parseInt(quantityInput.value) < <%= product.getStorage()%>) {
             quantityInput.value = parseInt(quantityInput.value) + 1;
             console.log(quantityInput.value);
         }
     });
-
     quantityInput.addEventListener("change", function (e) {
         if (e.target.value > <%= product.getStorage()%>) {
             quantityInput.value = <%= product.getStorage()%>;
@@ -343,54 +616,20 @@
             quantityInput.value = 1;
         }
     });
-
     const url = new URL(window.location.href);
     const searchParams = new URLSearchParams(url.search);
     const productId = searchParams.get("id");
-
     console.log(productId);
-
     const addToCartBtn = document.getElementById("addToCartBtn");
     addToCartBtn.addEventListener("click", () => {
         addToCart(productId, Number(quantityInput.value),<%= product.getStorage()%>);
         handleDisplayToost();
     });
-
     const buyNowBtn = document.getElementById("buyNowBtn");
     buyNowBtn.addEventListener("click", () => {
         addToCart(productId, Number(quantityInput.value),<%= product.getStorage()%>);
         window.location.href = "http://localhost:8080/store/cart";
     });
-
-
-    const ratingContainer = document.querySelector('.rating-container');
-    const stars = ratingContainer.querySelectorAll('.star');
-
-    function setRating(rating) {
-        const filledStars = Math.floor(rating);
-        const decimalPart = rating - filledStars;
-
-        stars.forEach((star, index) => {
-            star.classList.remove('filled');
-
-            if (index < filledStars) {
-                star.classList.add('filled');
-            } else if (index === filledStars) {
-                star.style.background = 'linear-gradient(to right, gold ' + (decimalPart * 100) + '%, gray ' + (decimalPart * 100) + '%)';
-            } else {
-                star.classList.add('no-filled');
-            }
-
-        });
-    }
-
-// Example usage
-    setRating(3.7); // Sets the rating to 3.5 stars
-
-
-
-
-
 
 </script>
 

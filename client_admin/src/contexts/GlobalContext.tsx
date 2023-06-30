@@ -1,5 +1,6 @@
 "use client";
 
+import { AlertType } from "@/utils/types";
 import { usePathname } from "next/navigation";
 import {
   createContext,
@@ -11,13 +12,17 @@ import {
 
 type GlobalContextType = {
   selectedNav: string;
-  setSelectedNav: (nav: string) => void;
+  setSelectedNav: (val: string) => void;
   editedProduct: Product | null | undefined;
-  setEditedProduct: (nav: Product) => void;
-  currentUser: Person | null | undefined;
-  setCurrentUser: (val: Person) => void;
-  modal: ModalType;
-  setModal: (val: ModalType) => void;
+  setEditedProduct: (val: Product) => void;
+  currentUser: any;
+  setCurrentUser: (val: any) => void;
+  showAlert: {
+    status: boolean;
+    type: AlertType;
+    message: string;
+  };
+  setShowAlert: (val: any) => void;
 };
 
 export const GlobalContext = createContext<GlobalContextType>({
@@ -27,12 +32,12 @@ export const GlobalContext = createContext<GlobalContextType>({
   setEditedProduct: () => {},
   currentUser: null,
   setCurrentUser: () => {},
-  modal: {
-    display: false,
+  showAlert: {
+    status: false,
+    type: AlertType.info,
     message: "",
-    handleModal:()=>{}
   },
-  setModal: () => {},
+  setShowAlert: () => {},
 });
 
 type GlobalProviderProps = {
@@ -54,16 +59,27 @@ export function GlobalProvider({ children }: GlobalProviderProps) {
   const [selectedNav, setSelectedNav] = useState("");
   const pathName = usePathname();
   const [editedProduct, setEditedProduct] = useState<Product>();
-  const [currentUser, setCurrentUser] = useState<Person>();
-  const [modal, setModal] = useState({
-    display: false,
+  const [currentUser, setCurrentUser] = useState<any>();
+  const [showAlert, setShowAlert] = useState({
+    status: false,
+    type: AlertType.info,
     message: "",
-    handleModal: () => {},
   });
 
   useEffect(() => {
     setSelectedNav(pathNameToNav["/" + pathName.split("/")[1]]);
   }, [pathName]);
+
+  // * Handle alerts
+  useEffect(() => {
+    if (showAlert?.status) {
+      const timer = setTimeout(() => {
+        setShowAlert({ status: false, type: AlertType.info, message: "" });
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showAlert]);
 
   return (
     <GlobalContext.Provider
@@ -74,8 +90,8 @@ export function GlobalProvider({ children }: GlobalProviderProps) {
         setEditedProduct,
         currentUser,
         setCurrentUser,
-        modal,
-        setModal,
+        showAlert,
+        setShowAlert,
       }}
     >
       {children}

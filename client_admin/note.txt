@@ -1,0 +1,11 @@
+Store:
+-thanh toán
+
+Admin: 
+-thêm các status cho các API
+-đồ thị cho dashboard ( nhớ dùng parameter cho đồ thị )
+
+- chỉnh sửa giao diện dashboard
+
+
+check lỗ hỏng

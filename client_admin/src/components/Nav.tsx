@@ -50,10 +50,7 @@ export default function Nav({}: Props) {
     <>
       <div className="bg-primary w-[280px] text-white p-4 pt-0 hidden lg:block">
         <div className="flex items-center border-b-2 py-2 border-y-dvt-item max-auto justify-center">
-          {/* <Image alt="logo" height={72} width={180} src={logo} /> */}
-          <div className="h-[72px] w-[180px] text-5xl flex justify-center items-center">
-            LOGO
-          </div>
+          <Image alt="logo" height={72} width={180} src={logo} />  
         </div>
 
         <ul className="flex flex-col mt-6">

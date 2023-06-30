@@ -1,7 +1,8 @@
 import Nav from "./Nav";
 import ProductForm from "./ProductForm";
 import Loader from "./Loader";
-import Modal from "./Modal";
 import Scroll from "./Scroll";
+import LineChart from "./LineChart";
+import ProductList from "./ProductList";
 
-export { Nav, ProductForm, Loader, Scroll, Modal };
+export { Nav, ProductForm, Loader, Scroll, LineChart, ProductList };

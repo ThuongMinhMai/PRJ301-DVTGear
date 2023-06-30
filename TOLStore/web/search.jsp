@@ -4,15 +4,16 @@
     Author     : Kingc
 --%>
 
+<%@page import="model.FetchResult"%>
 <%@page import="utils.Utils"%>
-<%@page import="entity.Product"%>
+<%@page import="model.Product"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="./header.jsp" />
 
 
 
-<div class="relative pb-16 mt-32 w-11/12 max-w-6xl mx-auto">
+<div id="searchPage" class="relative pb-16 mt-32 w-11/12 max-w-6xl mx-auto">
 
     <div class="flex justify-center">
         <h2 class="text-2xl mx-2 font-medium mt-5">Sắp xếp theo: </h2>
@@ -43,7 +44,7 @@
 
     <%
         List<Product> productList = (List<Product>) request.getAttribute("productList");
-
+        int totalProducts = (int) request.getAttribute("itemsCount");
         if (productList.size() == 0) { %>
 
     <div class="w-full flex flex-col justify-center gap-3 items-center relative bg-dvt-black-2 rounded-md py-12">
@@ -55,6 +56,7 @@
 
 
     <div
+        id="productsContainer"
         class="relative justify-center grid grid-cols-12 gap-5"
         >
         <%
@@ -65,8 +67,8 @@
             class="bg-dvt-black-2 flex flex-col rounded-3xl overflow-hidden cursor-pointer col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3"
             >
             <a href="/store/products?id=<%= product.getId()%>"
-                 class="w-full overflow-hidden relative aspect-square"
-                 >
+               class="w-full overflow-hidden relative aspect-square"
+               >
                 <% String imageUrl = Utils.parseJSONStringArray(product.getImages()).get(0);%>
                 <img
                     class="w-full h-full object-cover bt-[20px] transition duration-300 ease-linear hover:scale-125"
@@ -84,9 +86,9 @@
                     <%= product.getName()%>
                 </span>
             </div>
-          
+
             <div
-                onclick="addToCart(<%= product.getId()%>, 1,<%= product.getStorage() %>)"
+                onclick="addToCart(<%= product.getId()%>, 1,<%= product.getStorage()%>)"
                 class="mt-auto mx-auto px-4 py-2 rounded-[30px] bg-primary border-none uppercase cursor-pointer mb-4 hover:opacity-80"
                 >
                 Thêm vào giỏ hàng
@@ -97,17 +99,119 @@
         %>
 
     </div>
+
+
+
+
+
 </div>
+<script>
+    let hideProductsCount = <%= totalProducts%> - 12;//12 is products per page
+    let currentPage = 1;
+
+    const renderMoreProducts = (products) => {
+        let html = "";
+
+        for (const product of products) {
+            html += `
+            <div class="bg-dvt-black-2 flex flex-col rounded-3xl overflow-hidden cursor-pointer col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3">
+                <a href="/store/products?id=\${product.id}" class="w-full overflow-hidden relative aspect-square">
+                    <img class="w-full h-full object-cover bt-[20px] transition duration-300 ease-linear hover:scale-125" src="\${JSON.parse(product.images)[0]}" alt="product">
+                    <div class="absolute bottom-0 right-0 bg-black bg-opacity-60 rounded-tl-2xl py-3 px-5 text-2xl">
+                        \${product.price.toLocaleString()}₫
+                    </div>
+                </a>
+                <div class="px-5 py-0 my-2 mx-0 name_product">
+                    <span class="font-bold line-clamp-2">
+                        \${product.name}
+                    </span>
+                </div>
+                <div onclick="addToCart(\${product.id}, 1,\${product.storage})" class="mt-auto mx-auto px-4 py-2 rounded-[30px] bg-primary border-none uppercase cursor-pointer mb-4 hover:opacity-80">
+                    Thêm vào giỏ hàng
+                </div>
+            </div>`;
+        }
+
+        const productsContainer = document.getElementById("productsContainer");
+        productsContainer.innerHTML += html;
+    };
+
+    const renderViewMoreProductsBtn = () => {
+        const viewMoreProductsBtn = document.getElementById("viewMoreProductsBtn");
+        if (viewMoreProductsBtn) {
+            viewMoreProductsBtn.parentNode.removeChild(viewMoreProductsBtn);
+        }
+
+        if (hideProductsCount > 0) {
+            const viewMoreProductsBtn = document.createElement("div");
+            viewMoreProductsBtn.setAttribute("id", "viewMoreProductsBtn");
+            viewMoreProductsBtn.className = "py-2 px-4 rounded-md bg-primary w-fit mt-8 cursor-pointer mx-auto hover:opacity-80 select-none";
+            viewMoreProductsBtn.innerHTML = `Xem thêm <span class="font-semibold">\${hideProductsCount}</span> sản phẩm`;
+            viewMoreProductsBtn.onclick = fetchMoreProducts;
+            document.getElementById("searchPage").appendChild(viewMoreProductsBtn);
+        }
+    };
+
+    const removeViewMoreProductsBtn = () => {
+        const viewMoreProductsBtn = document.getElementById("viewMoreProductsBtn");
+        if (viewMoreProductsBtn) {
+            viewMoreProductsBtn.parentNode.removeChild(viewMoreProductsBtn);
+        }
+    };
+
+    const renderLoader = () => {
+        const loader = document.createElement("div");
+        loader.setAttribute("id", "loader");
+        loader.className = "loader ease-linear rounded-full border-t-8 border-b-8 border-primary h-20 w-20 animate-spin mt-6 mx-auto";
+        document.getElementById("searchPage").appendChild(loader);
+    };
+
+    const removeLoader = () => {
+        const loader = document.getElementById("loader");
+        if (loader) {
+            loader.parentNode.removeChild(loader);
+        }
+    };
+
+    const fetchMoreProducts = async () => {
+        removeViewMoreProductsBtn();
+        renderLoader();
+
+        currentPage++;
+        const currentUrl = window.location.href;
+        const separator = currentUrl.indexOf('?') !== -1 ? '&' : '?';
+        const newUrl = currentUrl + separator + 'page=' + currentPage;
+        console.log(newUrl);
+
+        const {products} = await fetch(newUrl)
+                .then((response) => {
+                    // Check if the response was successful
+                    if (response.ok) {
+                        // Parse the response data
+                        return response.json();
+                    } else {
+                        throw new Error('Error: ' + response.status);
+                    }
+                });
+
+        renderMoreProducts(products);
+        removeLoader();
+        hideProductsCount -= 12;
+        renderViewMoreProductsBtn();
+    };
+
+    renderViewMoreProductsBtn();
+</script>
+
 
 <script>
-
     const styleSelectedSort = () => {
         const currentUrl = window.location.href;
 
-// Create a URL object
+        // Create a URL object
         const url = new URL(currentUrl);
 
-// Get the value of the sortBy parameter
+        // Get the value of the sortBy parameter
         const sortByValue = url.searchParams.get("sortBy");
 
         const sortTypeToSortName = {
@@ -126,26 +230,23 @@
 
     styleSelectedSort();
 
-    const sortProductsBy = (sortBy) =>
-    {
+    const sortProductsBy = (sortBy) => {
         // Get the current URL
         const currentUrl = window.location.href;
 
-
-
-// Create a URL object
+        // Create a URL object
         const url = new URL(currentUrl);
 
-// Set the new sortBy value in the URL object
+        // Set the new sortBy value in the URL object
         url.searchParams.set("sortBy", sortBy);
 
-// Get the modified URL from the URL object
+        // Get the modified URL from the URL object
         const modifiedUrl = url.href;
 
-// Change the location to the modified URL
+        // Change the location to the modified URL
         window.location.href = modifiedUrl;
     };
-
 </script>
+
 
 <jsp:include page="./footer.jsp" />

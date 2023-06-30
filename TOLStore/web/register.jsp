@@ -132,7 +132,7 @@
 
 
                         <button
-                            class="w-[100%] mt-3 h-10 rounded-[40px] bg-primary text-white border-none outline-none cursor-pointer text-xl font-semibold login-button hover:opacity-70"
+                            class="w-[100%] mt-3 h-10 rounded-md bg-primary text-white border-none outline-none cursor-pointer text-xl font-semibold login-button hover:opacity-70"
                             >
                             Register
                         </button>
@@ -148,6 +148,15 @@
                             </p>
                         </div>
                     </form>
+                    <div class="text-white text-xl font-semibold flex items-center my-2 gap-3">
+                        <div class="h-[2px] flex-1 bg-white"></div>
+                        Or
+                        <div class="h-[2px] flex-1 bg-white"></div>
+                    </div>
+                    <div class="mx-auto py-2 px-4 rounded-md bg-white flex items-center justify-center gap-2 cursor-pointer" onclick="handleLoginButtonClick()">
+                        <img src="./assets/google.png" alt="google" class="w-7 h-7" />
+                        <div class="font-semibold">Đăng nhập bằng Google</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -159,5 +168,73 @@
             nomodule
             src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
         ></script>
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+        <script src="https://apis.google.com/js/api.js"></script>
+
+        <script>
+                        function decodeJwt(jwt) {
+                            const tokenParts = jwt.split('.');
+
+                            if (tokenParts.length !== 3) {
+                                throw new Error('Invalid JWT format');
+                            }
+
+                            const payload = tokenParts[1];
+                            const decodedPayload = decodeURIComponent(atob(payload).split('').map((c) => {
+                                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                            }).join(''));
+
+                            return JSON.parse(decodedPayload);
+                        }
+
+
+
+                        function handleCredentialResponse(response) {
+                            const decodedPayload = decodeJwt(response.credential);
+
+
+
+                            var form = document.createElement('form');
+                            form.method = 'POST';
+                            form.action = 'http://localhost:8080/store/login';
+                            form.style.display = 'none';
+
+                            // Create input fields for user information
+                            var googleLoginInput = document.createElement('input');
+                            googleLoginInput.type = 'hidden';
+                            googleLoginInput.name = 'googleLogin';
+                            googleLoginInput.value = 'googleLogin';
+
+                            var userNameInput = document.createElement('input');
+                            userNameInput.type = 'hidden';
+                            userNameInput.name = 'username';
+                            userNameInput.value = decodedPayload.email;
+
+                            var userAvatarInput = document.createElement('input');
+                            userAvatarInput.type = 'hidden';
+                            userAvatarInput.name = 'avatarUrl';
+                            userAvatarInput.value = decodedPayload.picture;
+
+                            // Add the input fields to the form
+                            form.appendChild(googleLoginInput);
+                            form.appendChild(userNameInput);
+                            form.appendChild(userAvatarInput);
+
+                            // Add the form to the document
+                            document.body.appendChild(form);
+
+                            // Submit the form
+                            form.submit();
+                        }
+
+                        function handleLoginButtonClick() {
+                            google.accounts.id.initialize({
+                                client_id: '834117377959-0aabfn4t7gui4au7aopki3c10h9rsa53.apps.googleusercontent.com',
+                                callback: handleCredentialResponse
+                            });
+
+                            google.accounts.id.prompt();
+                        }
+        </script>
     </body>
 </html>

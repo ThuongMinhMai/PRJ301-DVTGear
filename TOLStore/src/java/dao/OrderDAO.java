@@ -1,18 +1,26 @@
 package dao;
 
 import context.DBContext;
-import entity.Order.Status;
-import entity.Product;
+import model.Order.Status;
+import model.Product;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import entity.Order;
-import entity.OrderProduct;
+import model.Order;
+import model.OrderProduct;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.concurrent.ThreadLocalRandom;
+import model.FetchResult;
+import model.MutationResult;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class OrderDAO {
@@ -21,12 +29,70 @@ public class OrderDAO {
     PreparedStatement ps = null;
     ResultSet rs = null;
 
-//    public OrderAdmin getOrderDetail(int orderId)
-//    {
-//        return null;
-//    }
-    public List<Order> getAllOrders() {
+    public Order getOrderDetail(int orderId) {
+        Order order = null;
+        String query = "SELECT cus.username, o.date, o.receiver, o.address, o.phone, o.status, op.quantity, op.price, "
+                + "p.[name] AS productName, p.images AS productImages, p.productId, p.storage, "
+                + "CASE WHEN r.productId IS NOT NULL THEN 1 ELSE 0 END AS isRated "
+                + "FROM [Order] o "
+                + "INNER JOIN OrderProducts op ON o.orderId = op.orderId "
+                + "INNER JOIN Customer cus ON o.customerId = cus.customerId "
+                + "INNER JOIN Product p ON op.productId = p.productId "
+                + "LEFT JOIN Rate r ON r.productId = p.productId AND r.customerId = cus.customerId "
+                + "WHERE o.orderId = ? "
+                + "ORDER BY o.date DESC";
+
+        try (Connection conn = new DBContext().getConnection();
+                PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setInt(1, orderId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                if (order == null) {
+                    String receiver = rs.getString("receiver");
+                    String phone = rs.getString("phone");
+                    String address = rs.getString("address");
+                    String username = rs.getString("username");
+                    Date date = rs.getDate("date");
+                    Status status = Status.valueOf(rs.getString("status"));
+
+                    order = new Order(orderId, username, date, status, receiver, address, phone);
+                    order.setOrderProducts(new ArrayList<>());
+                }
+
+                int quantity = rs.getInt("quantity");
+                int price = rs.getInt("price");
+                int totalMoney = quantity * price;
+                boolean isRated = rs.getInt("isRated") == 1;
+
+                Product product = new Product(
+                        rs.getInt("productId"),
+                        rs.getString("productName"),
+                        null,
+                        null,
+                        rs.getString("productImages"),
+                        0,
+                        null,
+                        0
+                );
+
+                OrderProduct orderProduct = new OrderProduct(product, quantity, price);
+                orderProduct.setIsRated(isRated);
+
+                order.getOrderProducts().add(orderProduct);
+                order.setTotalMoney(order.getTotalMoney() + totalMoney);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return order;
+    }
+
+    public FetchResult<Order> getAllOrders(int page, int pageSize) {
         List<Order> orderList = new ArrayList<>();
+        int totalCount = 0;
         String query = "SELECT o.orderId, cus.username, o.date, o.receiver, o.address, o.phone, o.status, op.quantity, op.price, "
                 + "p.[name] AS productName, p.images AS productImages, p.productId, p.storage, "
                 + "CASE WHEN r.productId IS NOT NULL THEN 1 ELSE 0 END AS isRated "
@@ -78,6 +144,7 @@ public class OrderDAO {
                     order = new Order(orderId, username, date, status, receiver, address, phone);
                     order.setOrderProducts(new ArrayList<>());
                     orderList.add(order);
+                    totalCount++;
                 }
 
                 OrderProduct orderProduct = new OrderProduct(product, quantity, price);
@@ -90,12 +157,17 @@ public class OrderDAO {
             System.out.println(e);
         }
 
-        return orderList;
+        int startIndex = (page - 1) * pageSize;
+        int endIndex = Math.min(startIndex + pageSize, orderList.size());
+        List<Order> pagedOrderList = orderList.subList(startIndex, endIndex);
+
+        return new FetchResult<>(pagedOrderList, totalCount);
     }
 
-    public List<Order> getAllCustomerOrders(int customerId, String filterBy) {
+    public FetchResult<Order> getAllCustomerOrders(int customerId, String filterBy, int page, int pageSize) {
         System.out.println(filterBy);
 
+        int totalCount = 0;
         List<Order> orderList = new ArrayList<>();
         String query = "SELECT o.orderId, cus.username ,o.date, o.receiver, o.address, o.phone, o.status, op.quantity, op.price, "
                 + "p.[name] AS productName, p.images AS productImages, p.productId, p.storage, "
@@ -156,6 +228,7 @@ public class OrderDAO {
                     order = new Order(orderId, customer, date, status, receiver, address, phone);
                     order.setOrderProducts(new ArrayList<>());
                     orderList.add(order);
+                    totalCount++;
                 }
 
                 //public OrderProduct(Product product, int quantity, int price)
@@ -170,9 +243,79 @@ public class OrderDAO {
             System.out.println(e);
         }
 
-        return orderList;
+        int orderListSize = orderList.size();
+        int startIndex = (page - 1) * pageSize;
+        if (startIndex > orderListSize - 1) {
+            return new FetchResult<>(new ArrayList<>(), totalCount);
+        }
+
+        int endIndex = startIndex + pageSize - 1;
+        if (endIndex > orderListSize - 1) {
+            endIndex = orderListSize - 1;
+        }
+
+        return new FetchResult<>(orderList.subList(startIndex, endIndex + 1), totalCount);
     }
 
+//    public void createOrder(JSONObject jsonObject) {
+//        String address = jsonObject.getString("address");
+//        String receiver = jsonObject.getString("receiver");
+//        String phone = jsonObject.getString("phone");
+//        int customerId = jsonObject.getInt("customerId");
+//        JSONObject productsObj = jsonObject.getJSONObject("products");
+//
+//        // Generate a random date within the last 365 days to now
+//        LocalDate currentDate = LocalDate.now();
+//        LocalDate startDate = currentDate.minusDays(365);
+//        long startMillis = startDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+//        long endMillis = currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+//        long randomMillis = ThreadLocalRandom.current().nextLong(startMillis, endMillis + 1);
+//        Date randomDate = new Date(randomMillis);
+//
+//        // Create the Order entry in the database
+//        String orderQuery = "INSERT INTO [Order] (customerId, phone, address, [date], [status], receiver) VALUES (?, ?, ?, ?, 'PROCESSING', ?)";
+//        try (Connection conn = new DBContext().getConnection();
+//                PreparedStatement orderPs = conn.prepareStatement(orderQuery, Statement.RETURN_GENERATED_KEYS)) {
+//
+//            // Assuming you have a customerId associated with the order, retrieve it here
+//            orderPs.setInt(1, customerId);
+//            orderPs.setString(2, phone);
+//            orderPs.setString(3, address);
+//            orderPs.setDate(4, randomDate);
+//            orderPs.setString(5, receiver);
+//
+//            int rowsInserted = orderPs.executeUpdate();
+//            if (rowsInserted > 0) {
+//                // Get the generated order ID
+//                ResultSet generatedKeys = orderPs.getGeneratedKeys();
+//                int orderId = 0;
+//                if (generatedKeys.next()) {
+//                    orderId = generatedKeys.getInt(1);
+//                }
+//
+//                // Create the OrderProducts entries for each product in the order
+//                String orderProductQuery = "INSERT INTO OrderProducts (orderId, productId, quantity, price) VALUES (?, ?, ?, ?)";
+//                try (PreparedStatement orderProductPs = conn.prepareStatement(orderProductQuery)) {
+//                    for (String productId : productsObj.keySet()) {
+//                        int quantity = productsObj.getInt(productId);
+//                        int price = getProductPrice(conn, Integer.parseInt(productId)); // Retrieve the price of the product
+//
+//                        orderProductPs.setInt(1, orderId);
+//                        orderProductPs.setInt(2, Integer.parseInt(productId));
+//                        orderProductPs.setInt(3, quantity);
+//                        orderProductPs.setInt(4, price);
+//
+//                        orderProductPs.executeUpdate();
+//                    }
+//                    System.out.println("New order created successfully.");
+//                }
+//            } else {
+//                System.out.println("Failed to create the new order.");
+//            }
+//        } catch (Exception e) {
+//            System.err.println(e);
+//        }
+//    }
     public void createOrder(JSONObject jsonObject) {
         String address = jsonObject.getString("address");
         String receiver = jsonObject.getString("receiver");
@@ -296,7 +439,7 @@ public class OrderDAO {
         throw new IllegalArgumentException("Invalid order ID: " + orderId);
     }
 
-    public String approveOrder(int orderId) {
+    public MutationResult approveOrder(int orderId) {
         String getProductQuery = "SELECT op.productId, op.quantity, p.storage "
                 + "FROM OrderProducts op "
                 + "INNER JOIN Product p ON op.productId = p.productId "
@@ -341,16 +484,105 @@ public class OrderDAO {
                 updateStatusOrder(orderId, "DELIVERING");
                 updateStoragePs.executeBatch(); // Move the executeBatch() here
                 conn.commit(); // Commit the transaction
-                return "Order approved and storage updated successfully.";
+                return new MutationResult(true, "Order approved and storage updated successfully.");
             } else {
                 // Handle the situation where storage is not suitable (e.g., display an error message)
                 conn.rollback(); // Rollback the transaction
-                return "Insufficient storage for some products. Order cannot be approved.";
+                return new MutationResult(false, "Insufficient storage for some products. Order cannot be approved.");
             }
         } catch (Exception e) {
             System.out.println(e);
-            return "An error occurred during order approval.";
+            return new MutationResult(false, "An error occurred during order approval.");
         }
     }
 
+    public void deleteOrder(JSONObject jsonObject) {
+        String query = "DELETE FROM [Order] \n"
+                + "WHERE orderId = ?";
+
+        System.out.println(jsonObject.getInt("id"));
+        try (Connection conn = new DBContext().getConnection();
+                PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, jsonObject.getInt("id"));
+
+            int rowsUpdated = ps.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                System.out.println("Order deleted successfully.");
+            } else {
+                System.out.println("Failed to deleted the order.");
+            }
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+    }
+
+    private List<double[]> getRevuneChartData(int numDays) {
+        List<double[]> chartData = new ArrayList<>();
+
+        String query = "SELECT CAST(CONVERT(DATE, o.date) AS DATETIME) AS orderDate, COALESCE(SUM(op.quantity * op.price), 0) AS revenue "
+                + "FROM [Order] o "
+                + "INNER JOIN OrderProducts op ON o.orderId = op.orderId "
+                + "WHERE o.[status] = 'COMPLETE' AND o.[date] >= DATEADD(DAY, -?, GETDATE()) "
+                + "GROUP BY CAST(CONVERT(DATE, o.date) AS DATETIME) "
+                + "ORDER BY CAST(CONVERT(DATE, o.date) AS DATETIME) ASC";
+
+        try (Connection conn = new DBContext().getConnection();
+                PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setInt(1, numDays);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Timestamp orderDate = rs.getTimestamp("orderDate");
+                double revenue = rs.getDouble("revenue");
+
+                long timestamp = orderDate.getTime();
+                chartData.add(new double[]{timestamp, revenue});
+            }
+
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+
+        return chartData;
+    }
+
+    public double calculateTotalRevenue(int numDays) {
+        List<double[]> chartData = getRevuneChartData(numDays);
+        double totalRevenue = 0;
+
+        for (double[] data : chartData) {
+            totalRevenue += data[1]; // Revenue is stored at index 1
+        }
+
+        return totalRevenue;
+    }
+
+    public JSONArray getRevuneDataAtJson(int days) {
+
+        List<double[]> chartData = getRevuneChartData(days);
+
+        // Create a JSON array to store the chart data
+        JSONArray jsonArray = new JSONArray();
+        for (double[] dataPoint : chartData) {
+            long timestamp = (long) dataPoint[0];
+            double revenue = dataPoint[1];
+
+            // Create a JSON object for each data point
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("timestamp", timestamp);
+            jsonObject.put("revenue", revenue);
+
+            jsonArray.put(jsonObject);
+        }
+        return jsonArray;
+    }
+
+//    public static void main(String[] args) {
+//        OrderDAO orderDao = new OrderDAO();
+//        for (int i = 0; i < 1000; ++i) {
+//            orderDao.approveOrder(i + 1);
+//        }
+//    }
 }

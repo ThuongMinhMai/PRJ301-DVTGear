@@ -1,14 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import dao.RateDAO;
-import entity.Customer;
+import model.Customer;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,26 +12,29 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "RateController", urlPatterns = {"/rate"})
 public class RateController extends HttpServlet {
 
+    //add rate
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        //check login
         Customer customer = (Customer) request.getSession().getAttribute("currentUser");
-
         if (customer == null) {
             response.sendRedirect("/store/login");
             return;
         }
 
-        String productId = request.getParameter("productId");
-        String rateValue = request.getParameter("rateValue");
+        //if loged
+        int productId = Integer.parseInt(request.getParameter("productId"));
+        int customerId = customer.getCustomerId();
+        int rateValue = Integer.parseInt(request.getParameter("rateValue"));
         String rateContent = request.getParameter("rateContent");
 
         RateDAO rateDao = new RateDAO();
-        rateDao.addRate(Integer.parseInt(productId), customer.getCustomerId(), rateContent, Integer.parseInt(rateValue));
+        rateDao.addRate(productId, customerId, rateContent, rateValue);
 
-        response.sendRedirect("/store/orders?filter_by=COMPLETE");
-
+        //response to the added rate of the customer
+        response.sendRedirect("http://localhost:8080/store/products?id=" + productId + "#rateSection");
     }
 
 }

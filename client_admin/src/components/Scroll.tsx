@@ -1,26 +1,42 @@
-"use client";
+'use client'
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
 type ScrollableBlockProps = {
   children: React.ReactNode;
 };
 
 const ScrollableBlock = ({ children }: ScrollableBlockProps) => {
+  const [isDragging, setIsDragging] = useState(false);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const [startX, setStartX] = useState(0);
   const blockRef = useRef<HTMLDivElement>(null);
 
-  const handleScroll = (event: React.WheelEvent<HTMLDivElement>) => {
+  const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+    setIsDragging(true);
+    setStartX(event.clientX - scrollLeft);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
-    const scrollAmount = event.deltaY;
+    if (!isDragging) return;
+    const x = event.clientX;
+    const dragDistance = (x - startX) * 0.5; // Adjust the drag speed if necessary
     if (blockRef.current) {
-      blockRef.current.scrollLeft += scrollAmount;
+      blockRef.current.scrollLeft = scrollLeft - dragDistance;
     }
   };
 
   return (
     <div
       className="overflow-x-auto whitespace-nowrap scrollbar-hidden max-w-full"
-      onWheel={handleScroll}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onMouseMove={handleMouseMove}
       ref={blockRef}
     >
       {children}
