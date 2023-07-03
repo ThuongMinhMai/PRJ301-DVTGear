@@ -26,12 +26,13 @@ public class ProductAPI extends HttpServlet {
         //data pagination 
         String page = request.getParameter("page");
         String pageSize = request.getParameter("pageSize");
+        String searchQuery = request.getParameter("searchQuery");
 
         if (page != null && pageSize != null) {
             int pageInt = Integer.parseInt(page);
             int pageSizeInt = Integer.parseInt(pageSize);
             ProductDAO dao = new ProductDAO();
-            FetchResult<Product> fetchData = dao.getAllProducts(pageInt, pageSizeInt);
+            FetchResult<Product> fetchData = dao.getAllProducts(pageInt, pageSizeInt, searchQuery);
             List<Product> productList = fetchData.getItems();
             int totalCount = fetchData.getTotalCount();
 

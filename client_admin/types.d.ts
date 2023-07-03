@@ -52,3 +52,5 @@ interface IAlert {
   type: AlertType;
   message: string;
 }
+ 
+type Admin = string; //email address

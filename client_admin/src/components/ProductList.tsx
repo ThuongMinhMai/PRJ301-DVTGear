@@ -4,24 +4,31 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Loader, Scroll } from ".";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useGlobalContext } from "@/contexts/GlobalContext";
 import { EditIcon, MoreHorizIcon } from "@/contexts/icons";
 
-type ProductListProps = {};
+type ProductListProps = {
+  firstProducts: Product[];
+};
 
-const ProductList = ({}: ProductListProps) => {
+const ProductList = ({ firstProducts }: ProductListProps) => {
   const [productList, setProductList] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [pageNum, setPageNum] = useState(1);
+  const [pageNum, setPageNum] = useState(2);
   const [totalProducts, setTotalProducts] = useState(0);
   const router = useRouter();
   const { setEditedProduct } = useGlobalContext();
+  const searchQuery = useSearchParams().get("searchQuery");
+
 
   useEffect(() => {
+    console.log();
     axios
       .get(
-        `http://localhost:8080/store/api/products?page=${pageNum}&pageSize=10`
+        `http://localhost:8080/store/api/products?page=${pageNum}&pageSize=10&searchQuery=${
+          searchQuery || ""
+        }`
       )
       .then((res) => res.data)
       .then((data) => {
@@ -31,12 +38,16 @@ const ProductList = ({}: ProductListProps) => {
       });
   }, [pageNum]);
 
+  useEffect(() => {
+    setProductList([]);
+    setPageNum(2);
+  }, [searchQuery]);
+
   const handleScroll = () => {
     if (
       window.innerHeight + document.documentElement.scrollTop + 1 >=
       document.documentElement.scrollHeight
     ) {
-      console.log("fetch3");
       setPageNum((prev) => prev + 1);
       setIsLoading(true);
     }
@@ -71,7 +82,7 @@ const ProductList = ({}: ProductListProps) => {
             </tr>
           </thead>
           <tbody className="bg-dvt-item">
-            {productList?.map((product) => {
+            {[...firstProducts, ...productList]?.map((product) => {
               return (
                 <tr
                   key={product.id}

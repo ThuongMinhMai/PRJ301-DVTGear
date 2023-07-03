@@ -90,7 +90,7 @@ public class OrderDAO {
         return order;
     }
 
-    public FetchResult<Order> getAllOrders(int page, int pageSize) {
+    public FetchResult<Order> getAllOrders(int page, int pageSize, String searchQuery) {
         List<Order> orderList = new ArrayList<>();
         int totalCount = 0;
         String query = "SELECT o.orderId, cus.username, o.date, o.receiver, o.address, o.phone, o.status, op.quantity, op.price, "
@@ -100,58 +100,68 @@ public class OrderDAO {
                 + "INNER JOIN OrderProducts op ON o.orderId = op.orderId "
                 + "INNER JOIN Customer cus ON o.customerId = cus.customerId "
                 + "INNER JOIN Product p ON op.productId = p.productId "
-                + "LEFT JOIN Rate r ON r.productId = p.productId AND r.customerId = cus.customerId "
-                + "ORDER BY o.date DESC";
+                + "LEFT JOIN Rate r ON r.productId = p.productId AND r.customerId = cus.customerId";
+
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            query += " WHERE o.phone LIKE ?";  // Add search query filter
+        }
+
+        query += " ORDER BY o.date DESC";
 
         try (Connection conn = new DBContext().getConnection();
-                PreparedStatement ps = conn.prepareStatement(query);
-                ResultSet rs = ps.executeQuery()) {
+                PreparedStatement ps = conn.prepareStatement(query)) {
 
-            while (rs.next()) {
-                int orderId = rs.getInt("orderId");
-                String receiver = rs.getString("receiver");
-                String phone = rs.getString("phone");
-                String address = rs.getString("address");
-                String username = rs.getString("username");
-                Date date = rs.getDate("date");
-                Status status = Status.valueOf(rs.getString("status"));
+            if (searchQuery != null && !searchQuery.isEmpty()) {
+                ps.setString(1, "%" + searchQuery + "%");  // Set the search query parameter
+            }
 
-                int quantity = rs.getInt("quantity");
-                int price = rs.getInt("price");
-                int totalMoney = quantity * price;
-                boolean isRated = rs.getInt("isRated") == 1;
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int orderId = rs.getInt("orderId");
+                    String receiver = rs.getString("receiver");
+                    String phone = rs.getString("phone");
+                    String address = rs.getString("address");
+                    String username = rs.getString("username");
+                    Date date = rs.getDate("date");
+                    Status status = Status.valueOf(rs.getString("status"));
 
-                Product product = new Product(
-                        rs.getInt("productId"),
-                        rs.getString("productName"),
-                        null,
-                        null,
-                        rs.getString("productImages"),
-                        0,
-                        null,
-                        0
-                );
+                    int quantity = rs.getInt("quantity");
+                    int price = rs.getInt("price");
+                    int totalMoney = quantity * price;
+                    boolean isRated = rs.getInt("isRated") == 1;
 
-                Order order = null;
-                for (Order o : orderList) {
-                    if (o.getId() == orderId) {
-                        order = o;
-                        break;
+                    Product product = new Product(
+                            rs.getInt("productId"),
+                            rs.getString("productName"),
+                            null,
+                            null,
+                            rs.getString("productImages"),
+                            0,
+                            null,
+                            0
+                    );
+
+                    Order order = null;
+                    for (Order o : orderList) {
+                        if (o.getId() == orderId) {
+                            order = o;
+                            break;
+                        }
                     }
+
+                    if (order == null) {
+                        order = new Order(orderId, username, date, status, receiver, address, phone);
+                        order.setOrderProducts(new ArrayList<>());
+                        orderList.add(order);
+                        totalCount++;
+                    }
+
+                    OrderProduct orderProduct = new OrderProduct(product, quantity, price);
+                    orderProduct.setIsRated(isRated);
+
+                    order.getOrderProducts().add(orderProduct);
+                    order.setTotalMoney(order.getTotalMoney() + totalMoney);
                 }
-
-                if (order == null) {
-                    order = new Order(orderId, username, date, status, receiver, address, phone);
-                    order.setOrderProducts(new ArrayList<>());
-                    orderList.add(order);
-                    totalCount++;
-                }
-
-                OrderProduct orderProduct = new OrderProduct(product, quantity, price);
-                orderProduct.setIsRated(isRated);
-
-                order.getOrderProducts().add(orderProduct);
-                order.setTotalMoney(order.getTotalMoney() + totalMoney);
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -159,7 +169,14 @@ public class OrderDAO {
 
         int startIndex = (page - 1) * pageSize;
         int endIndex = Math.min(startIndex + pageSize, orderList.size());
-        List<Order> pagedOrderList = orderList.subList(startIndex, endIndex);
+
+        List<Order> pagedOrderList;
+
+        if (endIndex < startIndex) {
+            pagedOrderList = new ArrayList<>();
+        } else {
+            pagedOrderList = orderList.subList(startIndex, endIndex);
+        }
 
         return new FetchResult<>(pagedOrderList, totalCount);
     }

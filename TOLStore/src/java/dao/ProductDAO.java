@@ -133,7 +133,7 @@ public class ProductDAO {
         return sameProducts;
     }
 
-    public FetchResult<Product> getAllProducts(int pageNumber, int pageSize) {
+    public FetchResult<Product> getAllProducts(int pageNumber, int pageSize, String searchQuery) {
         List<Product> productList = new ArrayList<>();
         int totalProducts = 0;
 
@@ -150,14 +150,23 @@ public class ProductDAO {
             String query = "SELECT p.productId, p.name, c.name AS category, b.name AS brand, p.description, p.images, p.price, p.categoryId, p.brandId, p.storage\n"
                     + "FROM Product p\n"
                     + "INNER JOIN Brand b ON p.brandId = b.brandId\n"
-                    + "INNER JOIN Category c ON p.categoryId = c.categoryId\n"
-                    + "ORDER BY p.productId\n"
+                    + "INNER JOIN Category c ON p.categoryId = c.categoryId\n";
+
+            if (searchQuery != null && !searchQuery.isEmpty()) {
+                query += "WHERE p.name LIKE ?\n";  // Add search query filter
+            }
+
+            query += "ORDER BY p.productId\n"
                     + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
             try (PreparedStatement ps = conn.prepareStatement(query)) {
+                int parameterIndex = 1;
+                if (searchQuery != null && !searchQuery.isEmpty()) {
+                    ps.setString(parameterIndex++, "%" + searchQuery + "%");  // Set the search query parameter
+                }
                 int offset = (pageNumber - 1) * pageSize;
-                ps.setInt(1, offset);
-                ps.setInt(2, pageSize);
+                ps.setInt(parameterIndex++, offset);
+                ps.setInt(parameterIndex, pageSize);
 
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {

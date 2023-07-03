@@ -1,27 +1,35 @@
-"use client";
-
 import React from "react";
 import Link from "next/link";
-import { AddCircleIcon } from "@/contexts/icons";
 import { ProductList } from "@/components";
+import AddIcon from "@/assets/AddIcon";
+import getProducts from "@/services/getProducts";
+import SearchProducts from "@/components/SearchProducts";
 
-type Props = {};
+type SearchParams = {
+  searchQuery: string;
+};
 
-export default function ProductsPage({}: Props) {
+type Props = {
+  searchParams?: SearchParams;
+};
+
+export default async function ProductsPage({ searchParams }: Props) {
+  const firstProducts = await getProducts(searchParams?.searchQuery || "");
+
   return (
     <div className="flex flex-col">
-      <div className="flex justify-between flex-col sm:flex-row sm:items-center mb-6">
+      <div className="flex justify-between flex-col sm:flex-row sm:items-center mb-6 gap-6">
         <div className="font-medium text-3xl">Products</div>
-        <Link
-          href="/products/new"
-          className="btn btn-primary text-white w-fit mt-3"
-        >
-          <AddCircleIcon />
+
+        <SearchProducts />
+
+        <Link href="/products/new" className="btn btn-primary text-white w-fit">
+          <AddIcon className="w-6 h-6" />
           <div className="ml-2">Add Product</div>
         </Link>
       </div>
 
-      <ProductList />
+      <ProductList firstProducts={firstProducts} />
     </div>
   );
 }

@@ -43,12 +43,13 @@ public class OrderAPI extends HttpServlet {
         //data pagination 
         String page = request.getParameter("page");
         String pageSize = request.getParameter("pageSize");
+        String searchQuery = request.getParameter("searchQuery");
 
         if (page != null && pageSize != null) {
             int pageInt = Integer.parseInt(page);
             int pageSizeInt = Integer.parseInt(pageSize);
             OrderDAO orderDao = new OrderDAO();
-            FetchResult<Order> fetchData = orderDao.getAllOrders(pageInt, pageSizeInt);
+            FetchResult<Order> fetchData = orderDao.getAllOrders(pageInt, pageSizeInt, searchQuery);
             List<Order> orderList = fetchData.getItems();
             int itemsCount = fetchData.getTotalCount();
 

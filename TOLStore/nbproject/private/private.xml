@@ -3,39 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/controller/FavoriteController.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/footer.jsp</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/dao/ProductDAO.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/login.jsp</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/controller/SpamController.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/model/Product.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/header.jsp</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/home.jsp</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/dao/CategoryDAO.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/dao/CustomerDAO.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/register.jsp</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/api/ProductAPI.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/dao/BannerDAO.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/model/MutationResult.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/controller/HomeController.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/productDetail.jsp</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/dao/FavoriteDAO.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/api/BrandAPI.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/orders.jsp</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/search.jsp</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/dao/BrandDAO.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/cart.jsp</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/api/AdminAPI.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/model/OrderProduct.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/utils/Utils.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/dao/OrderDAO.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/model/Order.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/model/Brand.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/api/StatisticalAPI.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/api/OrderAPI.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/model/FetchResult.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/src/java/api/CorsFilter.java</file>
-            <file>file:/D:/Desktop/TOL_Gear/TOLStore/web/favorite.jsp</file>
+            <file>file:/D:/Desktop/TOLGEAR/TOLStore/src/java/api/AdminAPI.java</file>
+            <file>file:/D:/Desktop/TOLGEAR/TOLStore/src/java/api/ProductAPI.java</file>
+            <file>file:/D:/Desktop/TOLGEAR/TOLStore/src/java/api/OrderAPI.java</file>
+            <file>file:/D:/Desktop/TOLGEAR/TOLStore/src/java/dao/AdminDAO.java</file>
+            <file>file:/D:/Desktop/TOLGEAR/TOLStore/src/java/dao/ProductDAO.java</file>
+            <file>file:/D:/Desktop/TOLGEAR/TOLStore/src/java/dao/OrderDAO.java</file>
+            <file>file:/D:/Desktop/TOLGEAR/TOLStore/src/java/utils/Utils.java</file>
+            <file>file:/D:/Desktop/TOLGEAR/TOLStore/web/home.jsp</file>
         </group>
     </open-files>
 </project-private>

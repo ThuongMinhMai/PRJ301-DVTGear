@@ -32,13 +32,13 @@ public class AdminDAO {
 
     }
 
-    public void updateAdmins(JSONObject jsonObject) {
+    public void updateAdmins(String newAdmins) {
         String query = "UPDATE Setting\n"
                 + "SET adminEmails = ?";
 
         try (Connection conn = new DBContext().getConnection();
                 PreparedStatement ps = conn.prepareStatement(query)) {;
-            ps.setString(1, jsonObject.getJSONArray("admins").toString());
+            ps.setString(1, newAdmins);
 
             int rowsUpdated = ps.executeUpdate();
 
