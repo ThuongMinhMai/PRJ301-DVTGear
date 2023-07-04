@@ -45,6 +45,7 @@ export default async function SettingsPage({}: Props) {
         <AdminList adminList={admins} />
       </div>
 
+      {/* hard to handle banner at server, so separate it to client component */}
       <SettingBannerForm />
     </div>
   );

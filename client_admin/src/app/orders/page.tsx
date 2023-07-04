@@ -20,6 +20,8 @@ export default async function OrdersPage({ searchParams }: Props) {
 
         <SearchOrders />
       </div>
+
+      {/* fetch some orders at server and do infinity scrolling at client */}
       <OrderList firstOrders={firstOrders} />
     </div>
   );

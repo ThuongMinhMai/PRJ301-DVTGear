@@ -1,11 +1,13 @@
 "use client";
 
+import DeleteIcon from "@/assets/DeleteIcon";
 import EditIcon from "@/assets/EditIcon";
 import { FileUploadIcon } from "@/contexts/icons";
 import { storage } from "@/services/firebase";
 import axios from "axios";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useEffect, useState } from "react";
+import { ReactSortable } from "react-sortablejs";
 import { BounceLoader } from "react-spinners";
 import { v4 } from "uuid";
 
@@ -91,7 +93,7 @@ type ImageFieldProps = {
   isUploading: boolean;
   setIsUploading: (val: boolean) => void;
   bannerUrls: string[];
-  setBannerUrls: (val: string[]) => void;
+  setBannerUrls: any;
 };
 function ImageField({
   isUploading,
@@ -119,13 +121,32 @@ function ImageField({
   return (
     <>
       <div className="flex flex-wrap items-center">
-        {bannerUrls.map((url) => {
-          return (
-            <div key={url} className="mr-2 rounded-lg overflow-hidden mb-2">
-              <img className="h-24 object-cover" src={url} alt={url} />
-            </div>
-          );
-        })}
+        <ReactSortable
+          list={bannerUrls as any}
+          setList={setBannerUrls as any}
+          className="flex flex-wrap items-center"
+        >
+          {bannerUrls.map((url) => {
+            return (
+              <div
+                key={url}
+                className="group hover:opacity-70 mr-2 rounded-lg overflow-hidden mb-2 relative"
+              >
+                <div
+                  onClick={() => {
+                    setBannerUrls((prev: string[]) => {
+                      return prev.filter((item) => item !== url);
+                    });
+                  }}
+                  className="group-hover:flex hidden absolute opacity-70 rounded-full w-9 h-9 justify-center items-center bg-dvt-item top-2 right-2 hover:opacity-100 cursor-pointer"
+                >
+                  <DeleteIcon className="w-6 h-6 text-primary" />
+                </div>
+                <img className="h-32 object-cover" src={url} alt={url} />
+              </div>
+            );
+          })}
+        </ReactSortable>
 
         {isUploading && (
           <div className="w-24 h-24 flex justify-center items-center">
@@ -134,7 +155,7 @@ function ImageField({
         )}
 
         <label
-          className={`w-24 h-24 btn btn-outline btn-white hover:btn-primary mr-2 mb-2 text-white${
+          className={`w-32 h-32 btn btn-outline btn-white hover:btn-primary mr-2 mb-2 text-white${
             isUploading ? " hidden" : ""
           }`}
         >

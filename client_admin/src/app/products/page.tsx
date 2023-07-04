@@ -29,6 +29,7 @@ export default async function ProductsPage({ searchParams }: Props) {
         </Link>
       </div>
 
+      {/* fetch some products at server and do infinity scrolling at client */}
       <ProductList firstProducts={firstProducts} />
     </div>
   );
