@@ -11,6 +11,9 @@ import axios from "axios";
 import { FileUploadIcon } from "@/contexts/icons";
 import { useGlobalContext } from "@/contexts/GlobalContext";
 import { useRouter } from "next/navigation";
+import DeleteIcon from "@/assets/DeleteIcon";
+import clsx from "clsx";
+import { ReactSortable } from "react-sortablejs";
 
 type Props = {
   handleSubmit: (product: Product) => void;
@@ -280,24 +283,47 @@ function ImageField() {
         </div>
       </div>
       <div className="flex flex-wrap items-center mb-3 md:mb-5">
-        {imagesArray.map((url) => {
-          return (
-            <div key={url} className="mr-2 rounded-lg overflow-hidden mb-2">
-              <img className="h-24 object-cover" src={url} alt={url} />
-            </div>
-          );
-        })}
+        <ReactSortable
+          list={imagesArray as any}
+          setList={(val) => {
+            setFieldValue("images", JSON.stringify(val));
+          }}
+          className="flex flex-wrap items-center"
+        >
+          {imagesArray.map((url) => {
+            return (
+              <div
+                key={url}
+                className="group hover:opacity-70 mr-2 rounded-lg overflow-hidden mb-2 relative"
+              >
+                <div
+                  onClick={() => {
+                    setFieldValue(
+                      "images",
+                      JSON.stringify(imagesArray.filter((item) => item !== url))
+                    );
+                  }}
+                  className="hidden group-hover:flex absolute opacity-70 rounded-full w-9 h-9 justify-center items-center bg-dvt-item top-2 right-2 hover:opacity-100 cursor-pointer"
+                >
+                  <DeleteIcon className="w-6 h-6 text-primary" />
+                </div>
+                <img className="h-32 object-cover" src={url} alt={url} />
+              </div>
+            );
+          })}
+        </ReactSortable>
 
         {isUploading && (
-          <div className="w-24 h-24 flex justify-center items-center">
+          <div className="w-32 h-32 flex justify-center items-center">
             <BounceLoader color="#ea1c00" />
           </div>
         )}
 
         <label
-          className={`w-24 h-24 btn btn-outline btn-white hover:btn-primary mr-2 mb-2 text-white${
-            isUploading ? " hidden" : ""
-          }`}
+          className={clsx(
+            "w-32 h-32 btn btn-outline btn-white hover:btn-primary mr-2 mb-2 text-white",
+            isUploading && "hidden"
+          )}
         >
           <div className="flex justify-center items-center flex-col">
             <FileUploadIcon />

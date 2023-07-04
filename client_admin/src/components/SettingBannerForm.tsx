@@ -149,7 +149,7 @@ function ImageField({
         </ReactSortable>
 
         {isUploading && (
-          <div className="w-24 h-24 flex justify-center items-center">
+          <div className="w-32 h-32 flex justify-center items-center">
             <BounceLoader color="#ea1c00" />
           </div>
         )}
