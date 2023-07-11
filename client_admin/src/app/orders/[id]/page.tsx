@@ -12,10 +12,13 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
 
-type Props = {};
+type Props = {
+  params: {
+    id: string;
+  };
+};
 
-export default function page({}: Props) {
-  const { id } = useParams();
+export default function page({ params: { id } }: Props) {
   const [order, setOrder] = useState<Order>();
   const router = useRouter();
   // const { setShowAlert } = useGlobalContext();

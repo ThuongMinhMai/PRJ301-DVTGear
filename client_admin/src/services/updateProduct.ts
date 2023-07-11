@@ -11,6 +11,7 @@ const updateProduct = async (form: Product) => {
   });
 
   revalidatePath("/products");
+
 };
 
 export default updateProduct

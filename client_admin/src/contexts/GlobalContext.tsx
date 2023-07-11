@@ -67,7 +67,7 @@ export function GlobalProvider({ children }: GlobalProviderProps) {
   });
 
   useEffect(() => {
-    setSelectedNav(pathNameToNav["/" + pathName.split("/")[1]]);
+    setSelectedNav(pathNameToNav["/" + pathName?.split("/")[1] || ""]);
   }, [pathName]);
 
   // * Handle alerts

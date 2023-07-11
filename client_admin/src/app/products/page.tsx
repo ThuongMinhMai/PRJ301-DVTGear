@@ -13,8 +13,11 @@ type Props = {
   searchParams?: SearchParams;
 };
 
+export const revalidate = 0;
+
 export default async function ProductsPage({ searchParams }: Props) {
-  const firstProducts = await getProducts(searchParams?.searchQuery || "");
+  const firstProducts = (await getProducts(searchParams?.searchQuery || ""))
+    .products;
 
   return (
     <div className="flex flex-col">

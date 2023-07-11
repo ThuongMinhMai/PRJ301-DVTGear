@@ -24,6 +24,7 @@
     "chart.js": "^4.3.0",
     "clsx": "^1.2.1",
     "daisyui": "^2.51.6",
+    "dotenv": "^16.3.1",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.2",
     "firebase": "^9.22.0",

@@ -19,7 +19,7 @@ const ProductList = ({ firstProducts }: ProductListProps) => {
   const [totalProducts, setTotalProducts] = useState(0);
   const router = useRouter();
   const { setEditedProduct } = useGlobalContext();
-  const searchQuery = useSearchParams().get("searchQuery");
+  const searchQuery = useSearchParams()?.get("searchQuery");
 
 
   useEffect(() => {

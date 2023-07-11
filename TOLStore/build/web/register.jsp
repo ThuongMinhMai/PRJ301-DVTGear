@@ -172,58 +172,29 @@
         <script src="https://apis.google.com/js/api.js"></script>
 
         <script>
-                        function decodeJwt(jwt) {
-                            const tokenParts = jwt.split('.');
-
-                            if (tokenParts.length !== 3) {
-                                throw new Error('Invalid JWT format');
-                            }
-
-                            const payload = tokenParts[1];
-                            const decodedPayload = decodeURIComponent(atob(payload).split('').map((c) => {
-                                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-                            }).join(''));
-
-                            return JSON.parse(decodedPayload);
-                        }
-
-
-
                         function handleCredentialResponse(response) {
-                            const decodedPayload = decodeJwt(response.credential);
-
-
+                            const credential = response.credential;
 
                             var form = document.createElement('form');
                             form.method = 'POST';
                             form.action = 'http://localhost:8080/store/login';
                             form.style.display = 'none';
 
-                            // Create input fields for user information
                             var googleLoginInput = document.createElement('input');
                             googleLoginInput.type = 'hidden';
                             googleLoginInput.name = 'googleLogin';
                             googleLoginInput.value = 'googleLogin';
 
-                            var userNameInput = document.createElement('input');
-                            userNameInput.type = 'hidden';
-                            userNameInput.name = 'username';
-                            userNameInput.value = decodedPayload.email;
+                            var credentialInput = document.createElement('input');
+                            credentialInput.type = 'hidden';
+                            credentialInput.name = 'credential';
+                            credentialInput.value = credential;
 
-                            var userAvatarInput = document.createElement('input');
-                            userAvatarInput.type = 'hidden';
-                            userAvatarInput.name = 'avatarUrl';
-                            userAvatarInput.value = decodedPayload.picture;
-
-                            // Add the input fields to the form
                             form.appendChild(googleLoginInput);
-                            form.appendChild(userNameInput);
-                            form.appendChild(userAvatarInput);
+                            form.appendChild(credentialInput);
 
-                            // Add the form to the document
                             document.body.appendChild(form);
 
-                            // Submit the form
                             form.submit();
                         }
 

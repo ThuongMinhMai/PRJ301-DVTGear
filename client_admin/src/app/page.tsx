@@ -1,17 +1,17 @@
 "use client";
 
-import { LineChart, Loader } from "@/components";
+import {LineChart, Loader} from "@/components";
 import BarChart from "@/components/BarChart";
 import axios from "axios";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 
 type RevenueDataType = {
   revenueThisWeek: number;
   revenueThisMonth: number;
   revenueThisYear: number;
-  totalProductsSoldByCategory: { category: string; totalProducts: number }[];
-  totalProductsSoldByBrand: { brand: string; totalProducts: number }[];
+  totalProductsSoldByCategory: {category: string; totalProducts: number}[];
+  totalProductsSoldByBrand: {brand: string; totalProducts: number}[];
 };
 
 export default function Home() {
@@ -34,34 +34,34 @@ export default function Home() {
 
   return (
     <div>
-      <div className="mb-4 font-medium text-3xl">Revenue</div>
-      <div className="flex flex-col sm:flex-row gap-4 mb-8">
-        <div className="flex-1 p-2 bg-dvt-item rounded-lg flex flex-col items-center shadow-xl">
-          <div className="md:text-xl font-bold text-base">WEEK</div>
-          <div className="md:text-2xl text-primary font-bold my-2 text-base">
+      <div className="mb-4 text-3xl font-medium">Revenue</div>
+      <div className="flex flex-col gap-4 mb-8 sm:flex-row">
+        <div className="flex flex-col items-center flex-1 p-2 rounded-lg shadow-xl bg-dvt-item">
+          <div className="text-base font-bold md:text-xl">WEEK</div>
+          <div className="my-2 text-base font-bold md:text-2xl text-primary">
             {statisticalData?.revenueThisWeek.toLocaleString()}VNĐ
           </div>
-          <div className="md:text-base text-xs">
+          <div className="text-xs md:text-base">
             {statisticalData?.revenueThisWeek.toLocaleString()}VNĐ week
           </div>
         </div>
 
-        <div className="flex-1 p-2 bg-dvt-item rounded-lg flex flex-col items-center shadow-xl">
-          <div className="md:text-xl font-bold text-base">THIS MONTH</div>
-          <div className="md:text-2xl text-primary font-bold my-2 text-base">
+        <div className="flex flex-col items-center flex-1 p-2 rounded-lg shadow-xl bg-dvt-item">
+          <div className="text-base font-bold md:text-xl">THIS MONTH</div>
+          <div className="my-2 text-base font-bold md:text-2xl text-primary">
             {statisticalData?.revenueThisMonth.toLocaleString()}VNĐ
           </div>
-          <div className="md:text-base text-xs">
+          <div className="text-xs md:text-base">
             {statisticalData?.revenueThisMonth.toLocaleString()}VNĐ this month
           </div>
         </div>
 
-        <div className="flex-1 p-2 bg-dvt-item rounded-lg flex flex-col items-center shadow-xl">
-          <div className="md:text-xl font-bold text-base">THIS YEAR</div>
-          <div className="md:text-2xl text-primary font-bold my-2 text-base">
+        <div className="flex flex-col items-center flex-1 p-2 rounded-lg shadow-xl bg-dvt-item">
+          <div className="text-base font-bold md:text-xl">THIS YEAR</div>
+          <div className="my-2 text-base font-bold md:text-2xl text-primary">
             {statisticalData?.revenueThisYear.toLocaleString()}VNĐ
           </div>
-          <div className="md:text-base text-xs">
+          <div className="text-xs md:text-base">
             {" "}
             {statisticalData?.revenueThisYear.toLocaleString()}VNĐ this year
           </div>
@@ -72,7 +72,9 @@ export default function Home() {
         <LineChart />
       </div>
 
-      <div className="mb-4 font-medium text-3xl mt-8">Total Products Sold by Category and Brand</div>
+      <div className="mt-8 mb-4 text-3xl font-medium">
+        Total Products Sold by Category and Brand
+      </div>
 
       <div className="grid grid-cols-12 gap-6 mt-4">
         <BarChart

@@ -18,7 +18,7 @@ const OrderList = ({ firstOrders }: Props) => {
   const [pageNum, setPageNum] = useState(2);
   const [totalOrders, setTotalOrders] = useState(0);
   const router = useRouter();
-  const searchQuery = useSearchParams().get("searchQuery");
+  const searchQuery = useSearchParams()?.get("searchQuery");
 
   useEffect(() => {
     axios

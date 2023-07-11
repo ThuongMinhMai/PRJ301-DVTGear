@@ -2,6 +2,7 @@
 
 import { Loader, ProductForm } from "@/components";
 import { ArrowBackIcon } from "@/contexts/icons";
+import updateProduct from "@/services/updateProduct";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -15,11 +16,12 @@ export default function EditProductPage({}: Props) {
 
   const handleSubmit = async (form: Product) => {
     setIsUpdating(true);
-    await axios.put("http://localhost:8080/store/api/products", {
-      ...form,
-      images: JSON.parse(form.images),
-    });
-    router.push("/products");
+
+    await updateProduct(form);
+
+    //router push tự động cache dữ liệu và không lấy dữ liệu mới sau khi update. Chưa tìm được cách giải quyết. tạm thời chơi kiểu truyền thống
+    // router.push("/products");
+    window.location.href = "http://localhost:3000/products";
   };
 
   if (isUpdating) {

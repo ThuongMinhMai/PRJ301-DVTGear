@@ -3,14 +3,20 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Desktop/TOLGEAR/TOLStore/src/java/api/AdminAPI.java</file>
-            <file>file:/D:/Desktop/TOLGEAR/TOLStore/src/java/api/ProductAPI.java</file>
-            <file>file:/D:/Desktop/TOLGEAR/TOLStore/src/java/api/OrderAPI.java</file>
-            <file>file:/D:/Desktop/TOLGEAR/TOLStore/src/java/dao/AdminDAO.java</file>
-            <file>file:/D:/Desktop/TOLGEAR/TOLStore/src/java/dao/ProductDAO.java</file>
-            <file>file:/D:/Desktop/TOLGEAR/TOLStore/src/java/dao/OrderDAO.java</file>
-            <file>file:/D:/Desktop/TOLGEAR/TOLStore/src/java/utils/Utils.java</file>
-            <file>file:/D:/Desktop/TOLGEAR/TOLStore/web/home.jsp</file>
+            <file>file:/D:/code/TOLGEAR/TOLStore/src/java/controller/OrderController.java</file>
+            <file>file:/D:/code/TOLGEAR/TOLStore/src/java/api/CorsFilter.java</file>
+            <file>file:/D:/code/TOLGEAR/TOLStore/web/orders.jsp</file>
+            <file>file:/D:/code/TOLGEAR/TOLStore/src/java/controller/LoginController.java</file>
+            <file>file:/D:/code/TOLGEAR/TOLStore/src/java/api/CategoryAPI.java</file>
+            <file>file:/D:/code/TOLGEAR/TOLStore/web/login.jsp</file>
+            <file>file:/D:/code/TOLGEAR/TOLStore/src/java/api/BannerAPI.java</file>
+            <file>file:/D:/code/TOLGEAR/TOLStore/web/productDetail.jsp</file>
+            <file>file:/D:/code/TOLGEAR/TOLStore/web/home.jsp</file>
+            <file>file:/D:/code/TOLGEAR/TOLStore/web/header.jsp</file>
+            <file>file:/D:/code/TOLGEAR/TOLStore/web/favorite.jsp</file>
+            <file>file:/D:/code/TOLGEAR/TOLStore/web/cart.jsp</file>
+            <file>file:/D:/code/TOLGEAR/TOLStore/src/java/api/BrandAPI.java</file>
+            <file>file:/D:/code/TOLGEAR/TOLStore/web/register.jsp</file>
         </group>
     </open-files>
 </project-private>

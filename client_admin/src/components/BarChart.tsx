@@ -1,12 +1,5 @@
 "use client";
-import {
-  Chart as ChartJS,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import { Chart as ChartJS, registerables } from "chart.js";
 import React, { useEffect, useRef } from "react";
 
 type Props = {
@@ -15,7 +8,7 @@ type Props = {
   className?: string;
 };
 
-ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
+ChartJS.register(...registerables);
 
 export default function BarChart({ className, labels, data }: Props) {
   const chartRef: any = useRef(null);
