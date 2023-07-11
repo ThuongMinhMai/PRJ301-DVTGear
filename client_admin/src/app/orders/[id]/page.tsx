@@ -2,7 +2,6 @@
 
 import {Scroll} from "@/components";
 import {useGlobalContext} from "@/contexts/GlobalContext";
-import {ArrowBackIcon, ShippingIcon} from "@/contexts/icons";
 import statusToColor from "@/utils/statusColor";
 import axios from "axios";
 import clsx from "clsx";
@@ -55,12 +54,24 @@ export default function page({params: {id}}: Props) {
                 handleApproveOrder(order.id!);
               }}
             >
-              <ShippingIcon />
+              <Image
+                width={24}
+                height={24}
+                alt="shipping"
+                src="/shipping.svg"
+                className="filter invert"
+              />
               Approve Order
             </div>
           )}
           <Link href="/orders" className="text-white btn btn-primary">
-            <ArrowBackIcon />
+            <Image
+              width={24}
+              height={24}
+              alt="back"
+              src="/arrow-back.svg"
+              className="filter invert"
+            />
             <div className="ml-2">Back</div>
           </Link>
         </div>

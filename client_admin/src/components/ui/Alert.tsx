@@ -1,6 +1,6 @@
 "use client";
 
-import AlertIcon from "@/assets/AlertIcon";
+import AlertIcon from "@/components/ui/AlertIcon";
 import {useGlobalContext} from "@/contexts/GlobalContext";
 import clsx from "clsx";
 import React from "react";

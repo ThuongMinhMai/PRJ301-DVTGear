@@ -1,26 +1,24 @@
 "use client";
 
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { Loader, Scroll } from "..";
+import {useEffect, useState} from "react";
+import {Loader, Scroll} from "..";
 import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useGlobalContext } from "@/contexts/GlobalContext";
-import { EditIcon, MoreHorizIcon } from "@/contexts/icons";
+import {useRouter, useSearchParams} from "next/navigation";
+import {useGlobalContext} from "@/contexts/GlobalContext";
 
 type ProductListProps = {
   firstProducts: Product[];
 };
 
-const ProductList = ({ firstProducts }: ProductListProps) => {
+const ProductList = ({firstProducts}: ProductListProps) => {
   const [productList, setProductList] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [pageNum, setPageNum] = useState(2);
   const [totalProducts, setTotalProducts] = useState(0);
   const router = useRouter();
-  const { setEditedProduct } = useGlobalContext();
+  const {setEditedProduct} = useGlobalContext();
   const searchQuery = useSearchParams()?.get("searchQuery");
-
 
   useEffect(() => {
     console.log();
@@ -116,7 +114,13 @@ const ProductList = ({ firstProducts }: ProductListProps) => {
                         tabIndex={0}
                         className="m-1 text-white btn btn-primary"
                       >
-                        <MoreHorizIcon />
+                        <Image
+                          width={24}
+                          height={24}
+                          alt="more"
+                          src="/more.svg"
+                          className="filter invert"
+                        />
                       </label>
                       <ul
                         tabIndex={0}
@@ -129,7 +133,13 @@ const ProductList = ({ firstProducts }: ProductListProps) => {
                               router.push("/products/edit");
                             }}
                           >
-                            <EditIcon />
+                            <Image
+                              width={24}
+                              height={24}
+                              alt="edit"
+                              src="/edit.svg"
+                              className="filter invert"
+                            />
                             Edit
                           </div>
                         </li>

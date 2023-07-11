@@ -1,11 +1,9 @@
-'use sever'
+"use sever";
 
-import AddIcon from "@/assets/AddIcon";
-import DeleteIcon from "@/assets/DeleteIcon";
-import MoreHorizonIcon from "@/assets/MoreHorizonIcon";
 import {Scroll, SettingBannerForm} from "@/components";
 import React from "react";
 import {addAdmin, deleteAdmin, getAdmins} from "../_actions/admins";
+import Image from "next/image";
 
 type Props = {};
 
@@ -35,7 +33,13 @@ export default async function SettingsPage({}: Props) {
             <input type="hidden" name="admins" value={admins} />
 
             <button type="submit" className="text-white btn btn-primary w-fit">
-              <AddIcon className="w-6 h-6" />
+              <Image
+                src="/add-icon.svg"
+                alt="add"
+                width={24}
+                height={24}
+                className="filter invert"
+              />
               <div className="ml-2">Add Admin</div>
             </button>
           </form>
@@ -82,7 +86,13 @@ function AdminList({adminList}: AdminListProps) {
                       tabIndex={0}
                       className="m-1 text-white btn btn-primary"
                     >
-                      <MoreHorizonIcon className="w-6 h-6" />
+                      <Image
+                        src="/more.svg"
+                        alt="more"
+                        width={24}
+                        height={24}
+                        className="filter invert"
+                      />
                     </label>
                     <ul
                       tabIndex={0}
@@ -100,7 +110,13 @@ function AdminList({adminList}: AdminListProps) {
                             type="submit"
                             className="flex items-center gap-2"
                           >
-                            <DeleteIcon className="w-6 h-6" />
+                            <Image
+                              className="filter invert"
+                              src="/delete.svg"
+                              alt="add"
+                              width={24}
+                              height={24}
+                            />
                             Delete
                           </button>
                         </form>

@@ -16,7 +16,7 @@ const AlertIcon = ({type}: Props) => {
   return (
     <svg
       style={{
-        //tailwind lỗi chỗ này, nên dùng styles
+        //tailwind không custom được chỗ này, nên dùng inline style
         width: "24px",
         height: "24px",
       }}

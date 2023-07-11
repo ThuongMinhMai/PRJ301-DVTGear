@@ -1,8 +1,8 @@
 import React from "react";
 import Link from "next/link";
 import {ProductList, SearchProducts} from "@/components";
-import AddIcon from "@/assets/AddIcon";
 import {getProducts} from "../_actions/products";
+import Image from "next/image";
 
 type SearchParams = {
   searchQuery: string;
@@ -25,7 +25,13 @@ export default async function ProductsPage({searchParams}: Props) {
         <SearchProducts />
 
         <Link href="/products/new" className="text-white btn btn-primary w-fit">
-          <AddIcon className="w-6 h-6" />
+          <Image
+            src="/add-icon.svg"
+            alt="add"
+            width={24}
+            height={24}
+            className="filter invert"
+          />
           <div className="ml-2">Add Product</div>
         </Link>
       </div>

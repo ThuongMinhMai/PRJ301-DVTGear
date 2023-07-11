@@ -1,8 +1,8 @@
 "use client";
 
-import { updateProduct } from "@/app/_actions/products";
+import {updateProduct} from "@/app/_actions/products";
 import {Loader, ProductForm} from "@/components";
-import {ArrowBackIcon} from "@/contexts/icons";
+import Image from "next/image";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
 import React, {useTransition} from "react";
@@ -36,7 +36,13 @@ export default function EditProductPage({}: Props) {
       <div className="flex justify-between">
         <div className="text-3xl font-medium">Edit Product</div>
         <Link href="/products" className="mb-6 text-white btn btn-primary">
-          <ArrowBackIcon />
+          <Image
+            width={24}
+            height={24}
+            alt="back"
+            src="/arrow-back.svg"
+            className="filter invert"
+          />
           <div className="ml-2">Back</div>
         </Link>
       </div>

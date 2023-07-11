@@ -1,11 +1,11 @@
 "use client";
 
-import { Loader, ProductForm } from "@/components";
-import { ArrowBackIcon } from "@/contexts/icons";
+import {Loader, ProductForm} from "@/components";
 import axios from "axios";
+import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import {useRouter} from "next/navigation";
+import React, {useState} from "react";
 
 type Props = {};
 
@@ -36,9 +36,9 @@ export default function AddProductPage({}: Props) {
   return (
     <div className="flex flex-col">
       <div className="flex justify-between">
-        <div className="font-medium text-3xl">Add Product</div>
-        <Link href="/products" className="btn btn-primary mb-6 text-white">
-          <ArrowBackIcon />
+        <div className="text-3xl font-medium">Add Product</div>
+        <Link href="/products" className="mb-6 text-white btn btn-primary">
+          <Image alt="back" src="/arrow-back.svg" className="filter invert" />
           <div className="ml-2">Back</div>
         </Link>
       </div>

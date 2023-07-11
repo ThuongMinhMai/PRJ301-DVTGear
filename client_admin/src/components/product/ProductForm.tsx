@@ -1,19 +1,18 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Formik, Form, Field, ErrorMessage, useFormikContext } from "formik";
+import React, {useState, useEffect} from "react";
+import {Formik, Form, Field, ErrorMessage, useFormikContext} from "formik";
 import * as Yup from "yup";
 import {storage} from "@/firebase";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { v4 } from "uuid";
-import { BounceLoader } from "react-spinners";
+import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
+import {v4} from "uuid";
+import {BounceLoader} from "react-spinners";
 import axios from "axios";
-import { FileUploadIcon } from "@/contexts/icons";
-import { useGlobalContext } from "@/contexts/GlobalContext";
-import { useRouter } from "next/navigation";
-import DeleteIcon from "@/assets/DeleteIcon";
+import {useGlobalContext} from "@/contexts/GlobalContext";
+import {useRouter} from "next/navigation";
 import clsx from "clsx";
-import { ReactSortable } from "react-sortablejs";
+import {ReactSortable} from "react-sortablejs";
+import Image from "next/image";
 
 type Props = {
   handleSubmit: (product: Product) => void;
@@ -21,8 +20,8 @@ type Props = {
   edit?: boolean;
 };
 
-export default function ProductForm({ handleSubmit, edit }: Props) {
-  const { editedProduct } = useGlobalContext();
+export default function ProductForm({handleSubmit, edit}: Props) {
+  const {editedProduct} = useGlobalContext();
 
   const router = useRouter();
 
@@ -107,7 +106,7 @@ type TypoFiledProps = {
   component?: string;
 };
 
-const TypoFiled = ({ title, name, type, rows, component }: TypoFiledProps) => {
+const TypoFiled = ({title, name, type, rows, component}: TypoFiledProps) => {
   return (
     <>
       <div className="flex items-center mb-2">
@@ -143,7 +142,7 @@ const CategoryField = ({}: CategoryFieldProps) => {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const { data } = await axios.get(
+      const {data} = await axios.get(
         "http://localhost:8080/store/api/categories"
       );
       setCategories(data.categories);
@@ -155,9 +154,9 @@ const CategoryField = ({}: CategoryFieldProps) => {
     setOptions(
       categories.map((category: Category) => {
         if (typeof category === "object") {
-          return { value: category.id, label: category.name } as OptionType;
+          return {value: category.id, label: category.name} as OptionType;
         } else {
-          return { value: category, label: category } as OptionType;
+          return {value: category, label: category} as OptionType;
         }
       })
     );
@@ -201,9 +200,7 @@ const BrandField = ({}: BrandFieldProps) => {
 
   useEffect(() => {
     const fetchBrands = async () => {
-      const { data } = await axios.get(
-        "http://localhost:8080/store/api/brands"
-      );
+      const {data} = await axios.get("http://localhost:8080/store/api/brands");
       setBrands(data.brands);
     };
     fetchBrands();
@@ -213,9 +210,9 @@ const BrandField = ({}: BrandFieldProps) => {
     setOptions(
       brands.map((brand: Brand) => {
         if (typeof brand === "object") {
-          return { value: brand.id, label: brand.name } as OptionType;
+          return {value: brand.id, label: brand.name} as OptionType;
         } else {
-          return { value: brand, label: brand } as OptionType;
+          return {value: brand, label: brand} as OptionType;
         }
       })
     );
@@ -252,7 +249,7 @@ const BrandField = ({}: BrandFieldProps) => {
 };
 
 function ImageField() {
-  const { getFieldProps, setFieldValue } = useFormikContext();
+  const {getFieldProps, setFieldValue} = useFormikContext();
   const imagesString = getFieldProps("images").value;
   const imagesArray: string[] = imagesString ? JSON.parse(imagesString) : [];
   const [isUploading, setIsUploading] = useState(false);
@@ -305,7 +302,7 @@ function ImageField() {
                   }}
                   className="absolute items-center justify-center hidden rounded-full cursor-pointer group-hover:flex opacity-70 w-9 h-9 bg-black-2 top-2 right-2 hover:opacity-100"
                 >
-                  <DeleteIcon className="w-6 h-6 text-primary" />
+                  <Image src="/delete.svg" alt="delete" width={24} height={24} className="filter invert"/>
                 </div>
                 <img className="object-cover h-32" src={url} alt={url} />
               </div>
@@ -326,7 +323,13 @@ function ImageField() {
           )}
         >
           <div className="flex flex-col items-center justify-center">
-            <FileUploadIcon />
+            <Image
+              width={24}
+              height={24}
+              alt="upload"
+              src="/upload.svg"
+              className="filter invert"
+            />
             <h1 className="text-base normal-case">Upload</h1>
           </div>
           <input

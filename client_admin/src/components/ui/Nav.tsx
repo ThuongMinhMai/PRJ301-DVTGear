@@ -1,15 +1,7 @@
 "use client";
 
 import {useGlobalContext} from "@/contexts/GlobalContext";
-import {
-  DashboardIcon,
-  LogoutIcon,
-  MenuIcon,
-  OrdersIcon,
-  ProductsIcon,
-  SettingsIcon,
-} from "@/contexts/icons";
-import logo from "../../assets/logo.png"
+import logo from "../../assets/logo.png";
 import Image from "next/image";
 import Link from "next/link";
 import React, {useState} from "react";
@@ -21,22 +13,22 @@ const links = [
   {
     pathname: "/",
     label: "Dashboard",
-    icon: <DashboardIcon />,
+    icon: "/dashboard.svg",
   },
   {
     pathname: "/products",
     label: "Products",
-    icon: <ProductsIcon />,
+    icon: "/product.svg",
   },
   {
     pathname: "/orders",
     label: "Orders",
-    icon: <OrdersIcon />,
+    icon: "/order.svg",
   },
   {
     pathname: "/settings",
     label: "Settings",
-    icon: <SettingsIcon />,
+    icon: "/setting.svg",
   },
 ];
 
@@ -49,7 +41,7 @@ export default function Nav({}: Props) {
       <div className="relative bg-primary w-[280px] text-white hidden lg:block">
         <div className="fixed p-4 pt-0 w-[280px]">
           <div className="flex items-center justify-center py-2 border-b-2 border-y-black-2 max-auto">
-            <Image alt="logo" height={72} width={180} src={logo} />
+            <Image alt="logo" height={72} width={180} src="/logo.png" />
           </div>
 
           <ul className="flex flex-col mt-6">
@@ -64,7 +56,13 @@ export default function Nav({}: Props) {
                         : ""
                     }`}
                   >
-                    {link.icon}
+                    <Image
+                      alt={link.label}
+                      src={link.icon}
+                      width={24}
+                      height={24}
+                      className="filter invert"
+                    />
                     <div className="ml-2 text-lg font-medium">{link.label}</div>
                   </Link>
                 </li>
@@ -80,7 +78,13 @@ export default function Nav({}: Props) {
               className="cursor-pointer"
             >
               <div className="flex px-4 py-2 rounded-2xl">
-                <LogoutIcon />
+                <Image
+                  alt="logout"
+                  src="/logout.svg"
+                  width={24}
+                  height={24}
+                  className="filter invert"
+                />
                 <div className="ml-2 text-lg font-medium">Log Out</div>
               </div>
             </li>
@@ -106,12 +110,17 @@ export default function Nav({}: Props) {
       </div>
 
       <div className="flex items-center justify-center py-4 lg:hidden text-black-1">
-        <MenuIcon
-          className="absolute cursor-pointer left-4 md:w-12 md:h-12 w-9 h-9"
-          onClick={() => setOpenMobileNav(true)}
-        />
+        <div className="absolute cursor-pointer md:w-12 md:h-12 w-9 h-9 left-4">
+          <Image
+            alt="logout"
+            src="/menu.svg"
+            fill
+            className="filter invert"
+          />
+        </div>
+
         <div className="flex items-center justify-center gap-4 max-auto">
-          <Image alt="logo" height={56} width={56} src={logo} />
+          <Image alt="logo" height={56} width={56} src="/logo.png" />
           {/* <div className="text-lg font-bold md:text-2xl">DVT Admin</div> */}
         </div>
       </div>
@@ -133,9 +142,7 @@ export default function Nav({}: Props) {
               <Link
                 href={link.pathname}
                 className={`flex py-2 px-4 rounded-2xl hover:bg-black-1 hover:text-primary ${
-                  selectedNav === link.label
-                    ? "bg-black-1 text-primary"
-                    : ""
+                  selectedNav === link.label ? "bg-black-1 text-primary" : ""
                 }`}
               >
                 {link.icon}
@@ -154,7 +161,13 @@ export default function Nav({}: Props) {
           className="cursor-pointer"
         >
           <div className="flex px-4 py-2 rounded-2xl hover:bg-black-1 hover:text-primary">
-            <LogoutIcon />
+            <Image
+              alt="logout"
+              src="/logout.svg"
+              width={24}
+              height={24}
+              className="filter invert"
+            />
             <div className="ml-2 text-lg font-medium">Log Out</div>
           </div>
         </li>

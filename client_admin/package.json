@@ -44,7 +44,8 @@
     "tailwindcss": "3.3.2",
     "typescript": "5.0.4",
     "uuid": "^9.0.0",
-    "yup": "^1.1.1"
+    "yup": "^1.1.1",
+    "zustand": "^4.3.9"
   },
   "devDependencies": {
     "@types/sortablejs": "^1.15.1",

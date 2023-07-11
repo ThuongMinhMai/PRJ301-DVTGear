@@ -1,8 +1,5 @@
 "use client";
 
-import DeleteIcon from "@/assets/DeleteIcon";
-import EditIcon from "@/assets/EditIcon";
-import {FileUploadIcon} from "@/contexts/icons";
 import axios from "axios";
 import {storage} from "@/firebase";
 import {getDownloadURL, ref, uploadBytes} from "firebase/storage";
@@ -10,6 +7,7 @@ import {useEffect, useState} from "react";
 import {ReactSortable} from "react-sortablejs";
 import {BounceLoader} from "react-spinners";
 import {v4} from "uuid";
+import Image from "next/image";
 
 type Props = {};
 
@@ -43,7 +41,13 @@ const SettingBannerForm = ({}: Props) => {
             onClick={() => setEdit(true)}
             className="flex items-center gap-2 text-white btn btn-primary w-fit"
           >
-            <EditIcon className="w-5 h-5" />
+            <Image
+              src="/edit.svg"
+              alt="edit"
+              width={20}
+              height={20}
+              className="filter invert"
+            />
             Edit
           </button>
         )}
@@ -138,7 +142,13 @@ function ImageField({
                   }}
                   className="absolute items-center justify-center hidden rounded-full cursor-pointer group-hover:flex opacity-70 w-9 h-9 bg-black-2 top-2 right-2 hover:opacity-100"
                 >
-                  <DeleteIcon className="w-6 h-6 text-primary" />
+                  <Image
+                    src="/delete.svg"
+                    alt="add"
+                    width={24}
+                    height={24}
+                    className="filter invert"
+                  />
                 </div>
                 <img className="object-cover h-32" src={url} alt={url} />
               </div>
@@ -158,7 +168,13 @@ function ImageField({
           }`}
         >
           <div className="flex flex-col items-center justify-center">
-            <FileUploadIcon />
+            <Image
+              width={24}
+              height={24}
+              alt="upload"
+              src="/upload.svg"
+              className="filter invert"
+            />
             <h1 className="text-base normal-case">Upload</h1>
           </div>
           <input

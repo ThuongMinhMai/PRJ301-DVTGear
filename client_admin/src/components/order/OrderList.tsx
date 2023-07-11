@@ -1,18 +1,18 @@
 "use client";
 
 import axios from "axios";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { Loader, Scroll } from "..";
+import {useRouter, useSearchParams} from "next/navigation";
+import {useEffect, useState} from "react";
+import {Loader, Scroll} from "..";
 import clsx from "clsx";
-import { DetailsIcon, MoreHorizIcon } from "@/contexts/icons";
 import statusToColor from "@/utils/statusColor";
+import Image from "next/image";
 
 type Props = {
   firstOrders: Order[];
 };
 
-const OrderList = ({ firstOrders }: Props) => {
+const OrderList = ({firstOrders}: Props) => {
   const [orderList, setOrderList] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [pageNum, setPageNum] = useState(2);
@@ -108,7 +108,13 @@ const OrderList = ({ firstOrders }: Props) => {
                         tabIndex={0}
                         className="m-1 text-white btn btn-primary"
                       >
-                        <MoreHorizIcon />
+                        <Image
+                          width={24}
+                          height={24}
+                          alt="more"
+                          src="/more.svg"
+                          className="filter invert"
+                        />
                       </label>
                       <ul
                         tabIndex={0}
@@ -120,7 +126,13 @@ const OrderList = ({ firstOrders }: Props) => {
                           }}
                         >
                           <a>
-                            <DetailsIcon />
+                            <Image
+                              width={24}
+                              height={24}
+                              alt="detail"
+                              src="/detail.svg"
+                              className="filter invert"
+                            />
                             Detail
                           </a>
                         </li>

@@ -1,26 +1,23 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
-import { GoogleLogin } from "@react-oauth/google";
+import React, {useCallback, useEffect, useState} from "react";
+import {GoogleLogin} from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
-import { useGlobalContext } from "@/contexts/GlobalContext";
-import logo from "../../assets/logo3.png";
-import videoBg from "../../assets/videoBg.mp4";
+import {useGlobalContext} from "@/contexts/GlobalContext";
 import Image from "next/image";
 import axios from "axios";
 import Alert from "../ui/Alert";
-
 
 type Props = {
   children: React.ReactNode;
 };
 
-export default function AuthAdmin({ children }: Props) {
-  const { currentUser, setCurrentUser, setShowAlert } = useGlobalContext();
+export default function AuthAdmin({children}: Props) {
+  const {currentUser, setCurrentUser, setShowAlert} = useGlobalContext();
   const [admins, setAdmins] = useState<any>([]);
 
   const fetchAdmins = useCallback(async () => {
-    const { data } = await axios.get("http://localhost:8080/store/api/admins");
+    const {data} = await axios.get("http://localhost:8080/store/api/admins");
     setAdmins(JSON.parse(data.admins || "[]"));
   }, []);
 
@@ -57,7 +54,7 @@ export default function AuthAdmin({ children }: Props) {
           <Alert />
           <video
             className="object-fill w-full h-full"
-            src={videoBg}
+            src="/videoBg.mp4"
             autoPlay
             loop
             muted
@@ -68,7 +65,7 @@ export default function AuthAdmin({ children }: Props) {
             alt="logo"
             height={64}
             width={154}
-            src={logo}
+            src="/logo3.png"
             className="mb-4"
           />
           <GoogleLogin
