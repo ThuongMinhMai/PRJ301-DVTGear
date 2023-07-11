@@ -1,7 +1,7 @@
 "use client";
 
 import AlertIcon from "@/components/ui/AlertIcon";
-import {useGlobalContext} from "@/contexts/GlobalContext";
+import { useAlertStore } from "@/store";
 import clsx from "clsx";
 import React from "react";
 
@@ -13,12 +13,12 @@ const styles = {
 };
 
 export default function Alert() {
-  const {showAlert} = useGlobalContext();
+  const showAlert = useAlertStore();
 
   return (
     <>
       {showAlert?.status && (
-        <div className="absolute left-0 right-0 z-10 flex items-center justify-center top-5">
+        <div className="absolute left-0 right-0 z-[999] flex items-center justify-center top-5">
           <div
             className={clsx(
               "p-4 rounded-lg font-rajdhani font-semibold text-lg flex items-center",

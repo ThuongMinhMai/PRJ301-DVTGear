@@ -8,11 +8,11 @@ import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
 import {v4} from "uuid";
 import {BounceLoader} from "react-spinners";
 import axios from "axios";
-import {useGlobalContext} from "@/contexts/GlobalContext";
 import {useRouter} from "next/navigation";
 import clsx from "clsx";
 import {ReactSortable} from "react-sortablejs";
 import Image from "next/image";
+import {useEditedProductStore} from "@/store";
 
 type Props = {
   handleSubmit: (product: Product) => void;
@@ -21,7 +21,7 @@ type Props = {
 };
 
 export default function ProductForm({handleSubmit, edit}: Props) {
-  const {editedProduct} = useGlobalContext();
+  const {editedProduct} = useEditedProductStore();
 
   const router = useRouter();
 
@@ -302,7 +302,13 @@ function ImageField() {
                   }}
                   className="absolute items-center justify-center hidden rounded-full cursor-pointer group-hover:flex opacity-70 w-9 h-9 bg-black-2 top-2 right-2 hover:opacity-100"
                 >
-                  <Image src="/delete.svg" alt="delete" width={24} height={24} className="filter invert"/>
+                  <Image
+                    src="/delete.svg"
+                    alt="delete"
+                    width={24}
+                    height={24}
+                    className="filter invert"
+                  />
                 </div>
                 <img className="object-cover h-32" src={url} alt={url} />
               </div>

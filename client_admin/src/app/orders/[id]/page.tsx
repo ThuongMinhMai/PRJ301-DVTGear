@@ -1,7 +1,7 @@
 "use client";
 
 import {Scroll} from "@/components";
-import {useGlobalContext} from "@/contexts/GlobalContext";
+import { useAlertStore } from "@/store";
 import statusToColor from "@/utils/statusColor";
 import axios from "axios";
 import clsx from "clsx";
@@ -17,7 +17,6 @@ type Props = {
 
 export default function page({params: {id}}: Props) {
   const [order, setOrder] = useState<Order>();
-  const {setShowAlert} = useGlobalContext();
 
   const fetchOrderDetail = useCallback(async () => {
     const {data} = await axios.get(
@@ -34,11 +33,12 @@ export default function page({params: {id}}: Props) {
     const {data} = await axios.put("http://localhost:8080/store/api/orders", {
       orderId: id,
     });
-    setShowAlert({
+    useAlertStore.getState().setShowAlert({
       status: true,
       type: data.isSuccess ? "success" : "failure",
       message: data.message,
     });
+
     fetchOrderDetail();
   };
 

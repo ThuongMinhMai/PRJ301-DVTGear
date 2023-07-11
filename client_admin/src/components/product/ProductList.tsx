@@ -5,7 +5,7 @@ import {useEffect, useState} from "react";
 import {Loader, Scroll} from "..";
 import Image from "next/image";
 import {useRouter, useSearchParams} from "next/navigation";
-import {useGlobalContext} from "@/contexts/GlobalContext";
+import {useEditedProductStore} from "@/store";
 
 type ProductListProps = {
   firstProducts: Product[];
@@ -17,7 +17,6 @@ const ProductList = ({firstProducts}: ProductListProps) => {
   const [pageNum, setPageNum] = useState(2);
   const [totalProducts, setTotalProducts] = useState(0);
   const router = useRouter();
-  const {setEditedProduct} = useGlobalContext();
   const searchQuery = useSearchParams()?.get("searchQuery");
 
   useEffect(() => {
@@ -129,7 +128,9 @@ const ProductList = ({firstProducts}: ProductListProps) => {
                         <li>
                           <div
                             onClick={() => {
-                              setEditedProduct(product);
+                              useEditedProductStore.setState({
+                                editedProduct: product,
+                              });
                               router.push("/products/edit");
                             }}
                           >

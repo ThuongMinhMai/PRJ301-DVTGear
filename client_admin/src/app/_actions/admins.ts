@@ -1,6 +1,9 @@
-'use server'
+"use server";
 
+import {cookies} from "next/headers";
 import {revalidatePath} from "next/cache";
+import jwt_decode from "jwt-decode";
+import {relative} from "path";
 
 export async function addAdmin(formData: FormData) {
   const formDataObj: any = {};
@@ -52,4 +55,25 @@ export async function getAdmins() {
   const data: {admins: string} = await res.json();
 
   return JSON.parse(data.admins) as Admin[];
+}
+
+export async function getCurrentAdmin() {
+  return cookies().get("current-admin");
+}
+
+export async function loginAdmin(googleToken: any) {
+  const adminData: any = jwt_decode(googleToken);
+
+  if ((await getAdmins())?.includes(adminData.email)) {
+    await cookies().set("current-admin", adminData);
+    return true;
+  }
+
+  return false;
+}
+
+export async function logOutCurrentAdmin() {
+  cookies().delete("current-admin");
+  revalidatePath("/");
+  return;
 }

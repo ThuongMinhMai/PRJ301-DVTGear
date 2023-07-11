@@ -10,8 +10,9 @@ import OrderList from "./order/OrderList";
 import Alert from "./ui/Alert";
 import BarChart from "./dashboard/BarChart";
 import SettingBannerForm from "./setting/SettingBannerForm";
-import AuthAdmin from "./HOC/AuthAdmin";
+import AuthAdmin from "./ui/AuthAdmin";
 import Providers from "./HOC/Providers";
+import GoogleLoginBtn from "./ui/GoogleLoginBtn";
 
 export {
   Nav,
@@ -28,4 +29,5 @@ export {
   SettingBannerForm,
   AuthAdmin,
   Providers,
+  GoogleLoginBtn,
 };
