@@ -4,23 +4,27 @@
     Author     : Kingc
 --%>
 
-<%@page import="java.sql.Date"%>
-<%@page import="model.OrderProduct"%>
-<%@page import="utils.Utils"%>
-<%@page import="model.Product"%>
-<%@page import="model.Order"%>
-<%@page import="java.util.List"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.sql.Date" %>
+<%@page import="model.OrderProduct" %>
+<%@page import="utils.Utils" %>
+<%@page import="model.Product" %>
+<%@page import="model.Order" %>
+<%@page import="java.util.List" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 
-<jsp:include page="./header.jsp" />
+<jsp:include page="./header.jsp"/>
 
 <div id="ordersContainer" class="mx-auto max-w-6xl w-11/12 mt-32 mb-8">
     <div class="flex bg-dvt-black-2 mb-4 rounded-md">
         <a href="?" id="tab1" class="w-1/5 text-center text-lg cursor-pointer py-4 hover:text-primary tab">Tất cả</a>
-        <a href="?filter_by=PROCESSING" id="tab2" class="w-1/5 text-center text-lg cursor-pointer py-4 hover:text-primary tab">Đang xử lí</a>
-        <a href="?filter_by=DELIVERING" id="tab3" class="w-1/5 text-center text-lg cursor-pointer py-4 hover:text-primary tab">Đang giao</a>
-        <a href="?filter_by=COMPLETE" id="tab4" class="w-1/5 text-center text-lg cursor-pointer py-4 hover:text-primary tab">Hoàn thành</a>
-        <a href="?filter_by=CANCELLED" id="tab5" class="w-1/5 text-center text-lg cursor-pointer py-4 hover:text-primary tab">Đã hủy</a>
+        <a href="?filter_by=PROCESSING" id="tab2"
+           class="w-1/5 text-center text-lg cursor-pointer py-4 hover:text-primary tab">Đang xử lí</a>
+        <a href="?filter_by=DELIVERING" id="tab3"
+           class="w-1/5 text-center text-lg cursor-pointer py-4 hover:text-primary tab">Đang giao</a>
+        <a href="?filter_by=COMPLETE" id="tab4"
+           class="w-1/5 text-center text-lg cursor-pointer py-4 hover:text-primary tab">Hoàn thành</a>
+        <a href="?filter_by=CANCELLED" id="tab5"
+           class="w-1/5 text-center text-lg cursor-pointer py-4 hover:text-primary tab">Đã hủy</a>
     </div>
 
     <%
@@ -30,7 +34,9 @@
         if (orderList.size() == 0) {
     %>
     <div class="flex flex-col justify-center items-center bg-dvt-black-2 rounded-md h-[500px]">
-        <img class="h-24 w-24" src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/5fafbb923393b712b96488590b8f781f.png" alt="no_order" />
+        <img class="h-24 w-24"
+             src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/5fafbb923393b712b96488590b8f781f.png"
+             alt="no_order"/>
         <div class="text-white font-medium text-2xl my-4">Chưa có đơn hàng nào</div>
     </div>
     <% } %>
@@ -45,13 +51,13 @@
                 <%= Order.Status.translateStatus(order.getStatus())%>
             </label>
         </div>
-        <hr />
+        <hr/>
         <% for (OrderProduct orderProduct : orderProductList) {
                 Product product = orderProduct.getProduct();
         %>
         <div class="flex my-5">
             <a href="http://localhost:8080/store/products?id=<%= product.getId()%>" class="h-24 aspect-square">
-                <img class="object-fill" src="<%= Utils.parseJSONStringArray(product.getImages()).get(0)%>" alt="product" />
+                <img class="object-fill" src="<%= Utils.parseJSONStringArray(product.getImages()).get(0)%>" alt="product"/>
             </a>
             <div class="flex flex-col ml-4 flex-1">
                 <span class="pb-1 text-lg line-clamp-1"><%= product.getName()%></span>
@@ -62,7 +68,9 @@
                 <%= Utils.formatNum(orderProduct.getPrice())%>₫
                 <% if (order.getStatus().equals(Order.Status.COMPLETE)) { %>
                 <% if (!orderProduct.getIsRated()) {%>
-                <button onclick='renderRatingForm("<%= Utils.parseJSONStringArray(product.getImages()).get(0)%>", "<%= product.getName()%>", "<%= product.getId()%>")' class="bg-primary text-white px-6 py-2 rounded-sm hover:opacity-70">
+                <button
+                    onclick="renderRatingForm('<%= Utils.parseJSONStringArray(product.getImages()).get(0)%>', '<%= product.getName().replaceAll("\"", "inch")%>', '<%= product.getId()%>')"
+                    class="bg-primary text-white px-6 py-2 rounded-sm hover:opacity-70">
                     Đánh Giá
                 </button>
                 <% } else { %>
@@ -74,7 +82,7 @@
             </div>
         </div>
         <% }%>
-        <hr />
+        <hr/>
         <div class="flex pt-6">
             <div class="flex-1 text-slate-400 text-base flex items-center">
                 <span class="text-primary mr-2 font-medium">Ngày đặt hàng: </span>
@@ -87,17 +95,19 @@
                 </div>
                 <div>
                     <% switch (order.getStatus()) {
-                            case PROCESSING:%>
-                    <button onclick="cancelOrder(<%= order.getId()%>)" class="border bg-primary border-black px-12 py-2 rounded-sm hover:opacity-70">
+                  case PROCESSING:%>
+                    <button onclick="cancelOrder(<%= order.getId()%>)"
+                            class="border bg-primary border-black px-12 py-2 rounded-sm hover:opacity-70">
                         Hủy Đơn
                     </button>
                     <% break;
-                        case DELIVERING:%>
-                    <button onclick="completeOrder(<%= order.getId()%>)" class="border bg-primary border-black px-12 py-2 rounded-sm hover:opacity-70">
+              case DELIVERING:%>
+                    <button onclick="completeOrder(<%= order.getId()%>)"
+                            class="border bg-primary border-black px-12 py-2 rounded-sm hover:opacity-70">
                         Đã Nhận Hàng
                     </button>
                     <% break;
-                        } %>
+              } %>
                 </div>
             </div>
         </div>
@@ -189,13 +199,11 @@
 
     const renderViewMoreOrdersBtn = () => {
         const viewMoreOrdersBtn = document.getElementById("viewMoreOrdersBtn");
-        if (viewMoreOrdersBtn)
-        {
+        if (viewMoreOrdersBtn) {
             viewMoreOrdersBtn.parentNode.removeChild(viewMoreOrdersBtn);
         }
 
-        if (hideOrdersCount > 0)
-        {
+        if (hideOrdersCount > 0) {
             const viewMoreOrdersBtn = document.createElement("div");
             viewMoreOrdersBtn.setAttribute("id", "viewMoreOrdersBtn");
             viewMoreOrdersBtn.className = "py-2 px-4 rounded-md bg-primary w-fit mt-8 cursor-pointer mx-auto hover:opacity-80 select-none";
@@ -208,8 +216,7 @@
 
     const removeViewMoreOrdersBtn = () => {
         const viewMoreOrdersBtn = document.getElementById("viewMoreOrdersBtn");
-        if (viewMoreOrdersBtn)
-        {
+        if (viewMoreOrdersBtn) {
             viewMoreOrdersBtn.parentNode.removeChild(viewMoreOrdersBtn);
         }
     };
@@ -223,14 +230,13 @@
 
     const removeLoader = () => {
         const loader = document.getElementById("loader");
-        if (loader)
-        {
+        if (loader) {
             loader.parentNode.removeChild(loader);
         }
     };
 
 
-    const fetchMoreOrders = async() => {
+    const fetchMoreOrders = async () => {
 
         removeViewMoreOrdersBtn();
         renderLoader();
@@ -315,6 +321,7 @@
 
     // Get all the tab elements
     const tabs = document.querySelectorAll('.tab');
+
     // Function to handle tab click event
     function handleTabClick() {
         // Remove the 'selected' class from all tabs
@@ -397,8 +404,6 @@
         ratingInputs.forEach((input, index) => {
 
 
-
-
             input.addEventListener('change', () => {
                 const selectedRating = index + 1;
                 ratingImages.forEach((image, imageIndex) => {
@@ -411,6 +416,7 @@
                 displayRatingText(selectedRating);
             });
         });
+
         function displayRatingText(rating) {
             let text = '';
             switch (rating) {
@@ -447,6 +453,6 @@
 
 </script>
 
-<jsp:include page="./footer.jsp" />
+<jsp:include page="./footer.jsp"/>
 
 

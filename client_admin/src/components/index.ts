@@ -1,12 +1,17 @@
-import Nav from "./Nav";
-import ProductForm from "./ProductForm";
-import Loader from "./Loader";
-import Scroll from "./Scroll";
-import LineChart from "./LineChart";
-import ProductList from "./ProductList";
-import SearchOrders from "./SearchOrders";
-import SearchProducts from "./SearchProducts";
-import OrderList from "./OrderList";
+import Nav from "./ui/Nav";
+import ProductForm from "./product/ProductForm";
+import Loader from "./ui/Loader";
+import Scroll from "./HOC/Scroll";
+import LineChart from "./dashboard/LineChart";
+import ProductList from "./product/ProductList";
+import SearchOrders from "./order/SearchBarOrders";
+import SearchProducts from "./product/SearchBarProducts";
+import OrderList from "./order/OrderList";
+import Alert from "./ui/Alert";
+import BarChart from "./dashboard/BarChart";
+import SettingBannerForm from "./setting/SettingBannerForm";
+import AuthAdmin from "./HOC/AuthAdmin";
+import Providers from "./HOC/Providers";
 
 export {
   Nav,
@@ -17,5 +22,10 @@ export {
   ProductList,
   SearchOrders,
   SearchProducts,
-  OrderList
+  OrderList,
+  Alert,
+  BarChart,
+  SettingBannerForm,
+  AuthAdmin,
+  Providers,
 };

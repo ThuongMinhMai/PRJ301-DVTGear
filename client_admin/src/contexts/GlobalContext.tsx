@@ -1,6 +1,5 @@
 "use client";
 
-import { AlertType } from "@/utils/types";
 import { usePathname } from "next/navigation";
 import {
   createContext,
@@ -34,7 +33,7 @@ export const GlobalContext = createContext<GlobalContextType>({
   setCurrentUser: () => {},
   showAlert: {
     status: false,
-    type: AlertType.info,
+    type: "info" as AlertType,
     message: "",
   },
   setShowAlert: () => {},
@@ -62,7 +61,7 @@ export function GlobalProvider({ children }: GlobalProviderProps) {
   const [currentUser, setCurrentUser] = useState<any>();
   const [showAlert, setShowAlert] = useState({
     status: false,
-    type: AlertType.info,
+    type: "info" as AlertType,
     message: "",
   });
 
@@ -74,7 +73,7 @@ export function GlobalProvider({ children }: GlobalProviderProps) {
   useEffect(() => {
     if (showAlert?.status) {
       const timer = setTimeout(() => {
-        setShowAlert({ status: false, type: AlertType.info, message: "" });
+        setShowAlert({ status: false, type: "info", message: "" });
       }, 3000);
 
       return () => clearTimeout(timer);

@@ -32,7 +32,7 @@ public class OrderAPI extends HttpServlet {
             Order order = orderDAO.getOrderDetail(Integer.parseInt(orderId));
 
             JSONObject jsonResponse = new JSONObject();
-            jsonResponse.put("message", "Get order succesfully!");
+            jsonResponse.put("message", "Get order successfully!");
             jsonResponse.put("order", new JSONObject(order));
 
             response.getWriter().write(jsonResponse.toString());

@@ -1,50 +1,52 @@
 package controller;
 
 import dao.ProductDAO;
-import java.io.IOException;
-import java.util.List;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import model.Product;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import utils.Utils;
 
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+
 @WebServlet(name = "CartController", urlPatterns = {"/cart"})
 public class CartController extends HttpServlet {
 
-    //Get Cart Page
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+  //Get Cart Page
 
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html; charset=UTF-8");
+  @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
 
-        request.getRequestDispatcher("cart.jsp").forward(request, response);
-    }
+    response.setCharacterEncoding("UTF-8");
+    response.setContentType("text/html; charset=UTF-8");
 
-    //Post id products in cart from client, to get real products at json format 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        JSONObject body = Utils.getRequestBody(request);
-        ProductDAO productDAO = new ProductDAO();
+    request.getRequestDispatcher("cart.jsp").forward(request, response);
+  }
 
-        List<Product> products = productDAO.getCartProducts(body);
+  //Post id products in cart from client, to get real products at json format
+  @Override
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+    JSONObject body = Utils.getRequestBody(request);
+    ProductDAO productDAO = new ProductDAO();
 
-        JSONObject jsonResponse = new JSONObject();
+    List<Product> products = productDAO.getCartProducts(body);
 
-        jsonResponse.put("message", "Get cart products succesfully!");
-        jsonResponse.put("products", new JSONArray(products));
+    JSONObject jsonResponse = new JSONObject();
 
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.setContentType("application/json");
-        response.getWriter().write(jsonResponse.toString());
+    jsonResponse.put("message", "Get cart products succesfully!");
+    jsonResponse.put("products", new JSONArray(products));
 
-    }
+    response.setStatus(HttpServletResponse.SC_OK);
+    response.setContentType("application/json");
+    response.getWriter().write(jsonResponse.toString());
+
+  }
 
 }

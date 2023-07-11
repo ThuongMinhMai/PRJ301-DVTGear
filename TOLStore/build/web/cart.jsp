@@ -4,88 +4,92 @@
     Author     : Kingc
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 
-<jsp:include page="./header.jsp" />
+<jsp:include page="./header.jsp"/>
 
 <div id="cartPage" class="bg-dvt-black-2 text-white p-6 mx-auto max-w-6xl w-11/12 rounded-md mt-32 mb-8">
-    <div id="productsContainer"></div>
+  <div id="productsContainer"></div>
 
-    <div class="flex justify-between items-center my-4">
-        <div class="font-bold text-xl">Thành Tiền:</div>
-        <div id='totalMoney' class="font-bold text-xl"></div>
+  <div class="flex justify-between items-center my-4">
+    <div class="font-bold text-xl">Thành Tiền:</div>
+    <div id='totalMoney' class="font-bold text-xl"></div>
+  </div>
+  <div class="flex justify-end my-4">
+    <div id="orderButton"
+        <% if (request.getSession().getAttribute("currentUser") == null) { %>
+         onclick="moveToLogin()"
+        <% } else { %>
+         onclick="displayOrderForm()"
+        <% } %>
+         class="py-2 px-6 rounded-md cursor-pointer border-2 border-primary text-white bg-primary ml-4 hover:opacity-70">
+      Thanh Toán
     </div>
+  </div>
+
+  <div id="orderForm" class="hidden">
+    <div class="flex flex-col">
+      <div class="flex gap-4">
+        <label class="text-white mb-3 flex flex-col">
+          <div class="font-bold text-primary">Tên người nhận hàng</div>
+          <input placeholder="Tên người nhận..."
+                 class="mt-1 w-full block border py-2 border-white outline-none px-3 rounded w-full bg-transparent max-w-[400px]"
+                 type="text" name="receiver" id="receiver" required/>
+        </label>
+        <label class="text-white mb-3 flex flex-col">
+          <div class="font-bold text-primary">Số điện thoại</div>
+          <input placeholder="Số điện thoại..."
+                 class="mt-1 w-full block border py-2 border-white outline-none px-3 rounded w-full bg-transparent max-w-[500px]"
+                 type="text" name="phone" pattern="[0-9]{10,12}" title="Please enter a 10-digit phone number" id="phone"
+                 required/>
+        </label>
+      </div>
+      <div class="flex flex-col">
+        <label class="text-white mb-3">
+          <div class="font-bold text-primary">Địa chỉ</div>
+          <div class="flex gap-4 mt-1">
+            <select class="border py-2 border-white outline-none px-3 rounded bg-dvt-black-2" id="city">
+              <option class="bg-inherit" value="" selected>Chọn tỉnh thành</option>
+            </select>
+            <select class="border py-2 border-white outline-none px-3 rounded bg-dvt-black-2" id="district">
+              <option class="bg-inherit" value="" selected>Chọn quận huyện</option>
+            </select>
+            <select class="border py-2 border-white outline-none px-3 rounded bg-dvt-black-2" id="ward">
+              <option class="bg-inherit" value="" selected>Chọn phường xã</option>
+            </select>
+          </div>
+        </label>
+        <label class="text-white mb-3">
+          <div class="font-bold text-primary">Đường</div>
+          <input placeholder="Đường..."
+                 class="mt-1 block border py-2 border-white outline-none px-3 rounded w-full bg-transparent max-w-[400px]"
+                 type="text" name="address" id="road" required/>
+        </label>
+      </div>
+    </div>
+    <div>
+      <div class="font-bold text-primary">
+        Phương thức thanh toán: Trả tiền khi giao hàng.
+      </div>
+    </div>
+
     <div class="flex justify-end my-4">
-        <div id="orderButton"
-             <% if (request.getSession().getAttribute("currentUser") == null) { %>
-             onclick="moveToLogin()"
-             <% } else { %>
-             onclick="displayOrderForm()"
-             <% } %>
-             class="py-2 px-6 rounded-md cursor-pointer border-2 border-primary text-white bg-primary ml-4 hover:opacity-70">
-            Thanh Toán
-        </div>
+      <div onclick="hiddenOrderForm()"
+           class="py-2 px-6 rounded-md cursor-pointer border-2 border-primary text-primary hover:text-white hover:bg-primary">
+        Hủy
+      </div>
+      <button type="submit"
+          <% if (request.getSession().getAttribute("currentUser") == null) { %>
+              onclick="moveToLogin()"
+          <% } else { %>
+              onclick="handleSubmitOrder()"
+          <% }%>
+              class="py-2 px-6 rounded-md cursor-pointer border-2 border-primary text-white bg-primary ml-4 hover:opacity-70">
+        Tiến Hành Đặt Hàng
+      </button>
     </div>
-
-    <div id="orderForm" class="hidden">
-        <div class="flex flex-col">
-            <div class="flex gap-4">
-                <label class="text-white mb-3 flex flex-col">
-                    <div class="font-bold text-primary">Tên người nhận hàng</div>
-                    <input placeholder="Tên người nhận..." class="mt-1 w-full block border py-2 border-white outline-none px-3 rounded w-full bg-transparent max-w-[400px]" type="text" name="receiver" id="receiver" required />
-                </label>
-                <label class="text-white mb-3 flex flex-col">
-                    <div class="font-bold text-primary">Số điện thoại</div>
-                    <input placeholder="Số điện thoại..." class="mt-1 w-full block border py-2 border-white outline-none px-3 rounded w-full bg-transparent max-w-[500px]" type="text" name="phone" pattern="[0-9]{10,12}" title="Please enter a 10-digit phone number" id="phone" required />
-                </label>
-            </div>
-            <div class="flex flex-col">
-                <label class="text-white mb-3">
-                    <div class="font-bold text-primary">Địa chỉ</div>
-                    <div class="flex gap-4 mt-1">
-                        <select class="border py-2 border-white outline-none px-3 rounded bg-dvt-black-2" id="city">
-                            <option class="bg-inherit" value="" selected>Chọn tỉnh thành</option>
-                        </select>
-                        <select class="border py-2 border-white outline-none px-3 rounded bg-dvt-black-2" id="district">
-                            <option class="bg-inherit" value="" selected>Chọn quận huyện</option>
-                        </select>
-                        <select class="border py-2 border-white outline-none px-3 rounded bg-dvt-black-2" id="ward">
-                            <option class="bg-inherit" value="" selected>Chọn phường xã</option>
-                        </select>
-                    </div>
-                </label>
-                <label class="text-white mb-3">
-                    <div class="font-bold text-primary">Đường</div>
-                    <input placeholder="Đường..." class="mt-1 block border py-2 border-white outline-none px-3 rounded w-full bg-transparent max-w-[400px]" type="text" name="address" id="road" required />
-                </label>
-            </div>
-        </div>
-        <div>
-            <div class="font-bold text-primary">
-                Phương thức thanh toán: Trả tiền khi giao hàng.
-            </div>
-        </div>
-
-        <div class="flex justify-end my-4">
-            <div onclick="hiddenOrderForm()" class="py-2 px-6 rounded-md cursor-pointer border-2 border-primary text-primary hover:text-white hover:bg-primary">
-                Hủy
-            </div>
-            <button type="submit"
-                    <% if (request.getSession().getAttribute("currentUser") == null) { %>
-                    onclick="moveToLogin()"
-                    <% } else { %>
-                    onclick="handleSubmitOrder()"
-                    <% }%>
-                    class="py-2 px-6 rounded-md cursor-pointer border-2 border-primary text-white bg-primary ml-4 hover:opacity-70">
-                Tiến Hành Đặt Hàng
-            </button>
-        </div>
-    </div>
+  </div>
 </div>
-
-
-
-
 
 
 <script>
@@ -93,8 +97,7 @@
     const cartPage = document.getElementById("cartPage");
     updateCartPage = () => {
         const cart = JSON.parse(localStorage.getItem("cart"));
-        if (!cart || (cart && !cart.productCount))
-        {
+        if (!cart || (cart && !cart.productCount)) {
             cartPage.innerHTML = `<div class="w-full flex flex-col justify-center gap-3 items-center relative py-6">
             <img src="./assets/robot2.png" alt="robot2" class="h-64"/>
         <div class="font-bold text-3xl">Giỏ hàng rỗng</div>
@@ -127,7 +130,7 @@
     const localStorageCartProducts = localStorage.getItem("cart");
     let dataCartProducts; //{ products: [], totalMoney: 0 };
 
-// let cartProduct = { products: [], totalMoney: 0 };
+    // let cartProduct = { products: [], totalMoney: 0 };
 
     const fetchCartProducts = async () => {
         const url = "http://localhost:8080/store/cart";
@@ -155,7 +158,7 @@
     const calcTotalMoney = () => {
         const total = dataCartProducts.reduce(function (acc, product) {
             var quantity = JSON.parse(localStorage.getItem("cart")).products[product.id] ?? 0;
-                    return acc + Number(product.price) * Number(quantity);
+            return acc + Number(product.price) * Number(quantity);
         }, 0);
         console.log("calcTotalMoney");
         const totalMoney = document.getElementById("totalMoney");
@@ -223,8 +226,7 @@
         const cart = JSON.parse(localStorage.getItem("cart"));
         const product = dataCartProducts.find(product => product.id === id);
         console.log(product);
-        if (cart.products[id] >= product.storage)
-        {
+        if (cart.products[id] >= product.storage) {
             handleDisplayFailToost();
             return;
         }
@@ -299,8 +301,7 @@
         const address = `\${city}, \${district}, \${ward}, \${road}`;
 
 
-        if (!phone || !receiver || !road || !city || !district || !ward)
-        {
+        if (!phone || !receiver || !road || !city || !district || !ward) {
             alert("Hãy điền đủ thông tin đơn hàng");
             return;
         }
@@ -373,24 +374,24 @@
     };
     document.getElementById("city").addEventListener("change", () => {
         callApiDistrict(
-                host +
-                "p/" +
-                document
+            host +
+            "p/" +
+            document
                 .querySelector("#city option:checked")
                 .getAttribute("data-id") +
-                "?depth=2"
-                );
+            "?depth=2"
+        );
         printResult();
     });
     document.getElementById("district").addEventListener("change", () => {
         callApiWard(
-                host +
-                "d/" +
-                document
+            host +
+            "d/" +
+            document
                 .querySelector("#district option:checked")
                 .getAttribute("data-id") +
-                "?depth=2"
-                );
+            "?depth=2"
+        );
         printResult();
     });
     document.getElementById("ward").addEventListener("change", () => {
@@ -398,19 +399,19 @@
     });
     var printResult = () => {
         var districtSelected = document
-                .querySelector("#district option:checked")
-                .getAttribute("data-id");
+            .querySelector("#district option:checked")
+            .getAttribute("data-id");
         var citySelected = document
-                .querySelector("#city option:checked")
-                .getAttribute("data-id");
+            .querySelector("#city option:checked")
+            .getAttribute("data-id");
         var wardSelected = document
-                .querySelector("#ward option:checked")
-                .getAttribute("data-id");
+            .querySelector("#ward option:checked")
+            .getAttribute("data-id");
         if (districtSelected && citySelected && wardSelected) {
             var cityText = document.querySelector("#city option:checked").text;
             var districtText = document.querySelector(
-                    "#district option:checked"
-                    ).text;
+                "#district option:checked"
+            ).text;
             var wardText = document.querySelector("#ward option:checked").text;
             var result = cityText + " | " + districtText + " | " + wardText;
             console.log(result);
@@ -419,4 +420,4 @@
 </script>
 
 
-<jsp:include page="./footer.jsp" />
+<jsp:include page="./footer.jsp"/>

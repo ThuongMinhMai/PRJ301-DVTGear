@@ -1,16 +1,14 @@
 "use client";
 
-import { Scroll } from "@/components";
-import { useGlobalContext } from "@/contexts/GlobalContext";
-import { ArrowBackIcon, ShippingIcon } from "@/contexts/icons";
+import {Scroll} from "@/components";
+import {useGlobalContext} from "@/contexts/GlobalContext";
+import {ArrowBackIcon, ShippingIcon} from "@/contexts/icons";
 import statusToColor from "@/utils/statusColor";
-import { AlertType } from "@/utils/types";
 import axios from "axios";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
-import React, { useCallback, useEffect, useState } from "react";
+import React, {useCallback, useEffect, useState} from "react";
 
 type Props = {
   params: {
@@ -18,13 +16,12 @@ type Props = {
   };
 };
 
-export default function page({ params: { id } }: Props) {
+export default function page({params: {id}}: Props) {
   const [order, setOrder] = useState<Order>();
-  const router = useRouter();
-  // const { setShowAlert } = useGlobalContext();
+  const {setShowAlert} = useGlobalContext();
 
   const fetchOrderDetail = useCallback(async () => {
-    const { data } = await axios.get(
+    const {data} = await axios.get(
       `http://localhost:8080/store/api/orders?orderId=${id}`
     );
     console.log(setOrder(data.order));
@@ -35,25 +32,25 @@ export default function page({ params: { id } }: Props) {
   }, []);
 
   const handleApproveOrder = async (id: number) => {
-    const { data } = await axios.put("http://localhost:8080/store/api/orders", {
+    const {data} = await axios.put("http://localhost:8080/store/api/orders", {
       orderId: id,
     });
-    // setShowAlert({
-    //   status: true,
-    //   type: data.isSuccess ? AlertType.success : AlertType.failure,
-    //   message: data.message,
-    // });
+    setShowAlert({
+      status: true,
+      type: data.isSuccess ? "success" : "failure",
+      message: data.message,
+    });
     fetchOrderDetail();
   };
 
   return (
     <div className="flex flex-col">
-      <div className="flex justify-between flex-col sm:flex-row sm:items-center mb-6">
-        <div className="font-medium text-3xl">Orders</div>
+      <div className="flex flex-col justify-between mb-6 sm:flex-row sm:items-center">
+        <div className="text-3xl font-medium">Orders</div>
         <div className="flex gap-3">
           {order?.status === "PROCESSING" && (
             <div
-              className="text-white btn btn-primary text-center"
+              className="text-center text-white btn btn-primary"
               onClick={() => {
                 handleApproveOrder(order.id!);
               }}
@@ -62,44 +59,44 @@ export default function page({ params: { id } }: Props) {
               Approve Order
             </div>
           )}
-          <Link href="/orders" className="btn btn-primary text-white">
+          <Link href="/orders" className="text-white btn btn-primary">
             <ArrowBackIcon />
             <div className="ml-2">Back</div>
           </Link>
         </div>
       </div>
 
-      <div className="flex items-center justify-between text-2xl mb-2 font-medium">
+      <div className="flex items-center justify-between mb-2 text-2xl font-medium">
         <div>
           Order ID: <span className="text-primary">#{id}</span>
         </div>
       </div>
 
       <div className="grid grid-cols-12 gap-4">
-        <div className="col-span-9 grid grid-rows-3 grid-cols-2 grid-flow-col gap-4 bg-dvt-item rounded-md p-6">
+        <div className="grid grid-flow-col grid-cols-2 col-span-9 grid-rows-3 gap-4 p-6 rounded-md bg-black-2">
           <div className="flex flex-col row-span-1">
-            <div className="font-semibold mb-2 text-primary">Customer</div>
+            <div className="mb-2 font-semibold text-primary">Customer</div>
             <div>{order?.customer}</div>
           </div>
           <div className="flex flex-col row-span-1">
-            <div className="font-semibold mb-2 text-primary">Receiver</div>
+            <div className="mb-2 font-semibold text-primary">Receiver</div>
             <div>{order?.receiver}</div>
           </div>
           <div className="flex flex-col row-span-1">
-            <div className="font-semibold mb-2 text-primary">Phone</div>
+            <div className="mb-2 font-semibold text-primary">Phone</div>
             <div>{order?.phone}</div>
           </div>
           <div className="flex flex-col row-span-1">
-            <div className="font-semibold mb-2 text-primary">Date</div>
+            <div className="mb-2 font-semibold text-primary">Date</div>
             <div>{order?.date}</div>
           </div>
           <div className="flex flex-col row-span-1">
-            <div className="font-semibold mb-2 text-primary">Address</div>
+            <div className="mb-2 font-semibold text-primary">Address</div>
             <div>{order?.address}</div>
           </div>
 
           <div className="flex flex-col row-span-1">
-            <div className="font-semibold mb-2 text-primary">Status</div>
+            <div className="mb-2 font-semibold text-primary">Status</div>
             <div
               className={clsx(
                 "badge badge-lg text-lg font-medium text-white",
@@ -111,23 +108,23 @@ export default function page({ params: { id } }: Props) {
           </div>
         </div>
 
-        <div className="flex flex-col p-6 bg-dvt-item rounded-md col-span-3">
-          <div className="flex justify-between items-center">
-            <div className="font-semibold text-xl">Price</div>
+        <div className="flex flex-col col-span-3 p-6 rounded-md bg-black-2">
+          <div className="flex items-center justify-between">
+            <div className="text-xl font-semibold">Price</div>
           </div>
 
           <div className="flex flex-col gap-3 mt-4">
-            <div className="grid gap-2 grid-cols-2">
+            <div className="grid grid-cols-2 gap-2">
               <div className="col-span-1">Sub Total:</div>
               <div className="col-span-1">
                 đ{Number(order?.totalMoney).toLocaleString()}
               </div>
             </div>
-            <div className="grid gap-2 grid-cols-2">
+            <div className="grid grid-cols-2 gap-2">
               <div className="col-span-1">Shipping:</div>
               <div className="col-span-1">Free</div>
             </div>
-            <div className="grid gap-2 grid-cols-2 font-semibold text-primary">
+            <div className="grid grid-cols-2 gap-2 font-semibold text-primary">
               <div className="col-span-1">Total:</div>
               <div className="col-span-1">
                 đ{Number(order?.totalMoney).toLocaleString()}
@@ -137,13 +134,13 @@ export default function page({ params: { id } }: Props) {
         </div>
       </div>
 
-      <div className="flex items-center justify-between text-2xl mb-2 font-medium mt-6">
+      <div className="flex items-center justify-between mt-6 mb-2 text-2xl font-medium">
         Order Items
       </div>
       <Scroll>
-        <table className="min-w-full border-spacing-y-3 border-separate whitespace-nowrap pb-24">
+        <table className="min-w-full pb-24 border-separate border-spacing-y-3 whitespace-nowrap">
           <thead>
-            <tr className="font-medium text-xs uppercase">
+            <tr className="text-xs font-medium uppercase">
               <th className="pl-6 pr-4">NO.</th>
               <th className="px-4">Photo</th>
               <th className="px-4">Name</th>
@@ -151,19 +148,19 @@ export default function page({ params: { id } }: Props) {
               <th className="px-4">Price</th>
             </tr>
           </thead>
-          <tbody className="bg-dvt-item">
+          <tbody className="bg-black-2">
             {order?.orderProducts.map((orderProduct, index) => {
               return (
                 <tr
                   key={orderProduct?.product?.id}
-                  className="bg-dvt-item py-4 px-6 rounded-xl mb-2"
+                  className="px-6 py-4 mb-2 bg-black-2 rounded-xl"
                 >
-                  <td className="text-primary pl-6 pr-4 rounded-l-xl font-bold">
+                  <td className="pl-6 pr-4 font-bold text-primary rounded-l-xl">
                     {"#"}
                     {index + 1}
                   </td>
                   <td className="px-4">
-                    <div className="relative w-10 h-10 bg-white rounded-lg overflow-hidden">
+                    <div className="relative w-10 h-10 overflow-hidden bg-white rounded-lg">
                       <Image
                         fill
                         alt="product"

@@ -28,7 +28,7 @@ public class StatisticalAPI extends HttpServlet {
 
         JSONObject jsonResponse = new JSONObject();
         if (days != null) {
-            jsonResponse.put("historicalChart", orderDao.getRevuneDataAtJson(Integer.parseInt(days)));
+            jsonResponse.put("historicalChart", orderDao.getRevenueDataAtJson(Integer.parseInt(days)));
         }
         jsonResponse.put("revenueThisWeek", orderDao.calculateTotalRevenue(7));
         jsonResponse.put("revenueThisMonth", orderDao.calculateTotalRevenue(30));

@@ -1,30 +1,28 @@
 "use client";
 
-import { Loader, ProductForm } from "@/components";
-import { ArrowBackIcon } from "@/contexts/icons";
-import updateProduct from "@/services/updateProduct";
-import axios from "axios";
+import { updateProduct } from "@/app/_actions/products";
+import {Loader, ProductForm} from "@/components";
+import {ArrowBackIcon} from "@/contexts/icons";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import {useRouter} from "next/navigation";
+import React, {useTransition} from "react";
 
 type Props = {};
 
 export default function EditProductPage({}: Props) {
-  const [isUpdating, setIsUpdating] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
-  const handleSubmit = async (form: Product) => {
-    setIsUpdating(true);
+  const handleSubmit = (form: Product) => {
+    startTransition(async () => {
+      await updateProduct(form);
 
-    await updateProduct(form);
-
-    //router push tự động cache dữ liệu và không lấy dữ liệu mới sau khi update. Chưa tìm được cách giải quyết. tạm thời chơi kiểu truyền thống
-    // router.push("/products");
-    window.location.href = "http://localhost:3000/products";
+      router.push("/products");
+      router.refresh(); //to get updated data
+    });
   };
 
-  if (isUpdating) {
+  if (isPending) {
     return (
       <div>
         <div>Please wait for adding new product...</div>
@@ -36,8 +34,8 @@ export default function EditProductPage({}: Props) {
   return (
     <div className="flex flex-col">
       <div className="flex justify-between">
-        <div className="font-medium text-3xl">Edit Product</div>
-        <Link href="/products" className="btn btn-primary mb-6 text-white">
+        <div className="text-3xl font-medium">Edit Product</div>
+        <Link href="/products" className="mb-6 text-white btn btn-primary">
           <ArrowBackIcon />
           <div className="ml-2">Back</div>
         </Link>

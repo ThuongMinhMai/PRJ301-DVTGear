@@ -1,12 +1,11 @@
+'use sever'
+
 import AddIcon from "@/assets/AddIcon";
 import DeleteIcon from "@/assets/DeleteIcon";
 import MoreHorizonIcon from "@/assets/MoreHorizonIcon";
-import { Scroll } from "@/components";
-import SettingBannerForm from "@/components/SettingBannerForm";
-import addAdmin from "@/services/addAdmin";
-import deleteAdmin from "@/services/deleteAdmin";
-import getAdmins from "@/services/getAdmins";
+import {Scroll, SettingBannerForm} from "@/components";
 import React from "react";
+import {addAdmin, deleteAdmin, getAdmins} from "../_actions/admins";
 
 type Props = {};
 
@@ -16,26 +15,26 @@ export default async function SettingsPage({}: Props) {
   return (
     <div className="flex flex-col">
       <div className="flex justify-between mb-6">
-        <div className="font-medium text-3xl">Settings</div>
+        <div className="text-3xl font-medium">Settings</div>
       </div>
 
       <div className="flex flex-col">
-        <div className="flex justify-between md:items-center mb-6 gap-3 flex-col md:flex-row">
-          <div className="text-base md:text-xl font-semibold flex-nowrap">
+        <div className="flex flex-col justify-between gap-3 mb-6 md:items-center md:flex-row">
+          <div className="text-base font-semibold md:text-xl flex-nowrap">
             Admins's Email
           </div>
 
-          <form action={addAdmin} className="flex-1 flex gap-4">
+          <form action={addAdmin} className="flex flex-1 gap-4">
             <input
               name="email"
               type="text"
               placeholder="Enter admin's email"
-              className="py-3 px-4 w-full md:flex-1 md:w-0 md:max-w-sm ml-auto outline-none border-none bg-dvt-item rounded-xl"
+              className="w-full px-4 py-3 ml-auto border-none outline-none md:flex-1 md:w-0 md:max-w-sm bg-black-2 rounded-xl"
             />
 
             <input type="hidden" name="admins" value={admins} />
 
-            <button type="submit" className="btn btn-primary text-white w-fit">
+            <button type="submit" className="text-white btn btn-primary w-fit">
               <AddIcon className="w-6 h-6" />
               <div className="ml-2">Add Admin</div>
             </button>
@@ -52,43 +51,42 @@ export default async function SettingsPage({}: Props) {
 }
 
 type AdminListProps = {
-  adminList: any;
-  onDeleteAdmin?: (admin: string) => void;
+  adminList?: Admin[];
 };
 
-function AdminList({ adminList }: AdminListProps) {
+function AdminList({adminList}: AdminListProps) {
   return (
     <Scroll>
-      <table className="min-w-full border-spacing-y-3 border-separate whitespace-nowrap pb-9">
+      <table className="min-w-full border-separate border-spacing-y-3 whitespace-nowrap pb-9">
         <thead>
-          <tr className="font-medium text-xs uppercase">
+          <tr className="text-xs font-medium uppercase">
             <th className="pl-6 pr-4">ID</th>
             <th className="px-4">Email</th>
-            <th className="text-end pr-8 pl-4">Actions</th>
+            <th className="pl-4 pr-8 text-end">Actions</th>
           </tr>
         </thead>
-        <tbody className="bg-dvt-item">
-          {adminList.map((admin: any, index: number) => {
+        <tbody className="bg-black-2">
+          {adminList?.map((admin: any, index: number) => {
             return (
-              <tr key={admin} className="bg-dvt-item py-4 px-6 rounded-xl mb-2">
-                <td className="text-primary pl-6 pr-4 rounded-l-xl font-bold">
+              <tr key={admin} className="px-6 py-4 mb-2 bg-black-2 rounded-xl">
+                <td className="pl-6 pr-4 font-bold text-primary rounded-l-xl">
                   {"#"}
                   {index + 1}
                 </td>
 
                 <td className="px-4">{admin}</td>
 
-                <td className="text-end rounded-r-xl text-white pr-6 pl-4">
+                <td className="pl-4 pr-6 text-white text-end rounded-r-xl">
                   <div className="dropdown dropdown-end">
                     <label
                       tabIndex={0}
-                      className="btn btn-primary m-1 text-white"
+                      className="m-1 text-white btn btn-primary"
                     >
                       <MoreHorizonIcon className="w-6 h-6" />
                     </label>
                     <ul
                       tabIndex={0}
-                      className="dropdown-content menu p-2 shadow bg-primary rounded-box w-52"
+                      className="p-2 shadow dropdown-content menu bg-primary rounded-box w-52"
                     >
                       <li>
                         <form action={deleteAdmin}>

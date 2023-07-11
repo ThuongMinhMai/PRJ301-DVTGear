@@ -10,9 +10,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "dvt-white-1": "#2A303C",
-        "dvt-white-2": "#d5d3d8",
-        "dvt-item": "#191D24",
+        "black-1": "#2A303C",
+        "black-2": "#191D24",
       },
     },
   },
