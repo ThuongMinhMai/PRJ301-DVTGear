@@ -9,12 +9,16 @@ type Props = {};
 
 export default function GoogleLoginBtn({}: Props) {
   async function handleLoginAdmin(googleToken: string) {
-    if (!(await loginAdmin(googleToken))) {
+    const currentAdmin = await loginAdmin(googleToken);
+
+    if (!currentAdmin) {
       useAlertStore.getState().setShowAlert({
         status: true,
         type: "failure",
         message: "This account is not administrator",
       });
+    } else {
+      localStorage.setItem("current_admin", JSON.stringify(currentAdmin));
     }
   }
 

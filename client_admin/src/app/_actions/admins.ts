@@ -3,7 +3,7 @@
 import {cookies} from "next/headers";
 import {revalidatePath} from "next/cache";
 import jwt_decode from "jwt-decode";
-import {relative} from "path";
+import {json} from "stream/consumers";
 
 export async function addAdmin(formData: FormData) {
   const formDataObj: any = {};
@@ -64,12 +64,12 @@ export async function getCurrentAdmin() {
 export async function loginAdmin(googleToken: any) {
   const adminData: any = jwt_decode(googleToken);
 
-  if ((await getAdmins())?.includes(adminData.email)) {
-    await cookies().set("current-admin", adminData);
-    return true;
+  if ((await getAdmins())?.includes(adminData?.email)) {
+    await cookies().set("current-admin", JSON.stringify(adminData));
+    return adminData;
   }
 
-  return false;
+  return undefined;
 }
 
 export async function logOutCurrentAdmin() {

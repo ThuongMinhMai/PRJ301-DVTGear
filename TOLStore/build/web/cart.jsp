@@ -3,7 +3,7 @@
     Created on : Jun 9, 2023, 12:10:34 PM
     Author     : Kingc
 --%>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 
 <jsp:include page="./header.jsp"/>
@@ -17,11 +17,14 @@
   </div>
   <div class="flex justify-end my-4">
     <div id="orderButton"
-        <% if (request.getSession().getAttribute("currentUser") == null) { %>
-         onclick="moveToLogin()"
-        <% } else { %>
-         onclick="displayOrderForm()"
-        <% } %>
+		 <c:choose>
+		   <c:when test="${sessionScope.currentUser == null}" >
+			 onclick="moveToLogin()"
+		   </c:when>
+		   <c:otherwise>
+			 onclick="displayOrderForm()"
+		   </c:otherwise>
+		 </c:choose>
          class="py-2 px-6 rounded-md cursor-pointer border-2 border-primary text-white bg-primary ml-4 hover:opacity-70">
       Thanh Toán
     </div>
@@ -79,11 +82,14 @@
         Hủy
       </div>
       <button type="submit"
-          <% if (request.getSession().getAttribute("currentUser") == null) { %>
-              onclick="moveToLogin()"
-          <% } else { %>
-              onclick="handleSubmitOrder()"
-          <% }%>
+			  <c:choose>
+				<c:when test="${sessionScope.currentUser == null}" >
+				  onclick="moveToLogin()"
+				</c:when>
+				<c:otherwise>
+				  onclick="handleSubmitOrder()"
+				</c:otherwise>
+			  </c:choose>
               class="py-2 px-6 rounded-md cursor-pointer border-2 border-primary text-white bg-primary ml-4 hover:opacity-70">
         Tiến Hành Đặt Hàng
       </button>
@@ -94,91 +100,91 @@
 
 <script>
 
-    const cartPage = document.getElementById("cartPage");
-    updateCartPage = () => {
-        const cart = JSON.parse(localStorage.getItem("cart"));
-        if (!cart || (cart && !cart.productCount)) {
-            cartPage.innerHTML = `<div class="w-full flex flex-col justify-center gap-3 items-center relative py-6">
+  const cartPage = document.getElementById("cartPage");
+  updateCartPage = () => {
+	const cart = JSON.parse(localStorage.getItem("cart"));
+	if (!cart || (cart && !cart.productCount)) {
+	  cartPage.innerHTML = `<div class="w-full flex flex-col justify-center gap-3 items-center relative py-6">
             <img src="./assets/robot2.png" alt="robot2" class="h-64"/>
         <div class="font-bold text-3xl">Giỏ hàng rỗng</div>
         <div class="text-3xl">Hỏng lẻ hông ưng!</div>
         
     </div>`;
-        }
-    };
-    updateCartPage();
-    const orderForm = document.getElementById("orderForm");
-    const orderButton = document.getElementById("orderButton");
-    const hiddenOrderForm = () => {
-        orderForm.classList.add("hidden");
-        orderForm.classList.remove("block");
-        orderButton.classList.remove("hidden");
-        orderButton.classList.add("block");
-    };
-    const displayOrderForm = () => {
-        orderForm.classList.remove("hidden");
-        orderForm.classList.add("block");
-        orderButton.classList.add("hidden");
-        orderButton.classList.remove("block");
-    };
-    hiddenOrderForm();
-    const formatNum = (number) => {
-        const options = {maximumFractionDigits: 0};
-        const formattedNumber = number.toLocaleString("en-US", options);
-        return formattedNumber;
-    };
-    const localStorageCartProducts = localStorage.getItem("cart");
-    let dataCartProducts; //{ products: [], totalMoney: 0 };
+	}
+  };
+  updateCartPage();
+  const orderForm = document.getElementById("orderForm");
+  const orderButton = document.getElementById("orderButton");
+  const hiddenOrderForm = () => {
+	orderForm.classList.add("hidden");
+	orderForm.classList.remove("block");
+	orderButton.classList.remove("hidden");
+	orderButton.classList.add("block");
+  };
+  const displayOrderForm = () => {
+	orderForm.classList.remove("hidden");
+	orderForm.classList.add("block");
+	orderButton.classList.add("hidden");
+	orderButton.classList.remove("block");
+  };
+  hiddenOrderForm();
+  const formatNum = (number) => {
+	const options = {maximumFractionDigits: 0};
+	const formattedNumber = number.toLocaleString("en-US", options);
+	return formattedNumber;
+  };
+  const localStorageCartProducts = localStorage.getItem("cart");
+  let dataCartProducts; //{ products: [], totalMoney: 0 };
 
-    // let cartProduct = { products: [], totalMoney: 0 };
+  // let cartProduct = { products: [], totalMoney: 0 };
 
-    const fetchCartProducts = async () => {
-        const url = "http://localhost:8080/store/cart";
-        const method = "POST";
-        const body = {
-            products: Object.keys(JSON.parse(localStorageCartProducts).products)
-        };
-        try {
-            const response = await fetch(url, {
-                method,
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(body)
-            });
-            const data = await response.json();
-            dataCartProducts = data.products;
-            console.log(dataCartProducts);
-            calcTotalMoney();
-            renderOrders();
-        } catch (error) {
-            console.error("Error:", error);
-        }
-    };
-    const calcTotalMoney = () => {
-        const total = dataCartProducts.reduce(function (acc, product) {
-            var quantity = JSON.parse(localStorage.getItem("cart")).products[product.id] ?? 0;
-            return acc + Number(product.price) * Number(quantity);
-        }, 0);
-        console.log("calcTotalMoney");
-        const totalMoney = document.getElementById("totalMoney");
-        totalMoney.innerHTML = formatNum(total) + "đ";
-    };
-    const updateProductCountHeader = () => {
-        const cart = JSON.parse(localStorage.getItem("cart"));
-        document.getElementById("cartTotalDisplay").innerHTML = cart ? cart.productCount : 0;
-    };
-    updateProductCountHeader();
-    const renderOrders = () => {
-        let htmlContent = "";
-        if (!dataCartProducts) {
-            return;
-        }
-        const localStorageCartProducts = localStorage.getItem("cart");
-        dataCartProducts.forEach((product) => {
-            if (JSON.parse(localStorageCartProducts).products[product.id] >= 1) {
+  const fetchCartProducts = async () => {
+	const url = "http://localhost:8080/store/cart";
+	const method = "POST";
+	const body = {
+	  products: Object.keys(JSON.parse(localStorageCartProducts).products)
+	};
+	try {
+	  const response = await fetch(url, {
+		method,
+		headers: {
+		  "Content-Type": "application/json",
+		},
+		body: JSON.stringify(body)
+	  });
+	  const data = await response.json();
+	  dataCartProducts = data.products;
+	  console.log(dataCartProducts);
+	  calcTotalMoney();
+	  renderOrders();
+	} catch (error) {
+	  console.error("Error:", error);
+	}
+  };
+  const calcTotalMoney = () => {
+	const total = dataCartProducts.reduce(function (acc, product) {
+	  var quantity = JSON.parse(localStorage.getItem("cart")).products[product.id] ?? 0;
+			  return acc + Number(product.price) * Number(quantity);
+	}, 0);
+	console.log("calcTotalMoney");
+	const totalMoney = document.getElementById("totalMoney");
+	totalMoney.innerHTML = formatNum(total) + "đ";
+  };
+  const updateProductCountHeader = () => {
+	const cart = JSON.parse(localStorage.getItem("cart"));
+	document.getElementById("cartTotalDisplay").innerHTML = cart ? cart.productCount : 0;
+  };
+  updateProductCountHeader();
+  const renderOrders = () => {
+	let htmlContent = "";
+	if (!dataCartProducts) {
+	  return;
+	}
+	const localStorageCartProducts = localStorage.getItem("cart");
+	dataCartProducts.forEach((product) => {
+	  if (JSON.parse(localStorageCartProducts).products[product.id] >= 1) {
 
-                htmlContent += `
+		htmlContent += `
 <div class="flex justify-between items-center py-4 border-b-[3px] border-primary">
     <div class="flex gap-4 items-center">
         <a href="http://localhost:8080/store/products?id=\${product.id}" class="h-20 w-20 min-w-[80px] overflow-hidden">
@@ -212,211 +218,211 @@
         </div>
     </div>
 </div>`;
-            }
-        });
-        document.getElementById("productsContainer").innerHTML = htmlContent;
-    };
+	  }
+	});
+	document.getElementById("productsContainer").innerHTML = htmlContent;
+  };
 
 
-    if (localStorageCartProducts) {
-        fetchCartProducts();
-    }
+  if (localStorageCartProducts) {
+	fetchCartProducts();
+  }
 
-    const increaseProduct = (id) => {
-        const cart = JSON.parse(localStorage.getItem("cart"));
-        const product = dataCartProducts.find(product => product.id === id);
-        console.log(product);
-        if (cart.products[id] >= product.storage) {
-            handleDisplayFailToost();
-            return;
-        }
+  const increaseProduct = (id) => {
+	const cart = JSON.parse(localStorage.getItem("cart"));
+	const product = dataCartProducts.find(product => product.id === id);
+	console.log(product);
+	if (cart.products[id] >= product.storage) {
+	  handleDisplayFailToost();
+	  return;
+	}
 
-        cart.products[id] += 1;
-        cart.productCount += 1;
-        localStorage.setItem("cart", JSON.stringify(cart));
-        updateProductCountHeader();
-        renderOrders();
-        calcTotalMoney();
-        updateCartPage();
+	cart.products[id] += 1;
+	cart.productCount += 1;
+	localStorage.setItem("cart", JSON.stringify(cart));
+	updateProductCountHeader();
+	renderOrders();
+	calcTotalMoney();
+	updateCartPage();
 
-    };
-
-
-    const decreaseProduct = (id) => {
-        const cart = JSON.parse(localStorage.getItem("cart"));
-        if (cart.products[id] > 1) {
-            cart.products[id] -= 1;
-            cart.productCount -= 1;
-            localStorage.setItem("cart", JSON.stringify(cart));
-            updateProductCountHeader();
-            renderOrders();
-            calcTotalMoney();
-            updateCartPage();
-        }
-    };
+  };
 
 
-    const deleteProduct = (id) => {
-        const cart = JSON.parse(localStorage.getItem("cart"));
-        if (cart.products[id] >= 1) {
-            cart.productCount -= cart.products[id];
-            delete cart.products[id];
-            localStorage.setItem("cart", JSON.stringify(cart));
-            updateProductCountHeader();
-            renderOrders();
-            calcTotalMoney();
-            updateCartPage();
-        }
-    };
+  const decreaseProduct = (id) => {
+	const cart = JSON.parse(localStorage.getItem("cart"));
+	if (cart.products[id] > 1) {
+	  cart.products[id] -= 1;
+	  cart.productCount -= 1;
+	  localStorage.setItem("cart", JSON.stringify(cart));
+	  updateProductCountHeader();
+	  renderOrders();
+	  calcTotalMoney();
+	  updateCartPage();
+	}
+  };
 
 
-    const formDataToObject = (formData) => {
-        let object = {};
-        for (let entry of formData.entries()) {
-            let key = entry[0];
-            let value = entry[1];
-            // If the key already exists, convert the value to an array
-            if (object.hasOwnProperty(key)) {
-                if (!Array.isArray(object[key])) {
-                    object[key] = [object[key]];
-                }
-                object[key].push(value);
-            } else {
-                object[key] = value;
-            }
-        }
-
-        return object;
-    };
+  const deleteProduct = (id) => {
+	const cart = JSON.parse(localStorage.getItem("cart"));
+	if (cart.products[id] >= 1) {
+	  cart.productCount -= cart.products[id];
+	  delete cart.products[id];
+	  localStorage.setItem("cart", JSON.stringify(cart));
+	  updateProductCountHeader();
+	  renderOrders();
+	  calcTotalMoney();
+	  updateCartPage();
+	}
+  };
 
 
-    const handleSubmitOrder = () => {
+  const formDataToObject = (formData) => {
+	let object = {};
+	for (let entry of formData.entries()) {
+	  let key = entry[0];
+	  let value = entry[1];
+	  // If the key already exists, convert the value to an array
+	  if (object.hasOwnProperty(key)) {
+		if (!Array.isArray(object[key])) {
+		  object[key] = [object[key]];
+		}
+		object[key].push(value);
+	  } else {
+		object[key] = value;
+	  }
+	}
 
-        const phone = document.getElementById("phone").value;
-        const receiver = document.getElementById("receiver").value;
-        const road = document.getElementById("road").value;
-        const city = document.getElementById("city").value;
-        const district = document.getElementById("district").value;
-        const ward = document.getElementById("ward").value;
-        const address = `\${city}, \${district}, \${ward}, \${road}`;
+	return object;
+  };
 
 
-        if (!phone || !receiver || !road || !city || !district || !ward) {
-            alert("Hãy điền đủ thông tin đơn hàng");
-            return;
-        }
+  const handleSubmitOrder = () => {
 
-        const form = document.createElement('form');
+	const phone = document.getElementById("phone").value;
+	const receiver = document.getElementById("receiver").value;
+	const road = document.getElementById("road").value;
+	const city = document.getElementById("city").value;
+	const district = document.getElementById("district").value;
+	const ward = document.getElementById("ward").value;
+	const address = `\${city}, \${district}, \${ward}, \${road}`;
+
+
+	if (!phone || !receiver || !road || !city || !district || !ward) {
+	  alert("Hãy điền đủ thông tin đơn hàng");
+	  return;
+	}
+
+	const form = document.createElement('form');
 // Set form attributes
-        form.method = 'POST'; // HTTP method
-        form.action = 'http://localhost:8080/store/orders'; // Server endpoint URL
+	form.method = 'POST'; // HTTP method
+	form.action = 'http://localhost:8080/store/orders'; // Server endpoint URL
 
 // Create form fields
-        const phoneElement = document.createElement('input');
-        phoneElement.type = 'text';
-        phoneElement.name = 'phone';
-        phoneElement.value = phone;
-        const receiverElement = document.createElement('input');
-        receiverElement.type = 'text';
-        receiverElement.name = 'receiver';
-        receiverElement.value = receiver;
-        const addressElement = document.createElement('input');
-        addressElement.type = 'text';
-        addressElement.name = 'address';
-        addressElement.value = address;
-        const productsElement = document.createElement('input');
-        productsElement.type = 'text';
-        productsElement.name = 'products';
-        productsElement.value = JSON.stringify(JSON.parse(localStorage.getItem("cart")).products);
+	const phoneElement = document.createElement('input');
+	phoneElement.type = 'text';
+	phoneElement.name = 'phone';
+	phoneElement.value = phone;
+	const receiverElement = document.createElement('input');
+	receiverElement.type = 'text';
+	receiverElement.name = 'receiver';
+	receiverElement.value = receiver;
+	const addressElement = document.createElement('input');
+	addressElement.type = 'text';
+	addressElement.name = 'address';
+	addressElement.value = address;
+	const productsElement = document.createElement('input');
+	productsElement.type = 'text';
+	productsElement.name = 'products';
+	productsElement.value = JSON.stringify(JSON.parse(localStorage.getItem("cart")).products);
 // Add form fields to the form
-        form.appendChild(phoneElement);
-        form.appendChild(receiverElement);
-        form.appendChild(addressElement);
-        form.appendChild(productsElement);
+	form.appendChild(phoneElement);
+	form.appendChild(receiverElement);
+	form.appendChild(addressElement);
+	form.appendChild(productsElement);
 // Append the form to the document body
-        document.body.appendChild(form);
+	document.body.appendChild(form);
 //Before Submit the form
-        localStorage.removeItem("cart");
+	localStorage.removeItem("cart");
 // Submit the form   
-        form.submit();
-    };
+	form.submit();
+  };
 </script>
 <script>
-    const host = "https://provinces.open-api.vn/api/";
-    var callAPI = (api) => {
-        return axios.get(api).then((response) => {
-            renderData(response.data.sort(function (a, b) {
-                return a.name.localeCompare(b.name);
-            }), "city");
-        });
-    };
-    callAPI("https://provinces.open-api.vn/api/?depth=1");
-    var callApiDistrict = (api) => {
-        return axios.get(api).then((response) => {
-            renderData(response.data.districts.sort(function (a, b) {
-                return a.name.localeCompare(b.name);
-            }), "district");
-        });
-    };
-    var callApiWard = (api) => {
-        return axios.get(api).then((response) => {
-            renderData(response.data.wards.sort(function (a, b) {
-                return a.name.localeCompare(b.name);
-            }), "ward");
-        });
-    };
-    var renderData = (array, select) => {
-        let row = '<option class="bg-inherit" disabled value="">Chọn</option>';
-        array.forEach((element) => {
-            row += `<option class="bg-inherit" data-id="\${element.code}" value="\${element.name}">\${element.name}</option>`;
-        });
-        document.querySelector("#" + select).innerHTML = row;
-    };
-    document.getElementById("city").addEventListener("change", () => {
-        callApiDistrict(
-            host +
-            "p/" +
-            document
-                .querySelector("#city option:checked")
-                .getAttribute("data-id") +
-            "?depth=2"
-        );
-        printResult();
-    });
-    document.getElementById("district").addEventListener("change", () => {
-        callApiWard(
-            host +
-            "d/" +
-            document
-                .querySelector("#district option:checked")
-                .getAttribute("data-id") +
-            "?depth=2"
-        );
-        printResult();
-    });
-    document.getElementById("ward").addEventListener("change", () => {
-        printResult();
-    });
-    var printResult = () => {
-        var districtSelected = document
-            .querySelector("#district option:checked")
-            .getAttribute("data-id");
-        var citySelected = document
-            .querySelector("#city option:checked")
-            .getAttribute("data-id");
-        var wardSelected = document
-            .querySelector("#ward option:checked")
-            .getAttribute("data-id");
-        if (districtSelected && citySelected && wardSelected) {
-            var cityText = document.querySelector("#city option:checked").text;
-            var districtText = document.querySelector(
-                "#district option:checked"
-            ).text;
-            var wardText = document.querySelector("#ward option:checked").text;
-            var result = cityText + " | " + districtText + " | " + wardText;
-            console.log(result);
-        }
-    };
+  const host = "https://provinces.open-api.vn/api/";
+  var callAPI = (api) => {
+	return axios.get(api).then((response) => {
+	  renderData(response.data.sort(function (a, b) {
+		return a.name.localeCompare(b.name);
+	  }), "city");
+	});
+  };
+  callAPI("https://provinces.open-api.vn/api/?depth=1");
+  var callApiDistrict = (api) => {
+	return axios.get(api).then((response) => {
+	  renderData(response.data.districts.sort(function (a, b) {
+		return a.name.localeCompare(b.name);
+	  }), "district");
+	});
+  };
+  var callApiWard = (api) => {
+	return axios.get(api).then((response) => {
+	  renderData(response.data.wards.sort(function (a, b) {
+		return a.name.localeCompare(b.name);
+	  }), "ward");
+	});
+  };
+  var renderData = (array, select) => {
+	let row = '<option class="bg-inherit" disabled value="">Chọn</option>';
+	array.forEach((element) => {
+	  row += `<option class="bg-inherit" data-id="\${element.code}" value="\${element.name}">\${element.name}</option>`;
+	});
+	document.querySelector("#" + select).innerHTML = row;
+  };
+  document.getElementById("city").addEventListener("change", () => {
+	callApiDistrict(
+			host +
+			"p/" +
+			document
+			.querySelector("#city option:checked")
+			.getAttribute("data-id") +
+			"?depth=2"
+			);
+	printResult();
+  });
+  document.getElementById("district").addEventListener("change", () => {
+	callApiWard(
+			host +
+			"d/" +
+			document
+			.querySelector("#district option:checked")
+			.getAttribute("data-id") +
+			"?depth=2"
+			);
+	printResult();
+  });
+  document.getElementById("ward").addEventListener("change", () => {
+	printResult();
+  });
+  var printResult = () => {
+	var districtSelected = document
+			.querySelector("#district option:checked")
+			.getAttribute("data-id");
+	var citySelected = document
+			.querySelector("#city option:checked")
+			.getAttribute("data-id");
+	var wardSelected = document
+			.querySelector("#ward option:checked")
+			.getAttribute("data-id");
+	if (districtSelected && citySelected && wardSelected) {
+	  var cityText = document.querySelector("#city option:checked").text;
+	  var districtText = document.querySelector(
+			  "#district option:checked"
+			  ).text;
+	  var wardText = document.querySelector("#ward option:checked").text;
+	  var result = cityText + " | " + districtText + " | " + wardText;
+	  console.log(result);
+	}
+  };
 </script>
 
 

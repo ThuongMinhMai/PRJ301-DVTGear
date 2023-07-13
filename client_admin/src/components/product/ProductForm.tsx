@@ -115,7 +115,7 @@ const TypoFiled = ({title, name, type, rows, component}: TypoFiledProps) => {
           <ErrorMessage name={name} />
         </div>
       </div>
-      <div className="mb-3 overflow-hidden border rounded-lg border-e-black-1 md:mb-5 bg-e-white-1">
+      <div className="mb-3 overflow-hidden border rounded-lg md:mb-5">
         <Field
           name={name}
           type={type}
@@ -171,7 +171,7 @@ const CategoryField = ({}: CategoryFieldProps) => {
         </div>
       </div>
       <Field
-        className="px-4 py-2 mb-3 border rounded-lg border-e-black-1 md:mb-5 bg-e-white-1 bg-black-1"
+        className="px-4 py-2 mb-3 border rounded-lg border- md:mb-5 bg-black-1"
         component="select"
         name="category"
       >
@@ -227,7 +227,7 @@ const BrandField = ({}: BrandFieldProps) => {
         </div>
       </div>
       <Field
-        className="px-4 py-2 mb-3 border rounded-lg border-e-black-1 md:mb-5 bg-inherit bg-black-1"
+        className="px-4 py-2 mb-3 border rounded-lg md:mb-5 bg-inherit bg-black-1"
         component="select"
         name="brand"
       >

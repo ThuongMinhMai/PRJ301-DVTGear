@@ -1,3 +1,4 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="utils.Utils" %>
 <%@page import="model.Product" %>
 <%@page import="java.util.List" %>
@@ -8,40 +9,40 @@
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
 <style>
-    .carousel {
-        position: relative;
-        width: 100%;
-        max-width: 600px; /* Adjust the width as needed */
-        margin: 0 auto;
-    }
+  .carousel {
+	position: relative;
+	width: 100%;
+	max-width: 600px; /* Adjust the width as needed */
+	margin: 0 auto;
+  }
 
-    .carousel-inner {
-        display: flex;
-        overflow: hidden;
-    }
+  .carousel-inner {
+	display: flex;
+	overflow: hidden;
+  }
 
-    .carousel-inner img {
-        width: 100%;
-        height: auto;
-    }
+  .carousel-inner img {
+	width: 100%;
+	height: auto;
+  }
 
-    .prev,
-    .next {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 24px;
-        cursor: pointer;
-        z-index: 1;
-    }
+  .prev,
+  .next {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	font-size: 24px;
+	cursor: pointer;
+	z-index: 1;
+  }
 
-    .prev {
-        left: 10px;
-    }
+  .prev {
+	left: 10px;
+  }
 
-    .next {
-        right: 10px;
-    }
+  .next {
+	right: 10px;
+  }
 </style>
 
 <!-- Start banner -->
@@ -66,7 +67,7 @@
         <span class="ml-3">Tất cả sản phẩm</span>
       </a>
       <a class="flex px-4 py-3 text-sm bg-dvt-black-1 rounded-xl cursor-pointer hover:bg-primary"
-         href="i/store/search?category=1">
+         href="/store/search?category=1">
         <div>
           <i class="fa-solid fa-laptop"></i>
         </div>
@@ -204,14 +205,12 @@
   <div class="banner-slider relative w-full h-full flex-1 overflow-hidden rounded-3xl">
     <div class="swiper-container">
       <div class="swiper-wrapper">
-        <%
-          List<String> bannerUrlList = Utils.parseJSONStringArray((String) request.getAttribute("bannerUrls"));
-          for (String bannerUrl : bannerUrlList) {
-        %>
-        <div class="swiper-slide">
-          <img class="w-full aspect-[2.55/1] object-fill rounded-3xl select-none" src="<%=bannerUrl%>" alt="">
-        </div>
-        <% }%>
+		<c:set var="bannerUrlList" value="${Utils.parseJSONStringArray(requestScope.bannerUrls)}" />
+        <c:forEach items="${bannerUrlList}" var="bannerUrl" >
+		  <div class="swiper-slide">
+			<img class="w-full aspect-[2.55/1] object-fill rounded-3xl select-none" src="${bannerUrl}" alt="">
+		  </div>
+		</c:forEach>
       </div>
       <div style="color: #ea1c00" class="swiper-button-prev"></div>
       <div style="color: #ea1c00" class="swiper-button-next"></div>
@@ -233,74 +232,76 @@
     <div class="grow border-t-[3px] border-white"></div>
   </div>
   <div class="relative justify-center grid grid-cols-12 gap-5 w-11/12 max-w-6xl mx-auto">
-    <% List<Product> productList = (List<Product>) request.getAttribute("productList");
-      for (Product product : productList) {%>
-    <div
-        class="bg-dvt-black-2 flex flex-col rounded-3xl overflow-hidden cursor-pointer col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3">
-      <a href="/store/products?id=<%= product.getId()%>" class="w-full overflow-hidden relative aspect-square">
-        <% String imageUrl = Utils.parseJSONStringArray(product.getImages()).get(0);%>
-        <img class="w-full h-full object-cover bt-[20px] transition duration-300 ease-linear hover:scale-125"
-             src="<%=imageUrl%>" alt="product"/>
-        <div class="absolute bottom-0 right-0 bg-black bg-opacity-60 rounded-tl-2xl py-3 px-5 text-2xl">
-          <%= Utils.formatNum(product.getPrice())%>₫
-        </div>
-      </a>
-      <div class="px-5 py-0 my-2 mx-0 name_product">
-                <span class="font-bold line-clamp-2">
-                    <%= product.getName()%>
-                </span>
-      </div>
-      <div onclick="addToCart(<%= product.getId()%>, 1,<%= product.getStorage()%>)"
-           class="mt-auto mx-auto px-4 py-2 rounded-[30px] bg-primary border-none uppercase cursor-pointer mb-4 hover:opacity-80">
-        Thêm vào giỏ hàng
-      </div>
-    </div>
-    <% }%>
+	<c:set var="productList" value="${requestScope.productList}" />
+
+	<c:forEach items="${productList}" var="product">
+	  <div
+		class="bg-dvt-black-2 flex flex-col rounded-3xl overflow-hidden cursor-pointer col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3">
+		<a href="/store/products?id=${product.getId()}" class="w-full overflow-hidden relative aspect-square">
+
+		  <c:set var="imageUrl" value="${Utils.parseJSONStringArray(product.getImages()).get(0)}" />
+		  <img class="w-full h-full object-cover bt-[20px] transition duration-300 ease-linear hover:scale-125"
+			   src="${imageUrl}" alt="product"/>
+		  <div class="absolute bottom-0 right-0 bg-black bg-opacity-60 rounded-tl-2xl py-3 px-5 text-2xl">
+			${Utils.formatNum(product.getPrice())}₫
+		  </div>
+		</a>
+		<div class="px-5 py-0 my-2 mx-0 name_product">
+		  <span class="font-bold line-clamp-2">
+			${product.getName()}
+		  </span>
+		</div>
+		<div onclick="addToCart(${ product.getId()}, 1,${ product.getStorage()})"
+			 class="mt-auto mx-auto px-4 py-2 rounded-[30px] bg-primary border-none uppercase cursor-pointer mb-4 hover:opacity-80">
+		  Thêm vào giỏ hàng
+		</div>
+	  </div>
+	</c:forEach>
   </div>
 </div>
 
 
 <script>
-    const renderViewMoreProductsBtn = () => {
-        const viewMoreProductsBtn = document.createElement("a");
-        viewMoreProductsBtn.setAttribute("id", "viewMoreProductsBtn");
-        viewMoreProductsBtn.className = "py-2 px-4 rounded-md bg-primary w-fit mt-8 cursor-pointer mx-auto hover:opacity-80 select-none block";
-        viewMoreProductsBtn.innerHTML = `Xem tất cả sản phẩm`;
-        viewMoreProductsBtn.href = "http://localhost:8080/store/search";
-        document.getElementById("productsContainer").appendChild(viewMoreProductsBtn);
-    };
+  const renderViewMoreProductsBtn = () => {
+	const viewMoreProductsBtn = document.createElement("a");
+	viewMoreProductsBtn.setAttribute("id", "viewMoreProductsBtn");
+	viewMoreProductsBtn.className = "py-2 px-4 rounded-md bg-primary w-fit mt-8 cursor-pointer mx-auto hover:opacity-80 select-none block";
+	viewMoreProductsBtn.innerHTML = `Xem tất cả sản phẩm`;
+	viewMoreProductsBtn.href = "http://localhost:8080/store/search";
+	document.getElementById("productsContainer").appendChild(viewMoreProductsBtn);
+  };
 
-    renderViewMoreProductsBtn();
+  renderViewMoreProductsBtn();
 </script>
 
 <script>
-    const swiper = new Swiper('.swiper-container', {
-        slidesPerView: 1,
-        loop: true,
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev'
-        },
-        autoplay: {
-            delay: 3000 // Set the delay to 3000ms
-        }
-    });
+  const swiper = new Swiper('.swiper-container', {
+	slidesPerView: 1,
+	loop: true,
+	navigation: {
+	  nextEl: '.swiper-button-next',
+	  prevEl: '.swiper-button-prev'
+	},
+	autoplay: {
+	  delay: 3000 // Set the delay to 3000ms
+	}
+  });
 </script>
 
 <script>
-    const bannerNav = document.getElementById('banner_nav');
-    const navBrand = document.getElementById('nav_brand');
-    const navCategory = document.getElementById('nav_category');
+  const bannerNav = document.getElementById('banner_nav');
+  const navBrand = document.getElementById('nav_brand');
+  const navCategory = document.getElementById('nav_category');
 
-    navCategory.addEventListener('click', () => {
-        bannerNav.classList.remove('active_brand');
-        bannerNav.classList.add('active_category');
-    });
+  navCategory.addEventListener('click', () => {
+	bannerNav.classList.remove('active_brand');
+	bannerNav.classList.add('active_category');
+  });
 
-    navBrand.addEventListener('click', () => {
-        bannerNav.classList.add('active_brand');
-        bannerNav.classList.remove('active_category');
-    });
+  navBrand.addEventListener('click', () => {
+	bannerNav.classList.add('active_brand');
+	bannerNav.classList.remove('active_category');
+  });
 </script>
 
 <jsp:include page="./footer.jsp"/>

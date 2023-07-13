@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Alert from "./Alert";
 import GoogleLoginBtn from "./GoogleLoginBtn";
 
 type Props = {};

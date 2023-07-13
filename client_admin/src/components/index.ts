@@ -13,6 +13,8 @@ import SettingBannerForm from "./setting/SettingBannerForm";
 import AuthAdmin from "./ui/AuthAdmin";
 import Providers from "./HOC/Providers";
 import GoogleLoginBtn from "./ui/GoogleLoginBtn";
+import AdminList from "./setting/AdminList";
+import CurrentAdminInformation from "./ui/CurrentAdminInformation";
 
 export {
   Nav,
@@ -30,4 +32,6 @@ export {
   AuthAdmin,
   Providers,
   GoogleLoginBtn,
+  CurrentAdminInformation,
+  AdminList,
 };

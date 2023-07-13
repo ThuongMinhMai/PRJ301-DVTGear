@@ -26,104 +26,112 @@ public class Order {
   private List<OrderProduct> orderProducts;
 
   public Order(int id, String customer, Date date, Status status, String receiver, String address, String phone) {
-    this.id = id;
-    this.customer = customer;
-    this.date = date;
-    this.status = status;
-    this.receiver = receiver;
-    this.address = address;
-    this.phone = phone;
+	this.id = id;
+	this.customer = customer;
+	this.date = date;
+	this.status = status;
+	this.receiver = receiver;
+	this.address = address;
+	this.phone = phone;
   }
 
   public int getId() {
-    return id;
+	return id;
   }
 
   public void setId(int id) {
-    this.id = id;
+	this.id = id;
   }
 
   public String getCustomer() {
-    return customer;
+	return customer;
   }
 
   public void setCustomer(String customer) {
-    this.customer = customer;
+	this.customer = customer;
   }
 
   public Date getDate() {
-    return date;
+	return date;
   }
 
   public void setDate(Date date) {
-    this.date = date;
+	this.date = date;
   }
 
   public Status getStatus() {
-    return status;
+	return status;
   }
 
   public void setStatus(Status status) {
-    this.status = status;
+	this.status = status;
   }
 
   public String getReceiver() {
-    return receiver;
+	return receiver;
   }
 
   public void setReceiver(String receiver) {
-    this.receiver = receiver;
+	this.receiver = receiver;
   }
 
   public String getAddress() {
-    return address;
+	return address;
   }
 
   public void setAddress(String address) {
-    this.address = address;
+	this.address = address;
   }
 
   public String getPhone() {
-    return phone;
+	return phone;
   }
 
   public void setPhone(String phone) {
-    this.phone = phone;
+	this.phone = phone;
   }
 
   public int getTotalMoney() {
-    return totalMoney;
+	return totalMoney;
   }
 
   public void setTotalMoney(int totalMoney) {
-    this.totalMoney = totalMoney;
+	this.totalMoney = totalMoney;
   }
 
   public List<OrderProduct> getOrderProducts() {
-    return orderProducts;
+	return orderProducts;
   }
 
   public void setOrderProducts(List<OrderProduct> orderProducts) {
-    this.orderProducts = orderProducts;
+	this.orderProducts = orderProducts;
   }
 
   public enum Status {
-    COMPLETE, PROCESSING, DELIVERING, CANCELLED;
+	COMPLETE, PROCESSING, DELIVERING, CANCELLED;
 
-    public static String translateStatus(Status status) {
-      switch (status) {
-        case COMPLETE:
-          return "Hoàn Thành";
-        case PROCESSING:
-          return "Đang Chờ Xử Lý";
-        case DELIVERING:
-          return "Đang Giao Hàng";
-        case CANCELLED:
-          return "Đã Hủy";
-        default:
-          return "";
-      }
-    }
+	public String translate() {
+	  return translateStatus(this);
+	}
+
+	public static String translateStatus(Status status) {
+	  switch (status) {
+		case COMPLETE:
+		  return "Hoàn Thành";
+		case PROCESSING:
+		  return "Đang Chờ Xử Lý";
+		case DELIVERING:
+		  return "Đang Giao Hàng";
+		case CANCELLED:
+		  return "Đã Hủy";
+		default:
+		  return "";
+	  }
+	}
+
+	public boolean equalString(String str) {
+	  return this.equals(valueOf(str));
+	}
 
   }
 

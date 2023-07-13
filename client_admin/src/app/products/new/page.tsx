@@ -38,7 +38,13 @@ export default function AddProductPage({}: Props) {
       <div className="flex justify-between">
         <div className="text-3xl font-medium">Add Product</div>
         <Link href="/products" className="mb-6 text-white btn btn-primary">
-          <Image alt="back" src="/arrow-back.svg" className="filter invert" />
+          <Image
+            width={24}
+            height={24}
+            alt="back"
+            src="/arrow-back.svg"
+            className="filter invert"
+          />
           <div className="ml-2">Back</div>
         </Link>
       </div>

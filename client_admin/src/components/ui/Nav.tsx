@@ -6,6 +6,7 @@ import React, {useEffect, useState} from "react";
 import {googleLogout} from "@react-oauth/google";
 import {logOutCurrentAdmin} from "@/app/_actions/admins";
 import {usePathname, useRouter} from "next/navigation";
+import CurrentAdminInformation from "./CurrentAdminInformation";
 
 type Props = {};
 
@@ -102,22 +103,7 @@ export default function Nav({}: Props) {
             </li>
           </ul>
 
-          <div className="flex flex-col items-center mt-24 text-slate-100">
-            <div className="relative">
-              <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full"></div>
-              {/* <Image
-                alt="avatar"
-                src={currentUser?.picture!}
-                height={48}
-                width={48}
-                className="rounded-full"
-              /> */}
-            </div>
-            <h2 className="my-2 text-lg font-semibold line-clamp-1 text-">
-              {/* {currentUser?.name} */}
-            </h2>
-            {/* <p className="text-sm line-clamp-1">{currentUser?.email}</p> */}
-          </div>
+          <CurrentAdminInformation />
         </div>
       </div>
 
@@ -128,7 +114,6 @@ export default function Nav({}: Props) {
 
         <div className="flex items-center justify-center gap-4 max-auto">
           <Image alt="logo" height={56} width={56} src="/logo.png" />
-          {/* <div className="text-lg font-bold md:text-2xl">DVT Admin</div> */}
         </div>
       </div>
 
@@ -163,7 +148,7 @@ export default function Nav({}: Props) {
           onClick={() => {
             googleLogout();
             sessionStorage.removeItem("dvt-auth");
-            // setCurrentUser(null);
+            router.refresh();
           }}
           className="cursor-pointer"
         >

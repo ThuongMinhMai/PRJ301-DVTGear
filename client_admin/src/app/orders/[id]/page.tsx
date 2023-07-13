@@ -1,13 +1,14 @@
 "use client";
 
+import {approveOrder} from "@/app/_actions/orders";
 import {Scroll} from "@/components";
-import { useAlertStore } from "@/store";
+import {useAlertStore} from "@/store";
 import statusToColor from "@/utils/statusColor";
 import axios from "axios";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import React, {useCallback, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 
 type Props = {
   params: {
@@ -18,28 +19,24 @@ type Props = {
 export default function page({params: {id}}: Props) {
   const [order, setOrder] = useState<Order>();
 
-  const fetchOrderDetail = useCallback(async () => {
+  const fetchOrderDetail = async () => {
     const {data} = await axios.get(
       `http://localhost:8080/store/api/orders?orderId=${id}`
     );
-    console.log(setOrder(data.order));
-  }, []);
+    setOrder(data.order);
+  };
 
   useEffect(() => {
     fetchOrderDetail();
   }, []);
 
   const handleApproveOrder = async (id: number) => {
-    const {data} = await axios.put("http://localhost:8080/store/api/orders", {
-      orderId: id,
-    });
+    const {isSuccess, message} = await approveOrder(id);
     useAlertStore.getState().setShowAlert({
       status: true,
-      type: data.isSuccess ? "success" : "failure",
-      message: data.message,
+      type: isSuccess ? "success" : "failure",
+      message: message,
     });
-
-    fetchOrderDetail();
   };
 
   return (
@@ -48,11 +45,12 @@ export default function page({params: {id}}: Props) {
         <div className="text-3xl font-medium">Orders</div>
         <div className="flex gap-3">
           {order?.status === "PROCESSING" && (
-            <div
-              className="text-center text-white btn btn-primary"
+            <button
               onClick={() => {
                 handleApproveOrder(order.id!);
               }}
+              type="submit"
+              className="text-center text-white btn btn-primary"
             >
               <Image
                 width={24}
@@ -62,7 +60,7 @@ export default function page({params: {id}}: Props) {
                 className="filter invert"
               />
               Approve Order
-            </div>
+            </button>
           )}
           <Link href="/orders" className="text-white btn btn-primary">
             <Image
