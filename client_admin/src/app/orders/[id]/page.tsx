@@ -136,12 +136,12 @@ export default function page({params: {id}}: Props) {
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div className="col-span-1">Shipping:</div>
-              <div className="col-span-1">Free</div>
+              <div className="col-span-1">đ30,000</div>
             </div>
             <div className="grid grid-cols-2 gap-2 font-semibold text-primary">
               <div className="col-span-1">Total:</div>
               <div className="col-span-1">
-                đ{Number(order?.totalMoney).toLocaleString()}
+                đ{(Number(order?.totalMoney || 0) + 30000).toLocaleString()}
               </div>
             </div>
           </div>
@@ -184,7 +184,7 @@ export default function page({params: {id}}: Props) {
                   </td>
                   <td className="px-4">{orderProduct.product.name}</td>
                   <td className="px-4">{orderProduct.quantity}</td>
-                  <td className="px-4">
+                  <td className="px-4 rounded-r-xl">
                     đ{Number(orderProduct.price).toLocaleString()}
                   </td>
                 </tr>

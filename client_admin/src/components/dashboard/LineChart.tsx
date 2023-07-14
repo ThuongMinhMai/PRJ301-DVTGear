@@ -82,7 +82,7 @@ export default function LineChart(props: any) {
                 {
                   data: chartData?.map((day) => day?.revenue),
                   borderColor: "#ea1c00",
-                  label: "Hello World",
+                  label: "Revenue",
                 },
               ],
             }}

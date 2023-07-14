@@ -22,7 +22,7 @@ export default async function AdminList({}: Props) {
           {admins?.map((admin: any, index: number) => {
             return (
               <tr key={admin} className="px-6 py-4 mb-2 bg-black-2 rounded-xl">
-                <td className="pl-6 pr-4 font-bold text-primary rounded-l-xl">
+                <td className="pl-6 pr-4 font-bold rounded-l-xl">
                   {"#"}
                   {index + 1}
                 </td>

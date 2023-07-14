@@ -19,13 +19,14 @@ const OrderList = ({firstOrders}: Props) => {
   const [totalOrders, setTotalOrders] = useState(0);
   const router = useRouter();
   const searchQuery = useSearchParams()?.get("searchQuery");
+  const searchType = useSearchParams()?.get("searchType");
 
   useEffect(() => {
     axios
       .get(
         `http://localhost:8080/store/api/orders?page=${pageNum}&pageSize=10&searchQuery=${
           searchQuery || ""
-        }`
+        }&searchType=${searchType || ""}`
       )
       .then((res) => res.data)
       .then((data) => {
@@ -84,7 +85,7 @@ const OrderList = ({firstOrders}: Props) => {
                   key={order.id}
                   className="px-6 py-4 mb-2 bg-black-2 rounded-xl"
                 >
-                  <td className="pl-6 pr-4 font-bold text-primary rounded-l-xl">
+                  <td className="pl-6 pr-4 font-bold rounded-l-xl">
                     {"#"}
                     {order.id}
                   </td>

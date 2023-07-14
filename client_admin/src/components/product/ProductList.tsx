@@ -85,7 +85,7 @@ const ProductList = ({firstProducts}: ProductListProps) => {
                   key={product.id}
                   className="px-6 py-4 mb-2 bg-black-2 rounded-xl"
                 >
-                  <td className="pl-6 pr-4 font-bold text-primary rounded-l-xl">
+                  <td className="pl-6 pr-4 font-bold rounded-l-xl">
                     {"#"}
                     {product.id}
                   </td>

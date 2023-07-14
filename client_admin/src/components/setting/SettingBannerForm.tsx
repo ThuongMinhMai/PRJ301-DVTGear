@@ -75,16 +75,28 @@ const SettingBannerForm = ({}: Props) => {
             setIsUploading={setIsUploading}
           />
 
-          <button
-            type="submit"
-            className="ml-auto text-white btn btn-primary w-fit"
-            onClick={() => {
-              handleUpdateBanner();
-              setEdit(false);
-            }}
-          >
-            Save
-          </button>
+          <div className="flex justify-end gap-4 mt-6">
+            <button
+              type="submit"
+              className="text-white btn btn-primary w-fit"
+              onClick={() => {
+                setEdit(false);
+              }}
+            >
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              className="text-white btn btn-primary w-fit"
+              onClick={() => {
+                handleUpdateBanner();
+                setEdit(false);
+              }}
+            >
+              Save
+            </button>
+          </div>
         </>
       )}
     </div>

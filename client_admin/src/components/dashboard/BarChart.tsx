@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import {Chart as ChartJS, registerables, ChartItem} from "chart.js";
 import React, {useEffect, useRef} from "react";
@@ -29,25 +29,23 @@ export default function BarChart({className, labels, data}: Props) {
               {
                 label: "Total Products",
                 data,
-                backgroundColor: [
-                  "rgba(255, 99, 132, 0.2)",
-                  "rgba(54, 162, 235, 0.2)",
-                  "rgba(255, 206, 86, 0.2)",
-                  // Rest of the colors...
-                ],
-                borderColor: [
-                  "rgba(255, 99, 132, 1)",
-                  "rgba(54, 162, 235, 1)",
-                  "rgba(255, 206, 86, 1)",
-                  // Rest of the colors...
-                ],
+                backgroundColor: ["rgba(234, 28, 0, 0.1)"],
+                borderColor: ["#ea1c00"],
                 borderWidth: 1,
               },
             ],
           },
           options: {
             scales: {
+              x: {
+                ticks: {
+                  color: "#ea1c00",
+                },
+              },
               y: {
+                ticks: {
+                  color: "#ea1c00",
+                },
                 beginAtZero: true,
               },
             },

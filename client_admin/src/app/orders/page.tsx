@@ -4,6 +4,7 @@ import {getOrders} from "../_actions/orders";
 
 type SearchParams = {
   searchQuery?: string;
+  searchType?: string;
 };
 
 type Props = {
@@ -11,7 +12,10 @@ type Props = {
 };
 
 export default async function OrdersPage({searchParams}: Props) {
-  const firstOrders = await getOrders(searchParams?.searchQuery || "");
+  const firstOrders = await getOrders(
+    searchParams?.searchQuery || "",
+    searchParams?.searchType || ""
+  );
 
   return (
     <div className="flex flex-col">
@@ -26,7 +30,3 @@ export default async function OrdersPage({searchParams}: Props) {
     </div>
   );
 }
-
-
-
-

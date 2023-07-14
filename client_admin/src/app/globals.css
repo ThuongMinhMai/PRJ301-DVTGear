@@ -96,7 +96,7 @@ h1 {
   right: 0;
   border-radius: 50%;
   transform: translateY(-100%);
-  box-shadow: 18px 18px 0 0 #2A303C;
+  box-shadow: 18px 18px 0 0 #2a303c;
 }
 
 .navigation_effect::after {
@@ -109,7 +109,7 @@ h1 {
   right: 0;
   border-radius: 50%;
   transform: translateY(100%);
-  box-shadow: 18px -18px 0 0 #2A303C;
+  box-shadow: 18px -18px 0 0 #2a303c;
 }
 
 th {
@@ -118,4 +118,8 @@ th {
 
 td {
   @apply py-4;
+}
+
+.desc-preview img {
+  @apply block mx-auto;
 }

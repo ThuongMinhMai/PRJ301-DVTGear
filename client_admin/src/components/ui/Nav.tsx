@@ -52,10 +52,10 @@ export default function Nav({}: Props) {
 
   return (
     <>
-      <div className="relative bg-primary w-[280px] text-white hidden lg:block">
+      <div className="relative bg-black-2 w-[280px] text-white hidden lg:block">
         <div className="fixed p-4 pt-0 w-[280px]">
-          <div className="flex items-center justify-center py-2 border-b-2 border-y-black-2 max-auto">
-            <Image alt="logo" height={72} width={180} src="/logo.png" />
+          <div className="flex items-center justify-center pt-2 pb-4 border-b-2 border-white/40 max-auto">
+            <Image alt="logo" height={72} width={180} src="/logo3.png" />
           </div>
 
           <ul className="flex flex-col mt-6">
@@ -66,7 +66,7 @@ export default function Nav({}: Props) {
                     href={link.pathname}
                     className={`flex py-4 px-4 rounded-l-2xl ${
                       selectedNav === link.label
-                        ? "bg-black-1 text-primary navigation_effect"
+                        ? "bg-black-1 navigation_effect"
                         : ""
                     }`}
                   >

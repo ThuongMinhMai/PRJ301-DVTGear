@@ -18,31 +18,31 @@ public class BannerAPI extends HttpServlet {
     //get banner
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        BannerDAO dao = new BannerDAO();
-        String bannerUrl = dao.getBanner();
+	    throws ServletException, IOException {
+	BannerDAO dao = new BannerDAO();
+	String bannerUrl = dao.getBanner();
 
-        JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put("message", "Get banner image succesfully!");
-        jsonResponse.put("bannerUrl", bannerUrl);
+	JSONObject jsonResponse = new JSONObject();
+	jsonResponse.put("message", "Get banner image succesfully!");
+	jsonResponse.put("bannerUrl", bannerUrl);
 
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().write(jsonResponse.toString());
+	response.setStatus(HttpServletResponse.SC_OK);
+	response.getWriter().write(jsonResponse.toString());
     }
 
     //update banner
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        JSONObject requestBody = Utils.getRequestBody(request);
-        BannerDAO dao = new BannerDAO();
-        dao.updateBanner(requestBody);
+	    throws ServletException, IOException {
+	JSONObject requestBody = Utils.getRequestBody(request);
+	BannerDAO dao = new BannerDAO();
+	dao.updateBanner(requestBody);
 
-        JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put("message", "Update Banner succesfully!!!");
+	JSONObject jsonResponse = new JSONObject();
+	jsonResponse.put("message", "Update Banner succesfully!!!");
 
-        response.setStatus(HttpServletResponse.SC_CREATED);
-        response.getWriter().write(jsonResponse.toString());
+	response.setStatus(HttpServletResponse.SC_CREATED);
+	response.getWriter().write(jsonResponse.toString());
     }
 
 }

@@ -3,11 +3,14 @@
 import {revalidatePath} from "next/cache";
 
 //just get 10 first orders
-export async function getOrders(searchQuery: string | null) {
+export async function getOrders(
+  searchQuery: string | null,
+  searchType: string | null
+) {
   const res = await fetch(
     `http://localhost:8080/store/api/orders?page=1&pageSize=10&searchQuery=${
       searchQuery || ""
-    }`,
+    }&searchType=${searchType || ""}`,
     {
       next: {revalidate: 0},
     }

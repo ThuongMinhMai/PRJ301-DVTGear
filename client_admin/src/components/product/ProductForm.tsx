@@ -86,17 +86,37 @@ export default function ProductForm({handleSubmit, edit}: Props) {
             rows={3}
           />
 
-          <button
-            type="submit"
-            className="float-right text-white btn btn-primary"
-          >
-            Save
-          </button>
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              className="text-white btn btn-primary"
+            >
+              Save
+            </button>
+          </div>
+
+          <DescriptionPreview />
         </Form>
       </Formik>
     </div>
   );
 }
+
+const DescriptionPreview = () => {
+  const {getFieldProps} = useFormikContext();
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="text-xl font-semibold md:text-2xl">
+        Description Preview
+      </div>
+
+      <div
+        className="min-w-full p-4 bg-black-2 desc-preview"
+        dangerouslySetInnerHTML={{__html: getFieldProps("description").value}}
+      />
+    </div>
+  );
+};
 
 type TypoFiledProps = {
   title: string;

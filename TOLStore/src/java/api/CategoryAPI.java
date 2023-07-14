@@ -18,16 +18,16 @@ public class CategoryAPI extends HttpServlet {
     //get categories
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        CategoryDAO dao = new CategoryDAO();
-        List<Category> categoryList = dao.getAllCategories();
+	    throws ServletException, IOException {
+	CategoryDAO dao = new CategoryDAO();
+	List<Category> categoryList = dao.getAllCategories();
 
-        JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put("message", "Get categories succesfully!");
-        jsonResponse.put("categories", new JSONArray(categoryList));
+	JSONObject jsonResponse = new JSONObject();
+	jsonResponse.put("message", "Get categories succesfully!");
+	jsonResponse.put("categories", new JSONArray(categoryList));
 
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().write(jsonResponse.toString());
+	response.setStatus(HttpServletResponse.SC_OK);
+	response.getWriter().write(jsonResponse.toString());
     }
 
 }

@@ -18,17 +18,17 @@ public class BrandAPI extends HttpServlet {
     //get brands
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+	    throws ServletException, IOException {
 
-        BrandDAO dao = new BrandDAO();
-        List<Brand> brandList = dao.getAllBrands();
+	BrandDAO dao = new BrandDAO();
+	List<Brand> brandList = dao.getAllBrands();
 
-        JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put("message", "Get brands succesfully!");
-        jsonResponse.put("brands", new JSONArray(brandList));
+	JSONObject jsonResponse = new JSONObject();
+	jsonResponse.put("message", "Get brands succesfully!");
+	jsonResponse.put("brands", new JSONArray(brandList));
 
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().write(jsonResponse.toString());
+	response.setStatus(HttpServletResponse.SC_OK);
+	response.getWriter().write(jsonResponse.toString());
 
     }
 
