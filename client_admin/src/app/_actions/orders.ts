@@ -1,11 +1,16 @@
 "use server";
 
+import {revalidatePath} from "next/cache";
+
 //just get 10 first orders
 export async function getOrders(searchQuery: string | null) {
   const res = await fetch(
     `http://localhost:8080/store/api/orders?page=1&pageSize=10&searchQuery=${
       searchQuery || ""
-    }`
+    }`,
+    {
+      next: {revalidate: 0},
+    }
   );
 
   if (!res.ok) {
@@ -19,7 +24,10 @@ export async function getOrders(searchQuery: string | null) {
 
 export async function getOrderDetail(id: string) {
   const res = await fetch(
-    `http://localhost:8080/store/api/orders?orderId=${id}`
+    `http://localhost:8080/store/api/orders?orderId=${id}`,
+    {
+      next: {revalidate: 0},
+    }
   );
 
   if (!res.ok) {
@@ -45,5 +53,8 @@ export async function approveOrder(id: number) {
     return {isSuccess: false, message: "Something wrong"};
   }
 
-  return {isSuccess: false, message: "Something wrong"};
+  revalidatePath("/orders");
+  revalidatePath(`/orders/${id}`);
+
+  return {isSuccess: true, message: "Approve order successfully!"};
 }

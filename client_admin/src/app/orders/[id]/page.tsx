@@ -8,6 +8,7 @@ import axios from "axios";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
+import {useRouter} from "next/navigation";
 import {useEffect, useState} from "react";
 
 type Props = {
@@ -18,6 +19,7 @@ type Props = {
 
 export default function page({params: {id}}: Props) {
   const [order, setOrder] = useState<Order>();
+  const router = useRouter();
 
   const fetchOrderDetail = async () => {
     const {data} = await axios.get(
@@ -32,6 +34,9 @@ export default function page({params: {id}}: Props) {
 
   const handleApproveOrder = async (id: number) => {
     const {isSuccess, message} = await approveOrder(id);
+    if (isSuccess) {
+      fetchOrderDetail();
+    }
     useAlertStore.getState().setShowAlert({
       status: true,
       type: isSuccess ? "success" : "failure",

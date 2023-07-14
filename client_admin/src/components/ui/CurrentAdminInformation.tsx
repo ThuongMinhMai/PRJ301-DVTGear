@@ -6,9 +6,9 @@ import React from "react";
 type Props = {};
 
 export default function CurrentAdminInformation(props: Props) {
-  const currentAdmin = JSON.parse(
-    localStorage.getItem("current_admin") ?? "{}"
-  );
+  const currentAdmin = localStorage
+    ? JSON.parse(localStorage?.getItem("current_admin") ?? "{}")
+    : "{}";
 
   return (
     <div className="flex flex-col items-center mt-24 text-slate-100">

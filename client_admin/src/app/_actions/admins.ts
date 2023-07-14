@@ -3,7 +3,6 @@
 import {cookies} from "next/headers";
 import {revalidatePath} from "next/cache";
 import jwt_decode from "jwt-decode";
-import {json} from "stream/consumers";
 
 export async function addAdmin(formData: FormData) {
   const formDataObj: any = {};
@@ -35,6 +34,10 @@ export async function deleteAdmin(formData: FormData) {
     type: "delete",
   };
 
+  if (data.admins.length <= 1) {
+    return;
+  }
+
   try {
     await fetch("http://localhost:8080/store/api/admins", {
       method: "PUT",
@@ -46,7 +49,9 @@ export async function deleteAdmin(formData: FormData) {
 }
 
 export async function getAdmins() {
-  const res = await fetch("http://localhost:8080/store/api/admins");
+  const res = await fetch("http://localhost:8080/store/api/admins", {
+    next: {revalidate: 0},
+  });
 
   if (!res.ok) {
     return undefined;

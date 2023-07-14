@@ -284,24 +284,24 @@
 
 			<c:if test="${customer != null}" >
 			  <div id="header-user-menu"
-				   class="absolute bg-white -right-[5px] flex-col flex whitespace-nowrap text-black z-10 rounded-xl px-4 text-center py-2 font-bold hidden">
-				<div class="absolute bg-white w-6 h-6 right-[11px] rotate-45 top-2 -z-10 -translate-y-1/2 rounded-sm"></div>
+				   class="absolute bg-dvt-black-2 border border-white -right-[5px] flex-col flex whitespace-nowrap text-white z-10 rounded-xl px-4 text-center py-2 font-bold hidden">
+				<div class="absolute bg-dvt-black-2 w-6 h-6 right-[11px] rotate-45 top-2 -z-10 -translate-y-1/2 rounded-sm"></div>
 				<img src="assets/robot.png" alt="robot" class="absolute h-[70%] -left-16 bottom-0"/>
-				<div class="py-4">
+				<div class="py-4 border-b border-salte-50/10 mb-2">
 				  <span class="font-normal">Xin chào</span> ${customer.getUsername()}
 				</div>
 				<a href="/store/orders"
-				   class="block py-2 px-4 rounded-3xl flex justify-center gap-2 w-full items-center hover:bg-primary border-t border-slate-300 cursor-pointer">
+				   class="block py-2 px-4 rounded-3xl flex justify-center gap-2 w-full items-center hover:bg-primary cursor-pointer">
 				  <ion-icon class="w-6 h-6" name="file-tray-stacked-outline"></ion-icon>
 				  Đơn Hàng
 				</a>
 				<a href="/store/favorite"
-				   class="block py-2 px-4 rounded-3xl flex justify-center gap-2 w-full items-center hover:bg-primary border-t border-slate-300 cursor-pointer">
+				   class="block py-2 px-4 rounded-3xl flex justify-center gap-2 w-full items-center hover:bg-primary cursor-pointer">
 				  <ion-icon class="w-6 h-6" name="heart-circle-outline"></ion-icon>
 				  Sản Phẩm Yêu Thích
 				</a>
 				<form action="/store/logout" method="POST"
-					  class="block py-2 px-4 rounded-3xl flex justify-center gap-2 w-full items-center hover:bg-primary border-t border-slate-300 cursor-pointer">
+					  class="block py-2 px-4 rounded-3xl flex justify-center gap-2 w-full items-center hover:bg-primary cursor-pointer">
 				  <ion-icon class="w-6 h-6" name="log-out-outline"></ion-icon>
 				  <button type="submit">Đăng Xuất</button>
 				</form>

@@ -69,7 +69,7 @@
 				<c:when test="${!orderProduct.getIsRated()}">
 
 				  <button
-					onclick="renderRatingForm(${Utils.parseJSONStringArray(product.getImages()).get(0)}, ${product.getName().replaceAll("\"", "inch")}, ${product.getId()})"
+					onclick="renderRatingForm('${Utils.parseJSONStringArray(product.getImages()).get(0)}', '${product.getName().replaceAll("\"", "inch")}', '${product.getId()}')"
 					class="bg-primary text-white px-6 py-2 rounded-sm hover:opacity-70">
 					Đánh Giá
 				  </button>

@@ -17,8 +17,8 @@ export default function GoogleLoginBtn({}: Props) {
         type: "failure",
         message: "This account is not administrator",
       });
-    } else {
-      localStorage.setItem("current_admin", JSON.stringify(currentAdmin));
+    } else if (localStorage) {
+      localStorage?.setItem("current_admin", JSON.stringify(currentAdmin));
     }
   }
 
