@@ -2,6 +2,7 @@
 
 import {updateProduct} from "@/app/_actions/products";
 import {Loader, ProductForm} from "@/components";
+import {useAlertStore} from "@/store";
 import Image from "next/image";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
@@ -19,12 +20,17 @@ export default function EditProductPage({}: Props) {
 
       router.push("/products");
       router.refresh(); //to get updated data
+      useAlertStore.getState().setShowAlert({
+        status: true,
+        type: "success",
+        message: "Update product successfully",
+      });
     });
   };
 
   if (isPending) {
     return (
-      <div>
+      <div className="flex items-center justify-center">
         <div>Please wait for adding new product...</div>
         <Loader />
       </div>

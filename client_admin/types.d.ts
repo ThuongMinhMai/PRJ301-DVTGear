@@ -7,6 +7,7 @@ type Product = {
   price: number;
   images: string;
   storage: number;
+  disable: boolean;
 };
 
 type Brand = {
@@ -57,4 +58,3 @@ type Admin = string; //email address
 
 //có vài type bị lỗi khi định nghĩa trong types.d.ts, nên dùng cách này để export các type đó
 type AlertType = "info" | "success" | "failure";
-

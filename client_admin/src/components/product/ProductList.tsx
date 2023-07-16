@@ -5,7 +5,10 @@ import {useEffect, useState} from "react";
 import {Loader, Scroll} from "..";
 import Image from "next/image";
 import {useRouter, useSearchParams} from "next/navigation";
-import {useEditedProductStore} from "@/store";
+import {useAlertStore, useEditedProductStore} from "@/store";
+import {disableProduct, enableProduct} from "@/app/_actions/products";
+import clsx from "clsx";
+import _ from "lodash"; // Import Lodash library
 
 type ProductListProps = {
   firstProducts: Product[];
@@ -20,7 +23,6 @@ const ProductList = ({firstProducts}: ProductListProps) => {
   const searchQuery = useSearchParams()?.get("searchQuery");
 
   useEffect(() => {
-    console.log();
     axios
       .get(
         `http://localhost:8080/store/api/products?page=${pageNum}&pageSize=10&searchQuery=${
@@ -29,7 +31,9 @@ const ProductList = ({firstProducts}: ProductListProps) => {
       )
       .then((res) => res.data)
       .then((data) => {
-        setProductList((prev) => [...prev, ...data.products]);
+        const mergedProducts = [...productList, ...data.products];
+        const uniqueProducts = _.uniqWith(mergedProducts, _.isEqual); // Use uniqWith() from Lodash
+        setProductList(uniqueProducts);
         setTotalProducts(data.totalCount);
         setIsLoading(false);
       });
@@ -75,6 +79,7 @@ const ProductList = ({firstProducts}: ProductListProps) => {
               <th className="px-4">Brand</th>
               <th className="px-4">Price</th>
               <th className="px-4">Storage</th>
+              <th className="px-4">Status</th>
               <th className="pl-4 pr-8 text-end">Actions</th>
             </tr>
           </thead>
@@ -106,6 +111,16 @@ const ProductList = ({firstProducts}: ProductListProps) => {
                   </td>
                   <td className="px-4">
                     {Number(product.storage).toLocaleString()}
+                  </td>
+                  <td className="px-4">
+                    <div
+                      className={clsx(
+                        "badge badge-lg font-medium text-white px-2",
+                        product.disable ? "badge-error" : "badge-success"
+                      )}
+                    >
+                      {product.disable ? "DISABLED" : "ENABLED"}
+                    </div>
                   </td>
                   <td className="pl-4 pr-6 text-white text-end rounded-r-xl">
                     <div className="dropdown dropdown-end">
@@ -142,6 +157,42 @@ const ProductList = ({firstProducts}: ProductListProps) => {
                               className="filter invert"
                             />
                             Edit
+                          </div>
+                        </li>
+                        <li>
+                          <div
+                            onClick={async () => {
+                              if (product.disable) {
+                                await enableProduct(product);
+                                useAlertStore.getState().setShowAlert({
+                                  status: true,
+                                  type: "success",
+                                  message: "Enable product successfully",
+                                });
+                                router.refresh();
+                              } else {
+                                await disableProduct(product);
+                                useAlertStore.getState().setShowAlert({
+                                  status: true,
+                                  type: "success",
+                                  message: "Disable product successfully",
+                                });
+                                router.refresh();
+                              }
+                            }}
+                          >
+                            <Image
+                              width={24}
+                              height={24}
+                              alt="edit"
+                              src={
+                                product.disable
+                                  ? "/enable-product.svg"
+                                  : "/disable-product.svg"
+                              }
+                              className="filter invert"
+                            />
+                            {product.disable ? "Enable" : "Disable"}
                           </div>
                         </li>
                       </ul>

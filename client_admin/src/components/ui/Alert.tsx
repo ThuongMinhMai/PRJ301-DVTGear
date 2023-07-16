@@ -1,7 +1,7 @@
 "use client";
 
 import AlertIcon from "@/components/ui/AlertIcon";
-import { useAlertStore } from "@/store";
+import {useAlertStore} from "@/store";
 import clsx from "clsx";
 import React from "react";
 
@@ -12,13 +12,22 @@ const styles = {
     "text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800",
 };
 
-export default function Alert() {
+type Props = {
+  className?: string;
+};
+
+export default function Alert({className}: Props) {
   const showAlert = useAlertStore();
 
   return (
     <>
       {showAlert?.status && (
-        <div className="absolute left-0 right-0 z-[999] flex items-center justify-center top-5">
+        <div
+          className={clsx(
+            "fixed left-0 right-0 z-[999] flex items-center justify-center top-5",
+            className
+          )}
+        >
           <div
             className={clsx(
               "p-4 rounded-lg font-rajdhani font-semibold text-lg flex items-center",

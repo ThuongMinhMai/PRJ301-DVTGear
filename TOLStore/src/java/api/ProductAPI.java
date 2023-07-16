@@ -1,20 +1,19 @@
 package api;
 
 import dao.ProductDAO;
+import model.FetchResult;
 import model.Product;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import utils.Utils;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.FetchResult;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import utils.Utils;
+import java.io.IOException;
+import java.util.List;
 
 @WebServlet(name = "ProductServlet", urlPatterns = {"/api/products"})
 public class ProductAPI extends HttpServlet {
@@ -88,37 +87,8 @@ public class ProductAPI extends HttpServlet {
 
             response.getWriter().write(jsonResponse.toString());
         } catch (Exception e) {
-            System.err.println(e);
+            System.out.println(e.getMessage());
         }
 
     }
-
-//    @Override
-//    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//
-//        BufferedReader reader = new BufferedReader(
-//                new InputStreamReader(request.getInputStream(), "UTF-8")); // Specify UTF-8 encoding
-//        StringBuilder requestBody = new StringBuilder();
-//        String line;
-//        while ((line = reader.readLine()) != null) {
-//            requestBody.append(line);
-//        }
-//        reader.close();
-//
-//        JSONObject requestBody = new JSONObject(requestBody.toString());
-//
-//        try {
-//            ProductDAO dao = new ProductDAO();
-//            dao.deleteProduct(requestBody);
-//
-//            response.setStatus(HttpServletResponse.SC_OK);
-//
-//            JSONObject jsonResponse = new JSONObject();
-//            jsonResponse.put("message", "Delete Product succesfully!!!");
-//
-//            response.getWriter().write(jsonResponse.toString());
-//        } catch (Exception e) {
-//            System.err.println(e);
-//        }
-//    }
 }

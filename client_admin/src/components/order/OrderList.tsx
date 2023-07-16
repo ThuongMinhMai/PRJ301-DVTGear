@@ -7,6 +7,7 @@ import {Loader, Scroll} from "..";
 import clsx from "clsx";
 import statusToColor from "@/utils/statusColor";
 import Image from "next/image";
+import _ from "lodash"; // Import Lodash library
 
 type Props = {
   firstOrders: Order[];
@@ -30,7 +31,9 @@ const OrderList = ({firstOrders}: Props) => {
       )
       .then((res) => res.data)
       .then((data) => {
-        setOrderList((prev) => [...prev, ...data.orders]);
+        const mergedOrders = [...orderList, ...data.orders];
+        const uniqueOrders = _.uniqWith(mergedOrders, _.isEqual); // Use uniqWith() from Lodash
+        setOrderList(uniqueOrders);
         setTotalOrders(data.totalCount);
         setIsLoading(false);
       });
@@ -96,7 +99,7 @@ const OrderList = ({firstOrders}: Props) => {
                   <td className="px-4">
                     <div
                       className={clsx(
-                        "badge badge-lg text-lg font-medium text-white",
+                        "badge badge-lg font-medium text-white",
                         statusToColor[order.status as Status]
                       )}
                     >

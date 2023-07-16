@@ -1,6 +1,7 @@
 "use client";
 
 import {Loader, ProductForm} from "@/components";
+import {useAlertStore} from "@/store";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
@@ -20,13 +21,20 @@ export default function AddProductPage({}: Props) {
       category: Number(form.category),
       brand: Number(form.brand),
       images: JSON.parse(form.images),
+      disable: false,
     });
     router.push("/products");
+    router.refresh();
+    useAlertStore.getState().setShowAlert({
+      status: true,
+      type: "success",
+      message: "Add product successfully",
+    });
   };
 
   if (isCreating) {
     return (
-      <div>
+      <div className="flex items-center justify-center">
         <div>Please wait for adding new product...</div>
         <Loader />
       </div>

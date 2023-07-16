@@ -20,6 +20,7 @@ public class Product {
   private int price;
   private String description;
   private int storage;
+  private boolean disable;
 
   //expand attribute
   private List<Rate> rateList;
@@ -33,6 +34,27 @@ public class Product {
     this.price = price;
     this.description = description;
     this.storage = storage;
+  }
+
+  // Open/closed principle
+  public Product(int id, String name, Category category, Brand brand, String images, int price, String description, int storage, boolean disable) {
+    this.id = id;
+    this.name = name;
+    this.category = category;
+    this.brand = brand;
+    this.images = images;
+    this.price = price;
+    this.description = description;
+    this.storage = storage;
+    this.disable = disable;
+  }
+
+  public boolean isDisable() {
+    return disable;
+  }
+
+  public void setDisable(boolean disable) {
+    this.disable = disable;
   }
 
   public List<Rate> getRateList() {

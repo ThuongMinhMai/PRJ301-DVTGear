@@ -284,7 +284,7 @@
 
 			<c:if test="${customer != null}" >
 			  <div id="header-user-menu"
-				   class="absolute bg-dvt-black-2 border border-white -right-[5px] flex-col flex whitespace-nowrap text-white z-10 rounded-xl px-4 text-center py-2 font-bold hidden">
+				   class="absolute bg-dvt-black-2 shadow shadow-white -right-[5px] flex-col flex whitespace-nowrap text-white z-10 rounded-xl px-4 text-center py-2 font-bold hidden">
 				<div class="absolute bg-dvt-black-2 w-6 h-6 right-[11px] rotate-45 top-2 -z-10 -translate-y-1/2 rounded-sm"></div>
 				<img src="assets/robot.png" alt="robot" class="absolute h-[70%] -left-16 bottom-0"/>
 				<div class="py-4 border-b border-salte-50/10 mb-2">

@@ -43,8 +43,6 @@ const pathNameToNav: Record<string, string> = {
 export default function Nav({}: Props) {
   const [selectedNav, setSelectedNav] = useState("");
   const pathName = usePathname();
-  const [openMobileNav, setOpenMobileNav] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     setSelectedNav(pathNameToNav["/" + pathName?.split("/")[1] || ""]);
@@ -52,73 +50,102 @@ export default function Nav({}: Props) {
 
   return (
     <>
-      <div className="relative bg-black-2 w-[280px] text-white hidden lg:block">
-        <div className="fixed p-4 pt-0 w-[280px]">
-          <div className="flex items-center justify-center pt-2 pb-4 border-b-2 border-white/40 max-auto">
-            <Image alt="logo" height={72} width={180} src="/logo3.png" />
-          </div>
+      <NavDesktop selectedNav={selectedNav} />
+      <NavMobile selectedNav={selectedNav} />
+    </>
+  );
+}
 
-          <ul className="flex flex-col mt-6">
-            {links.map((link) => {
-              return (
-                <li className="-mr-4 cursor-pointer" key={link.label}>
-                  <Link
-                    href={link.pathname}
-                    className={`flex py-4 px-4 rounded-l-2xl ${
-                      selectedNav === link.label
-                        ? "bg-black-1 navigation_effect"
-                        : ""
-                    }`}
-                  >
-                    <Image
-                      alt={link.label}
-                      src={link.icon}
-                      width={24}
-                      height={24}
-                      className="filter invert"
-                    />
-                    <div className="ml-2 text-lg font-medium">{link.label}</div>
-                  </Link>
-                </li>
-              );
-            })}
+type NavDesktopProps = {
+  selectedNav: string;
+};
 
-            <li
-              onClick={async () => {
-                await logOutCurrentAdmin();
-                router.refresh();
-              }}
-              className="cursor-pointer"
-            >
-              <div className="flex px-4 py-2 rounded-2xl">
-                <Image
-                  alt="logout"
-                  src="/logout.svg"
-                  width={24}
-                  height={24}
-                  className="filter invert"
-                />
-                <div className="ml-2 text-lg font-medium">Log Out</div>
-              </div>
-            </li>
-          </ul>
-
-          <CurrentAdminInformation />
+function NavDesktop({selectedNav}: NavDesktopProps) {
+  const router = useRouter();
+  return (
+    <div className="relative bg-black-2 w-[280px] text-white hidden lg:block">
+      <div className="fixed p-4 pt-0 w-[280px]">
+        <div className="flex items-center justify-center pt-2 pb-4 border-b-2 border-white/40 max-auto">
+          <Image alt="logo" height={72} width={180} src="/logo3.png" />
         </div>
-      </div>
 
+        <ul className="flex flex-col mt-6">
+          {links.map((link) => {
+            return (
+              <li className="-mr-4 cursor-pointer" key={link.label}>
+                <Link
+                  href={link.pathname}
+                  className={`flex py-4 px-4 rounded-l-2xl ${
+                    selectedNav === link.label
+                      ? "bg-black-1 navigation_effect"
+                      : ""
+                  }`}
+                >
+                  <Image
+                    alt={link.label}
+                    src={link.icon}
+                    width={24}
+                    height={24}
+                    className="filter invert"
+                  />
+                  <div className="ml-2 text-lg font-medium">{link.label}</div>
+                </Link>
+              </li>
+            );
+          })}
+
+          <li
+            onClick={async () => {
+              await logOutCurrentAdmin();
+              router.refresh();
+            }}
+            className="cursor-pointer"
+          >
+            <div className="flex px-4 py-2 rounded-2xl">
+              <Image
+                alt="logout"
+                src="/logout.svg"
+                width={24}
+                height={24}
+                className="filter invert"
+              />
+              <div className="ml-2 text-lg font-medium">Log Out</div>
+            </div>
+          </li>
+        </ul>
+
+        <CurrentAdminInformation />
+      </div>
+    </div>
+  );
+}
+
+type NavMobileProps = {
+  selectedNav: string;
+};
+
+function NavMobile({selectedNav}: NavMobileProps) {
+  const [openMobileNav, setOpenMobileNav] = useState(false);
+  const router = useRouter();
+  return (
+    <>
       <div className="flex items-center justify-center py-4 lg:hidden text-black-1">
-        <div className="absolute cursor-pointer md:w-12 md:h-12 w-9 h-9 left-4">
+        <div
+          onClick={() => {
+            setOpenMobileNav(true);
+          }}
+          className="absolute cursor-pointer md:w-12 md:h-12 w-9 h-9 left-4"
+        >
           <Image alt="logout" src="/menu.svg" fill className="filter invert" />
         </div>
 
         <div className="flex items-center justify-center gap-4 max-auto">
-          <Image alt="logo" height={56} width={56} src="/logo.png" />
+          <Image alt="logo" height={56} width={112} src="/logo3.png" />
         </div>
       </div>
 
       <ul
-        className={`flex flex-col fixed inset-0 bg-primary text-black-1 py-2 px-4 lg:hidden transition-all z-50 -translate-x-full ${
+        className={`flex flex-col fixed inset-0 bg-black-2 text-white py-2 px-4 lg:hidden transition-all z-50 -translate-x-full ${
           openMobileNav ? "translate-x-0" : ""
         }`}
       >
@@ -133,11 +160,17 @@ export default function Nav({}: Props) {
             >
               <Link
                 href={link.pathname}
-                className={`flex py-2 px-4 rounded-2xl hover:bg-black-1 hover:text-primary ${
-                  selectedNav === link.label ? "bg-black-1 text-primary" : ""
+                className={`flex py-2 px-4 rounded-lg hover:bg-black-1 ${
+                  selectedNav === link.label ? "bg-black-1" : ""
                 }`}
               >
-                {link.icon}
+                <Image
+                  alt={link.label}
+                  src={link.icon}
+                  width={24}
+                  height={24}
+                  className="filter invert"
+                />
                 <div className="ml-2 text-lg font-medium">{link.label}</div>
               </Link>
             </li>
@@ -152,7 +185,7 @@ export default function Nav({}: Props) {
           }}
           className="cursor-pointer"
         >
-          <div className="flex px-4 py-2 rounded-2xl hover:bg-black-1 hover:text-primary">
+          <div className="flex px-4 py-2 rounded-lg hover:bg-black-1">
             <Image
               alt="logout"
               src="/logout.svg"
