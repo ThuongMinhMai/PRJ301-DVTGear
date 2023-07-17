@@ -17,40 +17,40 @@ import java.util.List;
 @WebServlet(name = "SearchController", urlPatterns = {"/search"})
 public class SearchController extends HttpServlet {
 
-  //get search page
-  @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String category = request.getParameter("category");
-    String brand = request.getParameter("brand");
-    String searchTerm = request.getParameter("searchTerm");
-    String sortBy = request.getParameter("sortBy");
-    String page = request.getParameter("page"); //page of pagination
+    //get search page
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String category = request.getParameter("category");
+        String brand = request.getParameter("brand");
+        String searchTerm = request.getParameter("searchTerm");
+        String sortBy = request.getParameter("sortBy");
+        String page = request.getParameter("page"); //page of pagination
 
-    ProductDAO productDAO = new ProductDAO();
+        ProductDAO productDAO = new ProductDAO();
 
-    //if page is greater than 1, return products at json format (fetching more products from client)
-    if (page != null) {
-      int pageInt = Integer.parseInt(page);
-      if (pageInt > 1) {
-        FetchResult<Product> fetchData = productDAO.getSearchedProducts(searchTerm, category, brand, sortBy, pageInt, 12);
+        //if page is greater than 1, return products at json format (fetching more products from client)
+        if (page != null) {
+            int pageInt = Integer.parseInt(page);
+            if (pageInt > 1) {
+                FetchResult<Product> fetchData = productDAO.getSearchedProducts(searchTerm, category, brand, sortBy, pageInt, 12);
 
-        JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put("itemsCount", fetchData.getTotalCount());
-        jsonResponse.put("products", new JSONArray(fetchData.getItems()));
+                JSONObject jsonResponse = new JSONObject();
+                jsonResponse.put("itemsCount", fetchData.getTotalCount());
+                jsonResponse.put("products", new JSONArray(fetchData.getItems()));
 
-        response.getWriter().write(jsonResponse.toString());
-        return;
-      }
+                response.getWriter().write(jsonResponse.toString());
+                return;
+            }
+        }
+
+        //else, return product page with page 1
+        FetchResult<Product> fetchData = productDAO.getSearchedProducts(searchTerm, category, brand, sortBy, 1, 12);
+        List<Product> productList = fetchData.getItems();
+        int itemsCount = fetchData.getTotalCount();
+
+        request.setAttribute("productList", productList);
+        request.setAttribute("itemsCount", itemsCount);
+        request.getRequestDispatcher("search.jsp").forward(request, response);
     }
-
-    //else, return product page with page 1
-    FetchResult<Product> fetchData = productDAO.getSearchedProducts(searchTerm, category, brand, sortBy, 1, 12);
-    List<Product> productList = fetchData.getItems();
-    int itemsCount = fetchData.getTotalCount();
-
-    request.setAttribute("productList", productList);
-    request.setAttribute("itemsCount", itemsCount);
-    request.getRequestDispatcher("search.jsp").forward(request, response);
-  }
 
 }

@@ -17,36 +17,36 @@ import java.util.List;
 @WebServlet(name = "CartController", urlPatterns = {"/cart"})
 public class CartController extends HttpServlet {
 
-  //Get Cart Page
+    //Get Cart Page
 
-  @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-    response.setCharacterEncoding("UTF-8");
-    response.setContentType("text/html; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
 
-    request.getRequestDispatcher("cart.jsp").forward(request, response);
-  }
+        request.getRequestDispatcher("cart.jsp").forward(request, response);
+    }
 
-  //Post id products in cart from client, to get real products at json format
-  @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-    JSONObject body = Utils.getRequestBody(request);
-    ProductDAO productDAO = new ProductDAO();
+    //Post id products in cart from client, to get real products at json format
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        JSONObject body = Utils.getRequestBody(request);
+        ProductDAO productDAO = new ProductDAO();
 
-    List<Product> products = productDAO.getCartProducts(body);
+        List<Product> products = productDAO.getCartProducts(body);
 
-    JSONObject jsonResponse = new JSONObject();
+        JSONObject jsonResponse = new JSONObject();
 
-    jsonResponse.put("message", "Get cart products succesfully!");
-    jsonResponse.put("products", new JSONArray(products));
+        jsonResponse.put("message", "Get cart products succesfully!");
+        jsonResponse.put("products", new JSONArray(products));
 
-    response.setStatus(HttpServletResponse.SC_OK);
-    response.setContentType("application/json");
-    response.getWriter().write(jsonResponse.toString());
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/json");
+        response.getWriter().write(jsonResponse.toString());
 
-  }
+    }
 
 }

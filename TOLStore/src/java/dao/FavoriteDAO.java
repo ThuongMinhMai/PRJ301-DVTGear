@@ -16,74 +16,70 @@ import java.sql.ResultSet;
  */
 public class FavoriteDAO {
 
-  Connection conn = null;
-  PreparedStatement ps = null;
-  ResultSet rs = null;
-
-  public boolean isFavorite(int productId, int customerId) {
-    if (customerId == 0) {
-      return false;
-    }
-
-    String query = "SELECT COUNT(*) AS count FROM Favorite WHERE productId = ? AND customerId = ?";
-
-    try (Connection conn = new DBContext().getConnection();
-         PreparedStatement ps = conn.prepareStatement(query)) {
-      ps.setInt(1, productId);
-      ps.setInt(2, customerId);
-
-      try (ResultSet rs = ps.executeQuery()) {
-        if (rs.next()) {
-          int count = rs.getInt("count");
-          return count > 0;
+    public boolean isFavorite(int productId, int customerId) {
+        if (customerId == 0) {
+            return false;
         }
-      }
-    } catch (Exception e) {
-      System.err.println(e);
+
+        String query = "SELECT COUNT(*) AS count FROM Favorite WHERE productId = ? AND customerId = ?";
+
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, productId);
+            ps.setInt(2, customerId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    int count = rs.getInt("count");
+                    return count > 0;
+                }
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+        return false;
     }
 
-    return false;
-  }
+    public void addFavorite(int productId, int customerId) {
 
-  public void addFavorite(int productId, int customerId) {
+        String query = "INSERT INTO Favorite (productId, customerId) VALUES (?, ?)";
 
-    String query = "INSERT INTO Favorite (productId, customerId) VALUES (?, ?)";
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, productId);
+            ps.setInt(2, customerId);
 
-    try (Connection conn = new DBContext().getConnection();
-         PreparedStatement ps = conn.prepareStatement(query)) {
-      ps.setInt(1, productId);
-      ps.setInt(2, customerId);
+            int rowsInserted = ps.executeUpdate();
 
-      int rowsInserted = ps.executeUpdate();
-
-      if (rowsInserted > 0) {
-        System.out.println("Favorite added successfully.");
-      } else {
-        System.out.println("Failed to add the favorite.");
-      }
-    } catch (Exception e) {
-      System.err.println(e);
+            if (rowsInserted > 0) {
+                System.out.println("Favorite added successfully.");
+            } else {
+                System.out.println("Failed to add the favorite.");
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
-  }
 
-  public void deleteFavorite(int productId, int customerId) {
-    String query = "DELETE FROM Favorite WHERE productId = ? AND customerId = ?";
+    public void deleteFavorite(int productId, int customerId) {
+        String query = "DELETE FROM Favorite WHERE productId = ? AND customerId = ?";
 
-    try (Connection conn = new DBContext().getConnection();
-         PreparedStatement ps = conn.prepareStatement(query)) {
-      ps.setInt(1, productId);
-      ps.setInt(2, customerId);
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, productId);
+            ps.setInt(2, customerId);
 
-      int rowsDeleted = ps.executeUpdate();
+            int rowsDeleted = ps.executeUpdate();
 
-      if (rowsDeleted > 0) {
-        System.out.println("Favorite deleted successfully.");
-      } else {
-        System.out.println("Failed to delete the favorite.");
-      }
-    } catch (Exception e) {
-      System.err.println(e);
+            if (rowsDeleted > 0) {
+                System.out.println("Favorite deleted successfully.");
+            } else {
+                System.out.println("Failed to delete the favorite.");
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
-  }
 
 }

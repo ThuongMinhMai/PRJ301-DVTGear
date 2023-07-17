@@ -16,50 +16,50 @@ import java.util.List;
 @WebServlet(name = "FavoriteController", urlPatterns = {"/favorite"})
 public class FavoriteController extends HttpServlet {
 
-  //get Favorite Page, with favorite products of customer
-  @Override
+    //get Favorite Page, with favorite products of customer
+    @Override
 
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    //check login
-    Customer customer = (Customer) request.getSession().getAttribute("currentUser");
-    if (customer == null) {
-      response.sendRedirect("/store/login");
-      return;
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //check login
+        Customer customer = (Customer) request.getSession().getAttribute("currentUser");
+        if (customer == null) {
+            response.sendRedirect("/store/login");
+            return;
+        }
+
+        //if loged
+        ProductDAO productDAO = new ProductDAO();
+        int customerId = customer.getCustomerId();
+        List<Product> favoriteProductList = productDAO.getFavoriteProducts(customerId);
+
+        request.setAttribute("favoriteProductList", favoriteProductList);
+        request.getRequestDispatcher("favorite.jsp").forward(request, response);
     }
 
-    //if loged
-    ProductDAO productDAO = new ProductDAO();
-    int customerId = customer.getCustomerId();
-    List<Product> favoriteProductList = productDAO.getFavoriteProducts(customerId);
+    //add or remove favorite product
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        //check login
+        Customer customer = (Customer) request.getSession().getAttribute("currentUser");
+        if (customer == null) {
+            response.sendRedirect("/store/login");
+            return;
+        }
 
-    request.setAttribute("favoriteProductList", favoriteProductList);
-    request.getRequestDispatcher("favorite.jsp").forward(request, response);
-  }
+        //if loged
+        int productId = Integer.parseInt(request.getParameter("productId"));
+        int customerId = customer.getCustomerId();
+        String action = request.getParameter("action");  //"add" or "remove"
+        FavoriteDAO favoriteDAO = new FavoriteDAO();
 
-  //add or remove favorite product
-  @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-    //check login
-    Customer customer = (Customer) request.getSession().getAttribute("currentUser");
-    if (customer == null) {
-      response.sendRedirect("/store/login");
-      return;
+        if (action.equals("add")) {
+            favoriteDAO.addFavorite(productId, customerId);
+        } else if (action.equals("remove")) {
+            favoriteDAO.deleteFavorite(productId, customerId);
+        }
+
+        response.sendRedirect("/store/products?id=" + productId);
     }
-
-    //if loged
-    int productId = Integer.parseInt(request.getParameter("productId"));
-    int customerId = customer.getCustomerId();
-    String action = request.getParameter("action");  //"add" or "remove"
-    FavoriteDAO favoriteDAO = new FavoriteDAO();
-
-    if (action.equals("add")) {
-      favoriteDAO.addFavorite(productId, customerId);
-    } else if (action.equals("remove")) {
-      favoriteDAO.deleteFavorite(productId, customerId);
-    }
-
-    response.sendRedirect("/store/products?id=" + productId);
-  }
 
 }

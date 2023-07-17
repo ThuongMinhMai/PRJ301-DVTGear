@@ -7,48 +7,43 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class AdminDAO {
+    public String getAllAdmins() {
+        String adminEmailList = null;
+        String query = "SELECT [adminEmails]\n"
+                + " FROM Setting";
 
-  Connection conn = null;
-  PreparedStatement ps = null;
-  ResultSet rs = null;
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
 
-  public String getAllAdmins() {
-    String adminEmailList = null;
-    String query = "SELECT [adminEmails]\n"
-        + " FROM Setting";
+            while (rs.next()) {
+                adminEmailList = rs.getString("adminEmails");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
-    try (Connection conn = new DBContext().getConnection();
-         PreparedStatement ps = conn.prepareStatement(query);
-         ResultSet rs = ps.executeQuery()) {
+        return adminEmailList;
 
-      while (rs.next()) {
-        adminEmailList = rs.getString("adminEmails");
-      }
-    } catch (Exception e) {
-      System.out.println(e);
     }
 
-    return adminEmailList;
+    public void updateAdmins(String newAdmins) {
+        String query = "UPDATE Setting\n"
+                + "SET adminEmails = ?";
 
-  }
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, newAdmins);
 
-  public void updateAdmins(String newAdmins) {
-    String query = "UPDATE Setting\n"
-        + "SET adminEmails = ?";
+            int rowsUpdated = ps.executeUpdate();
 
-    try (Connection conn = new DBContext().getConnection();
-         PreparedStatement ps = conn.prepareStatement(query)) {
-        ps.setString(1, newAdmins);
-
-      int rowsUpdated = ps.executeUpdate();
-
-      if (rowsUpdated > 0) {
-        System.out.println("Admins updated successfully.");
-      } else {
-        System.out.println("Failed to update the admins.");
-      }
-    } catch (Exception e) {
-      System.err.println(e);
+            if (rowsUpdated > 0) {
+                System.out.println("Admins updated successfully.");
+            } else {
+                System.out.println("Failed to update the admins.");
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
-  }
 }
