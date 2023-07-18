@@ -1,6 +1,9 @@
 "use server";
 
+import {API_PATH} from "@/utils/constant";
 import {revalidatePath} from "next/cache";
+
+const productAPI = `${API_PATH}/products`;
 
 export const updateProduct = async (product: Product) => {
   const data = {
@@ -8,7 +11,7 @@ export const updateProduct = async (product: Product) => {
     images: JSON.parse(product.images),
   };
 
-  await fetch("http://localhost:8080/store/api/products", {
+  await fetch(productAPI, {
     method: "PUT",
     body: JSON.stringify(data),
   });
@@ -16,23 +19,25 @@ export const updateProduct = async (product: Product) => {
   revalidatePath("/products");
 };
 
-export async function getProducts(searchQuery: string | null) {
+export async function getProducts(
+  searchQuery: string,
+  page: number,
+  pageSize: number
+) {
   const res = await fetch(
-    `http://localhost:8080/store/api/products?page=1&pageSize=10&searchQuery=${
-      searchQuery || ""
-    }`,
+    `${productAPI}?page=${page}&pageSize=${pageSize}&searchQuery=${searchQuery}`,
     {
       next: {revalidate: 0},
     }
   );
 
   if (!res.ok) {
-    return [] as Product[];
+    return {products: [] as Product[], totalCount: 0};
   }
 
-  const data: {products: Product[]} = await res.json();
+  const data: {products: Product[]; totalCount: number} = await res.json();
 
-  return data.products;
+  return data;
 }
 
 export async function enableProduct(product: Product) {
@@ -44,7 +49,7 @@ export async function enableProduct(product: Product) {
     brand: product.brand.id,
   };
 
-  await fetch("http://localhost:8080/store/api/products", {
+  await fetch(productAPI, {
     method: "PUT",
     body: JSON.stringify(data),
   });
@@ -61,7 +66,7 @@ export async function disableProduct(product: Product) {
     brand: product.brand.id,
   };
 
-  await fetch("http://localhost:8080/store/api/products", {
+  await fetch(productAPI, {
     method: "PUT",
     body: JSON.stringify(data),
   });

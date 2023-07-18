@@ -12,6 +12,7 @@ import {
   Chart,
   Tooltip,
 } from "chart.js";
+import {API_PATH} from "@/utils/constant";
 Chart.register(CategoryScale);
 Chart.register(LinearScale);
 Chart.register(PointElement);
@@ -30,7 +31,7 @@ export default function LineChart(props: any) {
   useEffect(() => {
     async function getChartData() {
       const response = await axios.get(
-        `http://localhost:8080/store/api/statistical?historicalChartDays=${days}`
+        `${API_PATH}/statistical?historicalChartDays=${days}`
       );
       setChartData(response.data.historicalChart);
     }

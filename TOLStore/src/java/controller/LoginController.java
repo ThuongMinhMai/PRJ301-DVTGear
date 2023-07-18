@@ -21,6 +21,7 @@ import java.nio.charset.StandardCharsets;
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginController extends HttpServlet {
 
+    //env
     private static final String CLIENT_ID = "834117377959-0aabfn4t7gui4au7aopki3c10h9rsa53.apps.googleusercontent.com";
 
     //get login page
@@ -110,7 +111,7 @@ public class LoginController extends HttpServlet {
             return;
         }
 
-        //check registed
+        //check registered
         CustomerDAO dao = new CustomerDAO();
         Customer customer = dao.getCustomerByName(username);
         if (customer == null) {
@@ -119,7 +120,7 @@ public class LoginController extends HttpServlet {
             return;
         }
 
-        //hash and check passowrd
+        //hash and check password
         String hashedPassword = Utils.sha256Hash(password);
         if (!customer.getPassword().equals(hashedPassword)) {
             request.setAttribute("errorMessage", "Wrong password. Try again!");
@@ -127,7 +128,7 @@ public class LoginController extends HttpServlet {
             return;
         }
 
-        //everthing is good, let's response
+        //everything is good, lets response
         request.getSession().setAttribute("currentUser", customer);
         response.sendRedirect("/store");
 

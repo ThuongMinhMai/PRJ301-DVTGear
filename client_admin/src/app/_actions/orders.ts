@@ -1,14 +1,19 @@
 "use server";
 
+import { API_PATH } from "@/utils/constant";
 import {revalidatePath} from "next/cache";
+
+const orderAPI = `${API_PATH}/orders`
 
 //just get 10 first orders
 export async function getOrders(
-  searchQuery: string | null,
-  searchType: string | null
+  searchQuery: string,
+  searchType: string,
+  page: number,
+  pageSize: number
 ) {
   const res = await fetch(
-    `http://localhost:8080/store/api/orders?page=1&pageSize=10&searchQuery=${
+    `${orderAPI}?page=${page}&pageSize=${pageSize}&searchQuery=${
       searchQuery || ""
     }&searchType=${searchType || ""}`,
     {
@@ -17,17 +22,17 @@ export async function getOrders(
   );
 
   if (!res.ok) {
-    return [] as Order[];
+    return {orders: [] as Order[], itemsCount: 0};
   }
 
-  const data: {orders: Order[]} = await res.json();
+  const data: {orders: Order[]; itemsCount: number} = await res.json();
 
-  return data.orders;
+  return data;
 }
 
 export async function getOrderDetail(id: string) {
   const res = await fetch(
-    `http://localhost:8080/store/api/orders?orderId=${id}`,
+    `${orderAPI}?orderId=${id}`,
     {
       next: {revalidate: 0},
     }
@@ -47,7 +52,7 @@ export async function approveOrder(id: number) {
     orderId: id,
   };
 
-  const res = await fetch("http://localhost:8080/store/api/orders", {
+  const res = await fetch(orderAPI, {
     method: "PUT",
     body: JSON.stringify(data),
   });

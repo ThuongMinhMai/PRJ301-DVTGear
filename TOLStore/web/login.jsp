@@ -22,7 +22,7 @@
             }
         };
     </script>
-    <style type="text/tailwindcss">
+    <style>
         input:focus ~ label,
         input:valid ~ label {
             top: -28px;

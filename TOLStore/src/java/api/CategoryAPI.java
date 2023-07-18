@@ -24,7 +24,7 @@ public class CategoryAPI extends HttpServlet {
         List<Category> categoryList = dao.getAllCategories();
 
         JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put("message", "Get categories succesfully!");
+        jsonResponse.put("message", "Get categories successfully!");
         jsonResponse.put("categories", new JSONArray(categoryList));
 
         response.setStatus(HttpServletResponse.SC_OK);

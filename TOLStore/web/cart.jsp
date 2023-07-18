@@ -1,8 +1,3 @@
-<%-- 
-    Document   : cart
-    Created on : Jun 9, 2023, 12:10:34 PM
-    Author     : Kingc
---%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 
@@ -34,24 +29,34 @@
         <div class="flex flex-col">
             <div class="flex gap-4">
                 <label class="text-white mb-3 flex flex-col">
-                    <div class="font-bold text-primary">Tên người nhận hàng</div>
-                    <input placeholder="Tên người nhận..."
-                           class="mt-1 w-full block border py-2 border-white outline-none px-3 rounded w-full bg-transparent max-w-[400px]"
-                           type="text" name="receiver" id="receiver" required/>
+                    <span class="font-bold text-primary">Tên người nhận hàng</span>
+                    <input
+                            placeholder="Tên người nhận..."
+                            class="mt-1 w-full block border py-2 border-white outline-none px-3 rounded w-full bg-transparent max-w-[400px]"
+                            type="text"
+                            name="receiver"
+                            id="receiver"
+                            required
+                    />
                 </label>
                 <label class="text-white mb-3 flex flex-col">
-                    <div class="font-bold text-primary">Số điện thoại</div>
-                    <input placeholder="Số điện thoại..."
-                           class="mt-1 w-full block border py-2 border-white outline-none px-3 rounded w-full bg-transparent max-w-[500px]"
-                           type="text" name="phone" pattern="[0-9]{10,12}" title="Please enter a 10-digit phone number"
-                           id="phone"
-                           required/>
+                    <span class="font-bold text-primary">Số điện thoại</span>
+                    <input
+                            placeholder="Số điện thoại..."
+                            class="mt-1 w-full block border py-2 border-white outline-none px-3 rounded w-full bg-transparent max-w-[500px]"
+                            type="text"
+                            name="phone"
+                            pattern="[0-9]{10,12}"
+                            title="Please enter a 10-digit phone number"
+                            id="phone"
+                            required
+                    />
                 </label>
             </div>
             <div class="flex flex-col">
                 <label class="text-white mb-3">
-                    <div class="font-bold text-primary">Địa chỉ</div>
-                    <div class="flex gap-4 mt-1">
+                    <span class="font-bold text-primary">Địa chỉ</span>
+                    <span class="flex gap-4 mt-1">
                         <select class="border py-2 border-white outline-none px-3 rounded bg-dvt-black-2" id="city">
                             <option class="bg-inherit" value="" selected>Chọn tỉnh thành</option>
                         </select>
@@ -61,10 +66,10 @@
                         <select class="border py-2 border-white outline-none px-3 rounded bg-dvt-black-2" id="ward">
                             <option class="bg-inherit" value="" selected>Chọn phường xã</option>
                         </select>
-                    </div>
+                    </span>
                 </label>
                 <label class="text-white mb-3">
-                    <div class="font-bold text-primary">Đường</div>
+                    <span class="font-bold text-primary">Đường</span>
                     <input placeholder="Đường..."
                            class="mt-1 block border py-2 border-white outline-none px-3 rounded w-full bg-transparent max-w-[400px]"
                            type="text" name="address" id="road" required/>
@@ -100,44 +105,51 @@
 
 
 <script>
-
     const cartPage = document.getElementById("cartPage");
     updateCartPage = () => {
         const cart = JSON.parse(localStorage.getItem("cart"));
         if (!cart || (cart && !cart.productCount)) {
-            cartPage.innerHTML = `<div class="w-full flex flex-col justify-center gap-3 items-center relative py-6">
-            <img src="./assets/robot2.png" alt="robot2" class="h-64"/>
-        <div class="font-bold text-3xl">Giỏ hàng rỗng</div>
-        <div class="text-3xl">Hỏng lẻ hông ưng!</div>
-        
-    </div>`;
+            cartPage.innerHTML = `
+            <div class="w-full flex flex-col justify-center gap-3 items-center relative py-6">
+                <img src="./assets/robot2.png" alt="robot2" class="h-64"/>
+                <div class="font-bold text-3xl">Giỏ hàng rỗng</div>
+                <div class="text-3xl">Hỏng lẻ hông ưng!</div>
+            </div>`;
         }
     };
     updateCartPage();
+
     const orderForm = document.getElementById("orderForm");
     const orderButton = document.getElementById("orderButton");
+
     const hiddenOrderForm = () => {
         orderForm.classList.add("hidden");
         orderForm.classList.remove("block");
         orderButton.classList.remove("hidden");
         orderButton.classList.add("block");
     };
+
     const displayOrderForm = () => {
         orderForm.classList.remove("hidden");
         orderForm.classList.add("block");
         orderButton.classList.add("hidden");
         orderButton.classList.remove("block");
     };
+
     hiddenOrderForm();
+
+    const updateProductCountHeader = () => {
+        const cart = JSON.parse(localStorage.getItem("cart"));
+        document.getElementById("cartTotalDisplay").innerHTML = cart ? cart.productCount : 0;
+    };
+    updateProductCountHeader();
+
     const formatNum = (number) => {
         const options = {maximumFractionDigits: 0};
-        const formattedNumber = number.toLocaleString("en-US", options);
-        return formattedNumber;
+        return number.toLocaleString("en-US", options);
     };
     const localStorageCartProducts = localStorage.getItem("cart");
     let dataCartProducts; //{ products: [], totalMoney: 0 };
-
-    // let cartProduct = { products: [], totalMoney: 0 };
 
     const fetchCartProducts = async () => {
         const url = "http://localhost:8080/store/cart";
@@ -157,6 +169,8 @@
             dataCartProducts = data.products;
 
             const productsInCart = JSON.parse(localStorageCartProducts).products;
+
+            //maybe some product in cart is disabled by admin, so we need to update cart
             const updatedCart = {
                 productCount: 0,
                 products: {}
@@ -167,27 +181,23 @@
                 updatedCart.productCount += productsInCart[id];
             })
             localStorage.setItem("cart", JSON.stringify(updatedCart))
-
             calcTotalMoney();
             renderOrders();
+            updateProductCountHeader();
         } catch (error) {
             console.error("Error:", error);
         }
     };
+
     const calcTotalMoney = () => {
         const total = dataCartProducts.reduce(function (acc, product) {
-            var quantity = JSON.parse(localStorage.getItem("cart")).products[product.id] ?? 0;
+            const quantity = JSON.parse(localStorage.getItem("cart")).products[product.id] ?? 0;
             return acc + Number(product.price) * Number(quantity);
         }, 0);
-        console.log("calcTotalMoney");
         const totalMoney = document.getElementById("totalMoney");
         totalMoney.innerHTML = formatNum(total) + "đ";
     };
-    const updateProductCountHeader = () => {
-        const cart = JSON.parse(localStorage.getItem("cart"));
-        document.getElementById("cartTotalDisplay").innerHTML = cart ? cart.productCount : 0;
-    };
-    updateProductCountHeader();
+
     const renderOrders = () => {
         let htmlContent = "";
         if (!dataCartProducts) {
@@ -236,7 +246,6 @@
         document.getElementById("productsContainer").innerHTML = htmlContent;
     };
 
-
     if (localStorageCartProducts) {
         fetchCartProducts();
     }
@@ -244,7 +253,6 @@
     const increaseProduct = (id) => {
         const cart = JSON.parse(localStorage.getItem("cart"));
         const product = dataCartProducts.find(product => product.id === id);
-        console.log(product);
         if (cart.products[id] >= product.storage) {
             handleDisplayFailToost();
             return;
@@ -260,7 +268,6 @@
 
     };
 
-
     const decreaseProduct = (id) => {
         const cart = JSON.parse(localStorage.getItem("cart"));
         if (cart.products[id] > 1) {
@@ -274,7 +281,6 @@
         }
     };
 
-
     const deleteProduct = (id) => {
         const cart = JSON.parse(localStorage.getItem("cart"));
         if (cart.products[id] >= 1) {
@@ -287,7 +293,6 @@
             updateCartPage();
         }
     };
-
 
     const formDataToObject = (formData) => {
         let object = {};
@@ -308,7 +313,6 @@
         return object;
     };
 
-
     const handleSubmitOrder = () => {
 
         const phone = document.getElementById("phone").value;
@@ -326,11 +330,11 @@
         }
 
         const form = document.createElement('form');
-// Set form attributes
+        // Set form attributes
         form.method = 'POST'; // HTTP method
         form.action = 'http://localhost:8080/store/orders'; // Server endpoint URL
 
-// Create form fields
+        // Create form fields
         const phoneElement = document.createElement('input');
         phoneElement.type = 'text';
         phoneElement.name = 'phone';
@@ -347,22 +351,30 @@
         productsElement.type = 'text';
         productsElement.name = 'products';
         productsElement.value = JSON.stringify(JSON.parse(localStorage.getItem("cart")).products);
-// Add form fields to the form
+        // Add form fields to the form
         form.appendChild(phoneElement);
         form.appendChild(receiverElement);
         form.appendChild(addressElement);
         form.appendChild(productsElement);
-// Append the form to the document body
+        // Append the form to the document body
         document.body.appendChild(form);
-//Before Submit the form
+        //Before Submit the form
         localStorage.removeItem("cart");
-// Submit the form   
+        // Submit the form
         form.submit();
     };
 </script>
+
 <script>
     const host = "https://provinces.open-api.vn/api/";
-    var callAPI = (api) => {
+    const renderData = (array, select) => {
+        let row = '<option class="bg-inherit" disabled value="">Chọn</option>';
+        array.forEach((element) => {
+            row += `<option class="bg-inherit" data-id="\${element.code}" value="\${element.name}">\${element.name}</option>`;
+        });
+        document.querySelector("#" + select).innerHTML = row;
+    };
+    const callAPI = (api) => {
         return axios.get(api).then((response) => {
             renderData(response.data.sort(function (a, b) {
                 return a.name.localeCompare(b.name);
@@ -370,26 +382,39 @@
         });
     };
     callAPI("https://provinces.open-api.vn/api/?depth=1");
-    var callApiDistrict = (api) => {
+    const callApiDistrict = (api) => {
         return axios.get(api).then((response) => {
             renderData(response.data.districts.sort(function (a, b) {
                 return a.name.localeCompare(b.name);
             }), "district");
         });
     };
-    var callApiWard = (api) => {
+    const callApiWard = (api) => {
         return axios.get(api).then((response) => {
             renderData(response.data.wards.sort(function (a, b) {
                 return a.name.localeCompare(b.name);
             }), "ward");
         });
     };
-    var renderData = (array, select) => {
-        let row = '<option class="bg-inherit" disabled value="">Chọn</option>';
-        array.forEach((element) => {
-            row += `<option class="bg-inherit" data-id="\${element.code}" value="\${element.name}">\${element.name}</option>`;
-        });
-        document.querySelector("#" + select).innerHTML = row;
+    const printResult = () => {
+        const districtSelected = document
+            .querySelector("#district option:checked")
+            .getAttribute("data-id");
+        const citySelected = document
+            .querySelector("#city option:checked")
+            .getAttribute("data-id");
+        const wardSelected = document
+            .querySelector("#ward option:checked")
+            .getAttribute("data-id");
+        if (districtSelected && citySelected && wardSelected) {
+            const cityText = document.querySelector("#city option:checked").text;
+            const districtText = document.querySelector(
+                "#district option:checked"
+            ).text;
+            const wardText = document.querySelector("#ward option:checked").text;
+            const result = cityText + " | " + districtText + " | " + wardText;
+            console.log(result);
+        }
     };
     document.getElementById("city").addEventListener("change", () => {
         callApiDistrict(
@@ -416,27 +441,6 @@
     document.getElementById("ward").addEventListener("change", () => {
         printResult();
     });
-    var printResult = () => {
-        var districtSelected = document
-            .querySelector("#district option:checked")
-            .getAttribute("data-id");
-        var citySelected = document
-            .querySelector("#city option:checked")
-            .getAttribute("data-id");
-        var wardSelected = document
-            .querySelector("#ward option:checked")
-            .getAttribute("data-id");
-        if (districtSelected && citySelected && wardSelected) {
-            var cityText = document.querySelector("#city option:checked").text;
-            var districtText = document.querySelector(
-                "#district option:checked"
-            ).text;
-            var wardText = document.querySelector("#ward option:checked").text;
-            var result = cityText + " | " + districtText + " | " + wardText;
-            console.log(result);
-        }
-    };
 </script>
-
 
 <jsp:include page="./footer.jsp"/>

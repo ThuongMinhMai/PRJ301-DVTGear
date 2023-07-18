@@ -1,15 +1,9 @@
-"use client";
-
-import {approveOrder} from "@/app/_actions/orders";
-import {Scroll} from "@/components";
-import {useAlertStore} from "@/store";
+import {getOrderDetail} from "@/app/_actions/orders";
+import {ApproveButton, Scroll, Skeleton} from "@/components";
 import statusToColor from "@/utils/statusColor";
-import axios from "axios";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import {useRouter} from "next/navigation";
-import {useEffect, useState} from "react";
 
 type Props = {
   params: {
@@ -17,32 +11,8 @@ type Props = {
   };
 };
 
-export default function page({params: {id}}: Props) {
-  const [order, setOrder] = useState<Order>();
-  const router = useRouter();
-
-  const fetchOrderDetail = async () => {
-    const {data} = await axios.get(
-      `http://localhost:8080/store/api/orders?orderId=${id}`
-    );
-    setOrder(data.order);
-  };
-
-  useEffect(() => {
-    fetchOrderDetail();
-  }, []);
-
-  const handleApproveOrder = async (id: number) => {
-    const {isSuccess, message} = await approveOrder(id);
-    if (isSuccess) {
-      fetchOrderDetail();
-    }
-    useAlertStore.getState().setShowAlert({
-      status: true,
-      type: isSuccess ? "success" : "failure",
-      message: message,
-    });
-  };
+export default async function page({params: {id}}: Props) {
+  const order = await getOrderDetail(id);
 
   return (
     <div className="flex flex-col">
@@ -50,22 +20,7 @@ export default function page({params: {id}}: Props) {
         <div className="text-3xl font-medium">Orders</div>
         <div className="flex gap-3">
           {order?.status === "PROCESSING" && (
-            <button
-              onClick={() => {
-                handleApproveOrder(order.id!);
-              }}
-              type="submit"
-              className="text-center text-white btn btn-primary"
-            >
-              <Image
-                width={24}
-                height={24}
-                alt="shipping"
-                src="/shipping.svg"
-                className="filter invert"
-              />
-              Approve Order
-            </button>
+            <ApproveButton orderId={Number(id)} />
           )}
           <Link href="/orders" className="text-white btn btn-primary">
             <Image
@@ -196,3 +151,34 @@ export default function page({params: {id}}: Props) {
     </div>
   );
 }
+
+// type SearchParams = {
+//   searchQuery?: string;
+//   searchType?: string;
+//   page?: number;
+// };
+
+// type GenerateStaticParamsProps = {
+//   searchParams: SearchParams;
+// };
+
+//nếu dùng generateStaticParams sẽ có lỗi. Chưa sửa được
+
+// export async function generateStaticParams({
+//   searchParams,
+// }: GenerateStaticParamsProps) {
+//   const currentPage = searchParams?.page || 1;
+//   const searchQuery = searchParams?.searchQuery || "";
+//   const searchType = searchParams?.searchType || "";
+//   const pageSize = 10;
+//   const {orders} = await getOrders(
+//     searchQuery,
+//     searchType,
+//     currentPage,
+//     pageSize
+//   );
+
+//   return orders.map((order) => ({
+//     id: String(order.id),
+//   }));
+// }

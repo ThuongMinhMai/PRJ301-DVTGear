@@ -1,9 +1,3 @@
-<%-- 
-    Document   : footer
-    Created on : Jun 5, 2023, 8:08:48 AM
-    Author     : Kingc
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <footer class="bg-dvt-black-2 py-12">
     <div class="container bg-dvt-black-2 mx-auto max-w-7xl w-11/12">

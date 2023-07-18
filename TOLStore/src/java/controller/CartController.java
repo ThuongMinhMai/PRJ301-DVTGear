@@ -32,7 +32,7 @@ public class CartController extends HttpServlet {
     //Post id products in cart from client, to get real products at json format
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         JSONObject body = Utils.getRequestBody(request);
         ProductDAO productDAO = new ProductDAO();
 
@@ -40,7 +40,7 @@ public class CartController extends HttpServlet {
 
         JSONObject jsonResponse = new JSONObject();
 
-        jsonResponse.put("message", "Get cart products succesfully!");
+        jsonResponse.put("message", "Get cart products successfully!");
         jsonResponse.put("products", new JSONArray(products));
 
         response.setStatus(HttpServletResponse.SC_OK);

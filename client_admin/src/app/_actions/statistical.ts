@@ -1,7 +1,9 @@
 "use server";
 
+import {API_PATH} from "@/utils/constant";
+
 export const getStatistical = async () => {
-  const response = await fetch("http://localhost:8080/store/api/statistical", {
+  const response = await fetch(`${API_PATH}/statistical`, {
     next: {revalidate: 0},
   });
 

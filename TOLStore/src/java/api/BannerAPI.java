@@ -22,7 +22,7 @@ public class BannerAPI extends HttpServlet {
         String bannerUrl = dao.getBanner();
 
         JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put("message", "Get banner image succesfully!");
+        jsonResponse.put("message", "Get banner image successfully!");
         jsonResponse.put("bannerUrl", bannerUrl);
 
         response.setStatus(HttpServletResponse.SC_OK);
@@ -32,13 +32,13 @@ public class BannerAPI extends HttpServlet {
     //update banner
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         JSONObject requestBody = Utils.getRequestBody(request);
         BannerDAO dao = new BannerDAO();
         dao.updateBanner(requestBody);
 
         JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put("message", "Update Banner succesfully!!!");
+        jsonResponse.put("message", "Update Banner successfully!!!");
 
         response.setStatus(HttpServletResponse.SC_CREATED);
         response.getWriter().write(jsonResponse.toString());

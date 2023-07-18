@@ -25,7 +25,7 @@ public class BrandAPI extends HttpServlet {
         List<Brand> brandList = dao.getAllBrands();
 
         JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put("message", "Get brands succesfully!");
+        jsonResponse.put("message", "Get brands successfully!");
         jsonResponse.put("brands", new JSONArray(brandList));
 
         response.setStatus(HttpServletResponse.SC_OK);

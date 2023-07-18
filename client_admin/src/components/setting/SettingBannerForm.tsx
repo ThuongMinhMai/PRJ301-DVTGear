@@ -8,6 +8,7 @@ import {ReactSortable} from "react-sortablejs";
 import {BounceLoader} from "react-spinners";
 import {v4} from "uuid";
 import Image from "next/image";
+import {API_PATH} from "@/utils/constant";
 
 type Props = {};
 
@@ -18,14 +19,14 @@ const SettingBannerForm = ({}: Props) => {
 
   useEffect(() => {
     const fetchBanner = async () => {
-      const {data} = await axios.get("http://localhost:8080/store/api/banner");
+      const {data} = await axios.get(`${API_PATH}/banner`);
       setBannerUrls(data.bannerUrl ? JSON.parse(data.bannerUrl) : []);
     };
     fetchBanner();
   }, []);
 
   const handleUpdateBanner = async () => {
-    axios.put("http://localhost:8080/store/api/banner", {
+    axios.put(`${API_PATH}/banner`, {
       bannerUrl: JSON.stringify(bannerUrls),
     });
   };

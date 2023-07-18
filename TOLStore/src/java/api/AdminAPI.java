@@ -25,7 +25,7 @@ public class AdminAPI extends HttpServlet {
         String admins = dao.getAllAdmins();
 
         JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put("message", "Get admins succesfully!");
+        jsonResponse.put("message", "Get admins successfully!");
         jsonResponse.put("admins", admins);
 
         response.setStatus(HttpServletResponse.SC_OK);
@@ -35,7 +35,7 @@ public class AdminAPI extends HttpServlet {
     //add or delete admin
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         JSONObject requestBody = Utils.getRequestBody(request);
 
         String type = requestBody.getString("type");
@@ -82,7 +82,7 @@ public class AdminAPI extends HttpServlet {
 
         dao.updateAdmins(adminsJson.toString());
         JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put("message", "Update Admin's Email succesfully!!!");
+        jsonResponse.put("message", "Update admins email successfully!!!");
 
         response.setStatus(HttpServletResponse.SC_OK);
         response.getWriter().write(jsonResponse.toString());

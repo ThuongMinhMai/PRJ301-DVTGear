@@ -42,7 +42,7 @@ public class OrderController extends HttpServlet {
                 FetchResult<Order> fetchData = orderDAO.getAllCustomerOrders(customer.getCustomerId(), filterBy, pageInt, 5);
 
                 JSONObject jsonResponse = new JSONObject();
-                jsonResponse.put("message", "Get orders succesfully!");
+                jsonResponse.put("message", "Get orders successfully!");
                 jsonResponse.put("itemsCount", fetchData.getTotalCount());
                 jsonResponse.put("orders", new JSONArray(fetchData.getItems()));
 
@@ -93,7 +93,7 @@ public class OrderController extends HttpServlet {
 
     //update order's status : cancelled or complete the order
     @Override
-    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws  IOException {
         JSONObject requestBody = Utils.getRequestBody(request);
         int orderId = requestBody.getInt("orderId");
         String status = requestBody.getString("typeUpdate"); //CANCELLED OR COMPLETE
@@ -102,7 +102,7 @@ public class OrderController extends HttpServlet {
         orderDAO.updateStatusOrder(orderId, status);
 
         JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put("message", "Update orders status succesfully!");
+        jsonResponse.put("message", "Update orders status successfully!");
 
         response.getWriter().write(jsonResponse.toString());
     }

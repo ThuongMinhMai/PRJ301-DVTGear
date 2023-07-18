@@ -54,7 +54,7 @@ public class OrderAPI extends HttpServlet {
             int itemsCount = fetchData.getTotalCount();
 
             JSONObject jsonResponse = new JSONObject();
-            jsonResponse.put("message", "Get orders succesfully!");
+            jsonResponse.put("message", "Get orders successfully!");
             jsonResponse.put("orders", new JSONArray(orderList));
             jsonResponse.put("itemsCount", itemsCount);
 
@@ -62,7 +62,7 @@ public class OrderAPI extends HttpServlet {
             response.getWriter().write(jsonResponse.toString());
         } else {
             JSONObject jsonResponse = new JSONObject();
-            jsonResponse.put("message", "page and pageSize paramater is required!");
+            jsonResponse.put("message", "page and pageSize parameter is required!");
 
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().write(jsonResponse.toString());
@@ -72,7 +72,7 @@ public class OrderAPI extends HttpServlet {
 
     //approve order
     @Override
-    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws  IOException {
         JSONObject requestBody = Utils.getRequestBody(request);
 
         OrderDAO orderDAO = new OrderDAO();
@@ -105,7 +105,7 @@ public class OrderAPI extends HttpServlet {
 //        response.setStatus(HttpServletResponse.SC_OK);
 //
 //        JSONObject jsonResponse = new JSONObject();
-//        jsonResponse.put("message", "Delete Order succesfully!!!");
+//        jsonResponse.put("message", "Delete Order successfully!!!");
 //
 //        response.getWriter().write(jsonResponse.toString());
 //

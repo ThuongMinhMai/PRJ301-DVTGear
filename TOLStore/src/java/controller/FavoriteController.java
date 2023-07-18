@@ -27,7 +27,7 @@ public class FavoriteController extends HttpServlet {
             return;
         }
 
-        //if loged
+        //if logined
         ProductDAO productDAO = new ProductDAO();
         int customerId = customer.getCustomerId();
         List<Product> favoriteProductList = productDAO.getFavoriteProducts(customerId);
@@ -47,7 +47,7 @@ public class FavoriteController extends HttpServlet {
             return;
         }
 
-        //if loged
+        //if logined
         int productId = Integer.parseInt(request.getParameter("productId"));
         int customerId = customer.getCustomerId();
         String action = request.getParameter("action");  //"add" or "remove"

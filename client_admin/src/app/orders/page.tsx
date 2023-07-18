@@ -1,10 +1,11 @@
-import {OrderList, SearchOrders} from "@/components";
+import {Pagination, Scroll, SearchOrders, OrderItem} from "@/components";
 import React from "react";
 import {getOrders} from "../_actions/orders";
 
 type SearchParams = {
   searchQuery?: string;
   searchType?: string;
+  page?: number;
 };
 
 type Props = {
@@ -12,9 +13,15 @@ type Props = {
 };
 
 export default async function OrdersPage({searchParams}: Props) {
-  const firstOrders = await getOrders(
-    searchParams?.searchQuery || "",
-    searchParams?.searchType || ""
+  const currentPage = searchParams?.page || 1;
+  const searchQuery = searchParams?.searchQuery || "";
+  const searchType = searchParams?.searchType || "";
+  const pageSize = 10;
+  const {orders, itemsCount} = await getOrders(
+    searchQuery,
+    searchType,
+    currentPage,
+    pageSize
   );
 
   return (
@@ -25,8 +32,33 @@ export default async function OrdersPage({searchParams}: Props) {
         <SearchOrders />
       </div>
 
-      {/* fetch some orders at server and do infinity scrolling at client */}
-      <OrderList firstOrders={firstOrders} />
+      <Scroll>
+        <table className="w-full pb-12 border-separate border-spacing-y-3">
+          <thead>
+            <tr className="text-xs font-medium uppercase">
+              <th className="pl-6 pr-4">ID</th>
+              <th className="px-4">Customer</th>
+              <th className="px-4">Receiver</th>
+              <th className="px-4">Phone</th>
+              <th className="px-4">DATE</th>
+              <th className="px-4">STATUS</th>
+              <th className="pl-4 pr-8 text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders?.map((order) => {
+              return <OrderItem order={order} />;
+            })}
+          </tbody>
+        </table>
+      </Scroll>
+
+      <Pagination
+        path={`/orders?searchQuery=${searchQuery}&searchType=${searchType}`}
+        pageSize={pageSize}
+        totalItems={itemsCount}
+      />
     </div>
   );
 }
+

@@ -1,16 +1,8 @@
-<%-- 
-    Document   : search
-    Created on : Jun 13, 2023, 7:17:05 AM
-    Author     : Kingc
---%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page import="model.FetchResult" %>
 <%@page import="utils.Utils" %>
-<%@page import="model.Product" %>
-<%@page import="java.util.List" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<jsp:include page="./header.jsp"/>
 
+<jsp:include page="./header.jsp"/>
 
 <div id="searchPage" class="relative pb-16 mt-32 w-11/12 max-w-6xl mx-auto">
 

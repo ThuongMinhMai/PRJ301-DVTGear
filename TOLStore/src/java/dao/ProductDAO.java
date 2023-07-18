@@ -78,6 +78,10 @@ public class ProductDAO {
 
         String countQuery = "SELECT COUNT(*) AS total FROM Product";
 
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            countQuery += " WHERE [name] LIKE " + "'%" + searchQuery + "%'\n";  // Add search query filter
+        }
+
         try (Connection conn = new DBContext().getConnection(); PreparedStatement countPs = conn.prepareStatement(countQuery); ResultSet countRs = countPs.executeQuery()) {
 
             if (countRs.next()) {
@@ -90,7 +94,7 @@ public class ProductDAO {
                 query += "WHERE p.name LIKE ?\n";  // Add search query filter
             }
 
-            query += "ORDER BY p.productId\n" + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+            query += "ORDER BY p.productId DESC\n" + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
             try (PreparedStatement ps = conn.prepareStatement(query)) {
                 int parameterIndex = 1;

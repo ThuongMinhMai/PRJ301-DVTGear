@@ -36,7 +36,7 @@ public class ProductAPI extends HttpServlet {
             int totalCount = fetchData.getTotalCount();
 
             JSONObject jsonResponse = new JSONObject();
-            jsonResponse.put("message", "Get products succesfully!");
+            jsonResponse.put("message", "Get products successfully!");
             jsonResponse.put("products", new JSONArray(productList));
             jsonResponse.put("totalCount", totalCount);
 
@@ -44,7 +44,7 @@ public class ProductAPI extends HttpServlet {
             response.getWriter().write(jsonResponse.toString());
         } else {
             JSONObject jsonResponse = new JSONObject();
-            jsonResponse.put("message", "page and pageSize paramater is required!");
+            jsonResponse.put("message", "page and pageSize parameter is required!");
 
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().write(jsonResponse.toString());
@@ -55,7 +55,7 @@ public class ProductAPI extends HttpServlet {
     //create product
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
 
         JSONObject requestBody = Utils.getRequestBody(request);
 
@@ -65,14 +65,14 @@ public class ProductAPI extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_CREATED);
 
         JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put("message", "Create Product succesfully!!!");
+        jsonResponse.put("message", "Create Product successfully!!!");
 
         response.getWriter().write(jsonResponse.toString());
     }
 
     //update product
     @Override
-    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         JSONObject requestBody = Utils.getRequestBody(request);
 
@@ -83,7 +83,7 @@ public class ProductAPI extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_OK);
 
             JSONObject jsonResponse = new JSONObject();
-            jsonResponse.put("message", "Update Product succesfully!!!");
+            jsonResponse.put("message", "Update Product successfully!!!");
 
             response.getWriter().write(jsonResponse.toString());
         } catch (Exception e) {

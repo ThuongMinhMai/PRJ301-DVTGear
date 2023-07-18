@@ -24,7 +24,7 @@ public class RateController extends HttpServlet {
             return;
         }
 
-        //if loged
+        //if logined
         int productId = Integer.parseInt(request.getParameter("productId"));
         int customerId = customer.getCustomerId();
         int rateValue = Integer.parseInt(request.getParameter("rateValue"));

@@ -1,12 +1,5 @@
-<%-- 
-    Document   : favorite
-    Created on : Jun 14, 2023, 3:07:59 PM
-    Author     : Kingc
---%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="utils.Utils" %>
-<%@page import="model.Product" %>
-<%@page import="java.util.List" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <jsp:include page="./header.jsp"/>
 

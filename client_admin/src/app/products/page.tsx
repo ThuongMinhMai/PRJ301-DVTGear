@@ -1,11 +1,12 @@
 import React from "react";
 import Link from "next/link";
-import {ProductList, SearchProducts} from "@/components";
+import {Pagination, ProductItem, Scroll, SearchProducts} from "@/components";
 import {getProducts} from "../_actions/products";
 import Image from "next/image";
 
 type SearchParams = {
-  searchQuery: string;
+  searchQuery?: string;
+  page?: number;
 };
 
 type Props = {
@@ -15,7 +16,14 @@ type Props = {
 export const revalidate = 0;
 
 export default async function ProductsPage({searchParams}: Props) {
-  const firstProducts = await getProducts(searchParams?.searchQuery || "");
+  const currentPage = searchParams?.page || 1;
+  const searchQuery = searchParams?.searchQuery || "";
+  const pageSize = 10;
+  const {products, totalCount} = await getProducts(
+    searchQuery,
+    currentPage,
+    pageSize
+  );
 
   return (
     <div className="flex flex-col">
@@ -36,8 +44,34 @@ export default async function ProductsPage({searchParams}: Props) {
         </Link>
       </div>
 
-      {/* fetch some products at server and do infinity scrolling at client */}
-      <ProductList firstProducts={firstProducts} />
+      <Scroll>
+        <table className="min-w-full pb-24 border-separate border-spacing-y-3 whitespace-nowrap">
+          <thead>
+            <tr className="text-xs font-medium uppercase">
+              <th className="pl-6 pr-4">ID</th>
+              <th className="px-4">Photo</th>
+              <th className="px-4">Name</th>
+              <th className="px-4">Category</th>
+              <th className="px-4">Brand</th>
+              <th className="px-4">Price</th>
+              <th className="px-4">Storage</th>
+              <th className="px-4">Status</th>
+              <th className="pl-4 pr-8 text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="bg-black-2">
+            {products?.map((product) => {
+              return <ProductItem product={product} />;
+            })}
+          </tbody>
+        </table>
+      </Scroll>
+
+      <Pagination
+        path={`/products?searchQuery=${searchQuery}`}
+        pageSize={pageSize}
+        totalItems={totalCount}
+      />
     </div>
   );
 }

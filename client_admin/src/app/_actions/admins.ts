@@ -3,6 +3,9 @@
 import {cookies} from "next/headers";
 import {revalidatePath} from "next/cache";
 import jwt_decode from "jwt-decode";
+import {API_PATH} from "@/utils/constant";
+
+const adminAPI = `${API_PATH}/admins`;
 
 export async function addAdmin(formData: FormData) {
   const formDataObj: any = {};
@@ -15,7 +18,7 @@ export async function addAdmin(formData: FormData) {
   };
 
   try {
-    await fetch("http://localhost:8080/store/api/admins", {
+    await fetch(adminAPI, {
       method: "PUT",
       body: JSON.stringify(data),
     });
@@ -39,7 +42,7 @@ export async function deleteAdmin(formData: FormData) {
   }
 
   try {
-    await fetch("http://localhost:8080/store/api/admins", {
+    await fetch(adminAPI, {
       method: "PUT",
       body: JSON.stringify(data),
     });
@@ -49,7 +52,7 @@ export async function deleteAdmin(formData: FormData) {
 }
 
 export async function getAdmins() {
-  const res = await fetch("http://localhost:8080/store/api/admins", {
+  const res = await fetch(adminAPI, {
     next: {revalidate: 0},
   });
 
@@ -68,8 +71,9 @@ export async function getCurrentAdmin() {
 
 export async function loginAdmin(googleToken: any) {
   const adminData: any = jwt_decode(googleToken);
+  const validAdmins = await getAdmins();
 
-  if ((await getAdmins())?.includes(adminData?.email)) {
+  if (validAdmins ?.includes(adminData?.email)) {
     await cookies().set("current-admin", JSON.stringify(adminData));
     return adminData;
   }

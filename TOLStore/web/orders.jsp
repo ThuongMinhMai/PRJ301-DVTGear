@@ -1,15 +1,5 @@
-<%--
-    Document   : orders
-    Created on : Jun 10, 2023, 8:55:58 PM
-    Author     : Kingc
---%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page import="java.sql.Date" %>
-<%@page import="model.OrderProduct" %>
 <%@page import="utils.Utils" %>
-<%@page import="model.Product" %>
-<%@page import="model.Order" %>
-<%@page import="java.util.List" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 
 <jsp:include page="./header.jsp"/>

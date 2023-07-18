@@ -4,9 +4,11 @@ import {useAlertStore} from "@/store";
 import {useRouter} from "next/navigation";
 import React, {useRef, useState} from "react";
 
-type Props = {};
+type Props = {
+  disable?: boolean;
+};
 
-export default function SearchOrders({}: Props) {
+export default function SearchOrders({disable}: Props) {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [searchType, setSearchType] = useState("");
@@ -28,7 +30,7 @@ export default function SearchOrders({}: Props) {
 
           if (inputRef.current?.value) {
             router.push(
-              `/orders?searchQuery=${inputRef.current?.value}&searchType=${searchType}`
+              `/orders?searchQuery=${inputRef.current?.value}&searchType=${searchType}&page=1`
             );
             router.refresh();
           } else {
@@ -41,7 +43,8 @@ export default function SearchOrders({}: Props) {
         <input
           ref={inputRef}
           className="flex-1 w-0 px-5 py-3 rounded-md bg-black-2"
-          placeholder="search orders... ( by phone number )"
+          placeholder="Search..."
+          disabled={disable}
         />
       </form>
 
@@ -49,6 +52,7 @@ export default function SearchOrders({}: Props) {
         onChange={(e) => {
           setSearchType(e.target.value);
         }}
+        disabled={disable}
         value={searchType}
         className="w-full max-w-[240px] select bg-black-2"
       >

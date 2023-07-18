@@ -2,6 +2,7 @@
 
 import {Loader, ProductForm} from "@/components";
 import {useAlertStore} from "@/store";
+import {API_PATH} from "@/utils/constant";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,7 +17,7 @@ export default function AddProductPage({}: Props) {
 
   const handleSubmit = async (form: Product) => {
     setIsCreating(true);
-    await axios.post("http://localhost:8080/store/api/products", {
+    await axios.post(`${API_PATH}/products`, {
       ...form,
       category: Number(form.category),
       brand: Number(form.brand),

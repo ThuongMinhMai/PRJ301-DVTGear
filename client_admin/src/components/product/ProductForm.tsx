@@ -13,6 +13,7 @@ import clsx from "clsx";
 import {ReactSortable} from "react-sortablejs";
 import Image from "next/image";
 import {useEditedProductStore} from "@/store";
+import {API_PATH} from "@/utils/constant";
 
 type Props = {
   handleSubmit: (product: Product) => void;
@@ -87,10 +88,7 @@ export default function ProductForm({handleSubmit, edit}: Props) {
           />
 
           <div className="flex justify-end">
-            <button
-              type="submit"
-              className="text-white btn btn-primary"
-            >
+            <button type="submit" className="text-white btn btn-primary">
               Save
             </button>
           </div>
@@ -162,9 +160,7 @@ const CategoryField = ({}: CategoryFieldProps) => {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const {data} = await axios.get(
-        "http://localhost:8080/store/api/categories"
-      );
+      const {data} = await axios.get(`${API_PATH}/categories`);
       setCategories(data.categories);
     };
     fetchCategories();
@@ -220,7 +216,7 @@ const BrandField = ({}: BrandFieldProps) => {
 
   useEffect(() => {
     const fetchBrands = async () => {
-      const {data} = await axios.get("http://localhost:8080/store/api/brands");
+      const {data} = await axios.get(`${API_PATH}/brands`);
       setBrands(data.brands);
     };
     fetchBrands();
