@@ -29,6 +29,7 @@ export default function ProductItem({product}: Props) {
       <td className="px-4">{product.brand.name}</td>
       <td className="px-4">đ{Number(product.price).toLocaleString()}</td>
       <td className="px-4">{Number(product.storage).toLocaleString()}</td>
+      <td className="px-4">{Number(product.sold).toLocaleString()}</td>
       <td className="px-4">
         <div
           className={clsx(

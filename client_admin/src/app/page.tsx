@@ -160,6 +160,7 @@ const BestSeller = ({top5BestSellers}: BestSellerProps) => {
               <th className="px-4">Brand</th>
               <th className="px-4">Price</th>
               <th className="px-4">Storage</th>
+              <th className="px-4">Sold</th>
             </tr>
           </thead>
           <tbody className="bg-black-2">
@@ -188,8 +189,11 @@ const BestSeller = ({top5BestSellers}: BestSellerProps) => {
                   <td className="px-4">
                     đ{Number(product.price).toLocaleString()}
                   </td>
-                  <td className="px-4 rounded-r-lg">
+                  <td className="px-4">
                     {Number(product.storage).toLocaleString()}
+                  </td>
+                  <td className="px-4 rounded-r-lg">
+                    {Number(product.sold).toLocaleString()}
                   </td>
                 </tr>
               );

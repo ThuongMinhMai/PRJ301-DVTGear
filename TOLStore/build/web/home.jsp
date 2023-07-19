@@ -222,11 +222,11 @@
 <!-- Start productList -->
 <div id="productsContainer" class="relative pb-16">
     <img alt="bg-productList" class="w-full absolute z-[-10]" src="./assets/preorder-bg.png"/>
-    <!--Title productList-->
+
     <div class="flex items-center w-11/12 max-w-6xl mx-auto py-12">
         <div class="grow border-t-[3px] border-white"></div>
         <p class="px-5 py-0 text-2xl font-bold uppercase text-white">
-            danh sách sản phẩm
+            sản phẩm mới nhất
         </p>
         <div class="grow border-t-[3px] border-white"></div>
     </div>
@@ -235,20 +235,55 @@
 
         <c:forEach items="${productList}" var="product">
             <div
-                    class="bg-dvt-black-2 flex flex-col rounded-3xl overflow-hidden cursor-pointer col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3">
+                class="bg-dvt-black-2 flex flex-col rounded-3xl overflow-hidden cursor-pointer col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3">
                 <a href="/store/products?id=${product.getId()}" class="w-full overflow-hidden relative aspect-square">
 
                     <c:set var="imageUrl" value="${Utils.parseJSONStringArray(product.getImages()).get(0)}"/>
                     <img class="w-full h-full object-cover bt-[20px] transition duration-300 ease-linear hover:scale-125"
                          src="${imageUrl}" alt="product"/>
                     <div class="absolute bottom-0 right-0 bg-black bg-opacity-60 rounded-tl-2xl py-3 px-5 text-2xl">
-                            ${Utils.formatNum(product.getPrice())}₫
+                        ${Utils.formatNum(product.getPrice())}₫
                     </div>
                 </a>
                 <div class="px-5 py-0 my-2 mx-0 name_product">
-		  <span class="font-bold line-clamp-2">
-                  ${product.getName()}
-          </span>
+                    <span class="font-bold line-clamp-2">
+                        ${product.getName()}
+                    </span>
+                </div>
+                <div onclick="addToCart(${ product.getId()}, 1,${ product.getStorage()})"
+                     class="mt-auto mx-auto px-4 py-2 rounded-[30px] bg-primary border-none uppercase cursor-pointer mb-4 hover:opacity-80">
+                    Thêm vào giỏ hàng
+                </div>
+            </div>
+        </c:forEach>
+    </div>
+
+    <div class="flex items-center w-11/12 max-w-6xl mx-auto py-12">
+        <div class="grow border-t-[3px] border-white"></div>
+        <p class="px-5 py-0 text-2xl font-bold uppercase text-white">
+            Sản Phẩm Bán Chạy
+        </p>
+        <div class="grow border-t-[3px] border-white"></div>
+    </div>
+    <div class="relative justify-center grid grid-cols-12 gap-5 w-11/12 max-w-6xl mx-auto">
+        <c:set var="bestSellers" value="${requestScope.bestSellers}"/>
+
+        <c:forEach items="${bestSellers}" var="product">
+            <div
+                class="bg-dvt-black-2 flex flex-col rounded-3xl overflow-hidden cursor-pointer col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3">
+                <a href="/store/products?id=${product.getId()}" class="w-full overflow-hidden relative aspect-square">
+
+                    <c:set var="imageUrl" value="${Utils.parseJSONStringArray(product.getImages()).get(0)}"/>
+                    <img class="w-full h-full object-cover bt-[20px] transition duration-300 ease-linear hover:scale-125"
+                         src="${imageUrl}" alt="product"/>
+                    <div class="absolute bottom-0 right-0 bg-black bg-opacity-60 rounded-tl-2xl py-3 px-5 text-2xl">
+                        ${Utils.formatNum(product.getPrice())}₫
+                    </div>
+                </a>
+                <div class="px-5 py-0 my-2 mx-0 name_product">
+                    <span class="font-bold line-clamp-2">
+                        ${product.getName()}
+                    </span>
                 </div>
                 <div onclick="addToCart(${ product.getId()}, 1,${ product.getStorage()})"
                      class="mt-auto mx-auto px-4 py-2 rounded-[30px] bg-primary border-none uppercase cursor-pointer mb-4 hover:opacity-80">

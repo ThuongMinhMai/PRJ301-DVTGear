@@ -23,23 +23,21 @@ import java.util.List;
  * @author Kingc
  */
 public class ProductDAO {
-    public List<Product> getTop5BestSellers() {
+
+    public List<Product> getTopBestSellers(int n) {
         List<Product> bestSellers = new ArrayList<>();
 
-        // Query to get the top 5 best-selling products
-        String query = "SELECT TOP 5 p.productId, p.name, c.name AS category, b.name AS brand, p.description, p.images, p.price, p.categoryId, p.brandId, p.storage, SUM(op.quantity) AS totalQuantitySold " +
-                "FROM Product p " +
-                "INNER JOIN Brand b ON p.brandId = b.brandId " +
-                "INNER JOIN Category c ON p.categoryId = c.categoryId " +
-                "INNER JOIN OrderProducts op ON p.productId = op.productId " +
-                "INNER JOIN [Order] o ON op.orderId = o.orderId " +
-                "WHERE [disable] = 0 AND o.status = 'COMPLETE' " +
-                "GROUP BY p.productId, p.name, c.name, b.name, p.description, p.images, p.price, p.categoryId, p.brandId, p.storage " +
-                "ORDER BY totalQuantitySold DESC";
+        // Query to get the top best-selling products
+        String query = "SELECT TOP " + n + " p.productId, p.name, c.name AS category, b.name AS brand, p.description, p.images, p.price, p.categoryId, p.brandId, p.storage, p.sold "
+                + "FROM Product p "
+                + "INNER JOIN Brand b ON p.brandId = b.brandId "
+                + "INNER JOIN Category c ON p.categoryId = c.categoryId "
+                + "WHERE p.disable = 0"
+                + "ORDER BY p.sold DESC";
 
-        try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
-
+        try {
+            Connection conn = new DBContext().getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 int productId = rs.getInt("productId");
@@ -50,9 +48,10 @@ public class ProductDAO {
                 String images = rs.getString("images");
                 int price = rs.getInt("price");
                 int storage = rs.getInt("storage");
+                int sold = rs.getInt("sold");
 
                 // Create a new Product instance and add it to the list
-                Product product = new Product(productId, productName, category, brand, images, price, description, storage);
+                Product product = new Product(productId, productName, category, brand, images, price, description, storage, false, sold);
                 bestSellers.add(product);
             }
         } catch (Exception e) {
@@ -127,7 +126,7 @@ public class ProductDAO {
                 totalProducts = countRs.getInt("total");
             }
 
-            String query = "SELECT p.productId, p.disable, p.name, c.name AS category, b.name AS brand, p.description, p.images, p.price, p.categoryId, p.brandId, p.storage\nFROM Product p\nINNER JOIN Brand b ON p.brandId = b.brandId\nINNER JOIN Category c ON p.categoryId = c.categoryId\n";
+            String query = "SELECT p.productId, p.disable, p.name, c.name AS category, b.name AS brand, p.description, p.images, p.price, p.categoryId, p.brandId, p.storage, p.sold\nFROM Product p\nINNER JOIN Brand b ON p.brandId = b.brandId\nINNER JOIN Category c ON p.categoryId = c.categoryId\n";
 
             if (searchQuery != null && !searchQuery.isEmpty()) {
                 query += "WHERE p.name LIKE ?\n";  // Add search query filter
@@ -146,7 +145,7 @@ public class ProductDAO {
 
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
-                        productList.add(new Product(rs.getInt("productId"), rs.getString("name"), new Category(rs.getInt("categoryId"), rs.getString("category")), new Brand(rs.getInt("brandId"), rs.getString("brand")), rs.getString("images"), rs.getInt("price"), rs.getString("description"), rs.getInt("storage"), rs.getBoolean("disable")));
+                        productList.add(new Product(rs.getInt("productId"), rs.getString("name"), new Category(rs.getInt("categoryId"), rs.getString("category")), new Brand(rs.getInt("brandId"), rs.getString("brand")), rs.getString("images"), rs.getInt("price"), rs.getString("description"), rs.getInt("storage"), rs.getBoolean("disable"), rs.getInt("sold")));
                     }
                 }
             }
@@ -188,6 +187,9 @@ public class ProductDAO {
                     break;
                 case "priceDesc":
                     queryBuilder.append(" order by p.price desc");
+                    break;
+                case "sold":
+                    queryBuilder.append(" order by p.sold desc");
                     break;
                 default: //newest
                     queryBuilder.append(" order by p.productId desc"); // Sort in descending order from original records

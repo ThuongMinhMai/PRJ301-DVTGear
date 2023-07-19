@@ -2,7 +2,7 @@
 <%@page import="utils.Utils" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 
-<jsp:include page="../web/header.jsp"/>
+<jsp:include page="header.jsp"/>
 
 <div id="searchPage" class="relative pb-16 mt-32 w-11/12 max-w-6xl mx-auto">
 
@@ -23,6 +23,11 @@
                 <i class="fa-solid fa-calendar-days fa-2x"></i></div>
             <p class="name bg-primary text-white text-center rounded-xl opacity-0">Mới nhất</p>
         </div>
+        <div class="sort-icon cursor-pointer" onclick="sortProductsBy('sold')">
+            <div class="sortSold flex items-center bg-dvt-black-2 justify-center w-14 h-14 m-2 rounded-full hover:bg-primary">
+                <i class="fa-solid fa-cart-shopping fa-xl"></i></div>
+            <p class="name bg-primary text-white text-center rounded-xl opacity-0">Bán chạy</p>
+        </div>
         <div class="sort-icon cursor-pointer" onclick="sortProductsBy('price')">
             <div class="sortPrice flex items-center bg-dvt-black-2 justify-center w-14 h-14 m-2 rounded-full hover:bg-primary">
                 <i class="fa-solid fa-arrow-trend-up fa-2x"></i></div>
@@ -40,34 +45,34 @@
     <c:set var="productList" value="${requestScope.productList}"/>
     <c:if test="${productList.size() == 0}">
         <div class="w-full flex flex-col justify-center gap-3 items-center relative bg-dvt-black-2 rounded-md py-12">
-            <img src="../web/assets/robot2.png" alt="robot2" class="h-64"/>
+            <img src="assets/robot2.png" alt="robot2" class="h-64"/>
             <div class="font-bold text-3xl">Không tìm thấy sản phẩm nào!</div>
         </div>
     </c:if>
 
 
     <div
-            id="productsContainer"
-            class="relative justify-center grid grid-cols-12 gap-5"
-    >
+        id="productsContainer"
+        class="relative justify-center grid grid-cols-12 gap-5"
+        >
         <c:forEach var="product" items="${productList}">
             <div class="bg-dvt-black-2 flex flex-col rounded-3xl overflow-hidden cursor-pointer col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3"
-            >
+                 >
                 <a href="/store/products?id=${product.getId()}" class="w-full overflow-hidden relative aspect-square"
-                > <c:set var="imageUrl" value="${Utils.parseJSONStringArray(product.getImages()).get(0)}"/> <img
+                   > <c:set var="imageUrl" value="${Utils.parseJSONStringArray(product.getImages()).get(0)}"/> <img
                         class="w-full h-full object-cover bt-[20px] transition duration-300 ease-linear hover:scale-125"
                         src="${imageUrl}" alt="product"/>
                     <div class="absolute bottom-0 right-0 bg-black bg-opacity-60 rounded-tl-2xl py-3 px-5 text-2xl">         ${Utils.formatNum(product.getPrice())}₫</div>
                 </a>
                 <div class="px-5 py-0 my-2 mx-0 name_product">
-		  <span class="font-bold line-clamp-2">
-                  ${product.getName()}
-          </span>
+                    <span class="font-bold line-clamp-2">
+                        ${product.getName()}
+                    </span>
                 </div>
 
                 <div onclick="addToCart(${product.getId()}, 1,${product.getStorage()})"
                      class="mt-auto mx-auto px-4 py-2 rounded-[30px] bg-primary border-none uppercase cursor-pointer mb-4 hover:opacity-80"
-                > Thêm vào giỏ hàng
+                     > Thêm vào giỏ hàng
                 </div>
             </div>
         </c:forEach>
@@ -76,7 +81,7 @@
 
 </div>
 <script>
-    let hideProductsCount = ${totalProducts} -12;//12 is products per page
+    let hideProductsCount = ${totalProducts} - 12;//12 is products per page
     let currentPage = 1;
 
     const renderMoreProducts = (products) => {
@@ -151,16 +156,17 @@
         const currentUrl = window.location.href;
         const separator = currentUrl.indexOf('?') !== -1 ? '&' : '?';
         const newUrl = currentUrl + separator + 'page=' + currentPage;
-        console.log(newUrl);
+
 
         const {products} = await fetch(newUrl)
-            .then((response) => {
-                // Check if the response was successful
-                if (response.ok) { // Parse the response data return response.json();
-                } else {
-                    throw new Error('Error: ' + response.status);
-                }
-            });
+                .then((response) => {
+                    // Check if the response was successful
+                    if (response.ok) { // Parse the response data 
+                        return response.json();
+                    } else {
+                        throw new Error('Error: ' + response.status);
+                    }
+                });
 
         renderMoreProducts(products);
         removeLoader();
@@ -185,6 +191,7 @@
         const sortTypeToSortName = {
             name: "sortName",
             nameDesc: "sortNameDesc",
+            sold: "sortSold",
             price: "sortPrice",
             priceDesc: "sortPriceDesc"
         };
@@ -217,4 +224,4 @@
 </script>
 
 
-<jsp:include page="../web/footer.jsp"/>
+<jsp:include page="footer.jsp"/>

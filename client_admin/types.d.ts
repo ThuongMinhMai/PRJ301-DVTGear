@@ -8,6 +8,7 @@ type Product = {
   images: string;
   storage: number;
   disable: boolean;
+  sold: int;
 };
 
 type Brand = {

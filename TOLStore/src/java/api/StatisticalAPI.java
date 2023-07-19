@@ -35,7 +35,7 @@ public class StatisticalAPI extends HttpServlet {
         jsonResponse.put("totalCustomer", customerDao.getTotalCustomer());
         jsonResponse.put("totalProductsSoldByCategory", categoryDao.calculateTotalProductsSoldByCategory());
         jsonResponse.put("totalProductsSoldByBrand", brandDao.calculateTotalProductsSoldByBrand());
-        jsonResponse.put("top5BestSellers", productDao.getTop5BestSellers());
+        jsonResponse.put("top5BestSellers", productDao.getTopBestSellers(5));
         jsonResponse.put("numberOfProcessingOrders", orderDao.getNumberOfProcessingOrders());
         jsonResponse.put("numberOfDeliveringOrders", orderDao.getNumberOfDeliveringProducts());
 

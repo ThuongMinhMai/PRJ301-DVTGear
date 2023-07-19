@@ -55,6 +55,7 @@ export default async function ProductsPage({searchParams}: Props) {
               <th className="px-4">Brand</th>
               <th className="px-4">Price</th>
               <th className="px-4">Storage</th>
+              <th className="px-4">Sold</th>
               <th className="px-4">Status</th>
               <th className="pl-4 pr-8 text-end">Actions</th>
             </tr>
