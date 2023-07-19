@@ -54,6 +54,45 @@ public class OrderDAO {
         return order;
     }
 
+    public int getNumberOfProcessingOrders() {
+        int numberOfProcessingOrders = 0;
+
+        String query = "SELECT COUNT(*) AS numProcessingOrders FROM [Order] WHERE status = 'PROCESSING'";
+
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                numberOfProcessingOrders = rs.getInt("numProcessingOrders");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return numberOfProcessingOrders;
+    }
+
+    public int getNumberOfDeliveringProducts() {
+        int numberOfDeliveringProducts = 0;
+
+        String query = "SELECT COUNT(*) AS numDeliveringProducts FROM [Order] WHERE status = 'DELIVERING'";
+
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                numberOfDeliveringProducts = rs.getInt("numDeliveringProducts");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return numberOfDeliveringProducts;
+    }
+
+
     public FetchResult<Order> getAllOrders(int page, int pageSize, String searchQuery, String searchType) {
         List<Order> orderList = new ArrayList<>();
         int totalCount = 0;
@@ -141,8 +180,6 @@ public class OrderDAO {
     }
 
     public FetchResult<Order> getAllCustomerOrders(int customerId, String filterBy, int page, int pageSize) {
-        System.out.println(filterBy);
-
         int totalCount = 0;
         List<Order> orderList = new ArrayList<>();
         String query = "SELECT o.orderId, cus.username ,o.date, o.receiver, o.address, o.phone, o.status, op.quantity, op.price, " + "p.[name] AS productName, p.images AS productImages, p.productId, p.storage, " + "CASE WHEN r.productId IS NOT NULL THEN 1 ELSE 0 END AS isRated " + "FROM [Order] o " + "INNER JOIN OrderProducts op ON o.orderId = op.orderId " + "INNER JOIN Customer cus ON o.customerId = cus.customerId " + "INNER JOIN Product p ON op.productId = p.productId " + "LEFT JOIN Rate r ON r.productId = p.productId AND r.customerId = " + customerId + " WHERE o.customerId = " + customerId;

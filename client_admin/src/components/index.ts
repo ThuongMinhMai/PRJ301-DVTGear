@@ -18,8 +18,10 @@ import Pagination from "./ui/Paginate";
 import OrderItem from "./order/OrderItem";
 import {Skeleton} from "./ui/Skeleton";
 import ApproveButton from "./order/ApproveButton";
+import CircleChart from "./dashboard/CircleChart";
 
 export {
+  CircleChart,
   ApproveButton,
   Skeleton,
   OrderItem,

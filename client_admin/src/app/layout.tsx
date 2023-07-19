@@ -16,6 +16,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const currentAdmin = await getCurrentAdmin();
+  
 
   return (
     <html data-theme="primary" lang="en">
@@ -28,7 +29,7 @@ export default async function RootLayout({
             <>
               <div className="flex flex-col text-black lg:flex-row bg-black-1">
                 <Nav />
-                <div className="flex-1 bg-black-1 p-6 min-h-screen text-[#C2D0EA] overflow-x-auto">
+                <div className="flex-1 bg-black-1 p-8 min-h-screen text-[#C2D0EA] overflow-x-auto">
                   {children}
                 </div>
               </div>

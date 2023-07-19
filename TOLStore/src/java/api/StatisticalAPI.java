@@ -1,9 +1,6 @@
 package api;
 
-import dao.BrandDAO;
-import dao.CategoryDAO;
-import dao.CustomerDAO;
-import dao.OrderDAO;
+import dao.*;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -26,6 +23,7 @@ public class StatisticalAPI extends HttpServlet {
         CustomerDAO customerDao = new CustomerDAO();
         BrandDAO brandDao = new BrandDAO();
         CategoryDAO categoryDao = new CategoryDAO();
+        ProductDAO productDao = new ProductDAO();
 
         JSONObject jsonResponse = new JSONObject();
         if (days != null) {
@@ -37,6 +35,9 @@ public class StatisticalAPI extends HttpServlet {
         jsonResponse.put("totalCustomer", customerDao.getTotalCustomer());
         jsonResponse.put("totalProductsSoldByCategory", categoryDao.calculateTotalProductsSoldByCategory());
         jsonResponse.put("totalProductsSoldByBrand", brandDao.calculateTotalProductsSoldByBrand());
+        jsonResponse.put("top5BestSellers", productDao.getTop5BestSellers());
+        jsonResponse.put("numberOfProcessingOrders", orderDao.getNumberOfProcessingOrders());
+        jsonResponse.put("numberOfDeliveringOrders", orderDao.getNumberOfDeliveringProducts());
 
         response.getWriter().write(jsonResponse.toString());
     }

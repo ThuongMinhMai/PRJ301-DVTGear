@@ -2,7 +2,7 @@
 <%@page import="utils.Utils" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 
-<jsp:include page="./header.jsp"/>
+<jsp:include page="../web/header.jsp"/>
 
 <div id="searchPage" class="relative pb-16 mt-32 w-11/12 max-w-6xl mx-auto">
 
@@ -40,7 +40,7 @@
     <c:set var="productList" value="${requestScope.productList}"/>
     <c:if test="${productList.size() == 0}">
         <div class="w-full flex flex-col justify-center gap-3 items-center relative bg-dvt-black-2 rounded-md py-12">
-            <img src="./assets/robot2.png" alt="robot2" class="h-64"/>
+            <img src="../web/assets/robot2.png" alt="robot2" class="h-64"/>
             <div class="font-bold text-3xl">Không tìm thấy sản phẩm nào!</div>
         </div>
     </c:if>
@@ -217,4 +217,4 @@
 </script>
 
 
-<jsp:include page="./footer.jsp"/>
+<jsp:include page="../web/footer.jsp"/>

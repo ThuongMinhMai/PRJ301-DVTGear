@@ -23,6 +23,45 @@ import java.util.List;
  * @author Kingc
  */
 public class ProductDAO {
+    public List<Product> getTop5BestSellers() {
+        List<Product> bestSellers = new ArrayList<>();
+
+        // Query to get the top 5 best-selling products
+        String query = "SELECT TOP 5 p.productId, p.name, c.name AS category, b.name AS brand, p.description, p.images, p.price, p.categoryId, p.brandId, p.storage, SUM(op.quantity) AS totalQuantitySold " +
+                "FROM Product p " +
+                "INNER JOIN Brand b ON p.brandId = b.brandId " +
+                "INNER JOIN Category c ON p.categoryId = c.categoryId " +
+                "INNER JOIN OrderProducts op ON p.productId = op.productId " +
+                "INNER JOIN [Order] o ON op.orderId = o.orderId " +
+                "WHERE [disable] = 0 AND o.status = 'COMPLETE' " +
+                "GROUP BY p.productId, p.name, c.name, b.name, p.description, p.images, p.price, p.categoryId, p.brandId, p.storage " +
+                "ORDER BY totalQuantitySold DESC";
+
+        try (Connection conn = new DBContext().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int productId = rs.getInt("productId");
+                String productName = rs.getString("name");
+                Category category = new Category(rs.getInt("categoryId"), rs.getString("category"));
+                Brand brand = new Brand(rs.getInt("brandId"), rs.getString("brand"));
+                String description = rs.getString("description");
+                String images = rs.getString("images");
+                int price = rs.getInt("price");
+                int storage = rs.getInt("storage");
+
+                // Create a new Product instance and add it to the list
+                Product product = new Product(productId, productName, category, brand, images, price, description, storage);
+                bestSellers.add(product);
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+        return bestSellers;
+    }
+
     public Product getProductDetail(int id) {
         Product product = null;
         String query = "SELECT p.productId, p.name, c.name AS category, b.name AS brand, p.description, p.images, p.price, p.categoryId, p.brandId, p.storage FROM Product p INNER JOIN Brand b ON p.brandId = b.brandId INNER JOIN Category c ON p.categoryId = c.categoryId WHERE p.productId = ? AND [disable] = 0";
