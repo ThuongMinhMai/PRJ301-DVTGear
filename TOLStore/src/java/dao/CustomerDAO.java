@@ -13,11 +13,17 @@ public class CustomerDAO {
         Customer customer = null;
         String query = "SELECT TOP 1 * FROM Customer WHERE username = N'" + username + "'";
         try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(query);
-             ResultSet rs = ps.executeQuery()) {
+                PreparedStatement ps = conn.prepareStatement(query);
+                ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                customer = new Customer(rs.getInt("customerId"), rs.getString("username"), rs.getString("password"), rs.getString("avatarUrl"));
+                customer = new Customer.Builder()
+                        .username(rs.getString("username"))
+                        .password(rs.getString("password"))
+                        .avatarUrl(rs.getString("avatarUrl"))
+                        .id(rs.getInt("customerId"))
+                        .build();
+
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -35,8 +41,8 @@ public class CustomerDAO {
         String selectQuery = "SELECT TOP 1 * FROM Customer WHERE username = ?";
 
         try (Connection conn = new DBContext().getConnection();
-             PreparedStatement insertPs = conn.prepareStatement(insertQuery);
-             PreparedStatement selectPs = conn.prepareStatement(selectQuery)) {
+                PreparedStatement insertPs = conn.prepareStatement(insertQuery);
+                PreparedStatement selectPs = conn.prepareStatement(selectQuery)) {
 
             // Set parameters for the insert query
             insertPs.setString(1, username);
@@ -52,7 +58,12 @@ public class CustomerDAO {
             // Execute the select query
             try (ResultSet rs = selectPs.executeQuery()) {
                 if (rs.next()) {
-                    customer = new Customer(rs.getInt("customerId"), rs.getString("username"), rs.getString("password"), rs.getString("avatarUrl"));
+                    customer = new Customer.Builder()
+                            .username(rs.getString("username"))
+                            .password(rs.getString("password"))
+                            .avatarUrl(rs.getString("avatarUrl"))
+                            .id(rs.getInt("customerId"))
+                            .build();
                 }
             }
         } catch (Exception e) {
@@ -68,8 +79,8 @@ public class CustomerDAO {
         String countQuery = "SELECT COUNT(*) AS total FROM Customer";
 
         try (Connection conn = new DBContext().getConnection();
-             PreparedStatement countPs = conn.prepareStatement(countQuery);
-             ResultSet rs = countPs.executeQuery()) {
+                PreparedStatement countPs = conn.prepareStatement(countQuery);
+                ResultSet rs = countPs.executeQuery()) {
 
             if (rs.next()) {
                 totalCustomer = rs.getInt("total");

@@ -26,23 +26,38 @@ public class OrderDAO {
                     String receiver = rs.getString("receiver");
                     String phone = rs.getString("phone");
                     String address = rs.getString("address");
-                    String username = rs.getString("username");
+                    String customer = rs.getString("username");
                     Date date = rs.getDate("date");
                     Status status = Status.valueOf(rs.getString("status"));
 
-                    order = new Order(orderId, username, date, status, receiver, address, phone);
-                    order.setOrderProducts(new ArrayList<>());
+                    order = new Order.Builder()
+                            .id(orderId)
+                            .customer(customer)
+                            .date(date)
+                            .status(status)
+                            .receiver(receiver)
+                            .address(address)
+                            .phone(phone)
+                            .orderProducts(new ArrayList<>())
+                            .build();
                 }
 
                 int quantity = rs.getInt("quantity");
                 int price = rs.getInt("price");
                 int totalMoney = quantity * price;
-                boolean isRated = rs.getInt("isRated") == 1;
 
-                Product product = new Product(rs.getInt("productId"), rs.getString("productName"), null, null, rs.getString("productImages"), 0, null, 0);
+                Product product
+                        = new Product.Builder()
+                                .id(rs.getInt("productId"))
+                                .name(rs.getString("productName"))
+                                .images(rs.getString("productImages"))
+                                .build();
 
-                OrderProduct orderProduct = new OrderProduct(product, quantity, price);
-                orderProduct.setIsRated(isRated);
+                OrderProduct orderProduct = new OrderProduct.Builder()
+                        .product(product)
+                        .quantity(quantity)
+                        .price(price)
+                        .build();
 
                 order.getOrderProducts().add(orderProduct);
                 order.setTotalMoney(order.getTotalMoney() + totalMoney);
@@ -60,8 +75,8 @@ public class OrderDAO {
         String query = "SELECT COUNT(*) AS numProcessingOrders FROM [Order] WHERE status = 'PROCESSING'";
 
         try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(query);
-             ResultSet rs = ps.executeQuery()) {
+                PreparedStatement ps = conn.prepareStatement(query);
+                ResultSet rs = ps.executeQuery()) {
 
             if (rs.next()) {
                 numberOfProcessingOrders = rs.getInt("numProcessingOrders");
@@ -79,8 +94,8 @@ public class OrderDAO {
         String query = "SELECT COUNT(*) AS numDeliveringProducts FROM [Order] WHERE status = 'DELIVERING'";
 
         try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(query);
-             ResultSet rs = ps.executeQuery()) {
+                PreparedStatement ps = conn.prepareStatement(query);
+                ResultSet rs = ps.executeQuery()) {
 
             if (rs.next()) {
                 numberOfDeliveringProducts = rs.getInt("numDeliveringProducts");
@@ -92,11 +107,12 @@ public class OrderDAO {
         return numberOfDeliveringProducts;
     }
 
-
     public FetchResult<Order> getAllOrders(int page, int pageSize, String searchQuery, String searchType) {
         List<Order> orderList = new ArrayList<>();
         int totalCount = 0;
-        String query = "SELECT o.orderId, cus.username, o.date, o.receiver, o.address, o.phone, o.status, op.quantity, op.price, " + "p.[name] AS productName, p.images AS productImages, p.productId, p.storage, " + "CASE WHEN r.productId IS NOT NULL THEN 1 ELSE 0 END AS isRated " + "FROM [Order] o " + "INNER JOIN OrderProducts op ON o.orderId = op.orderId " + "INNER JOIN Customer cus ON o.customerId = cus.customerId " + "INNER JOIN Product p ON op.productId = p.productId " + "LEFT JOIN Rate r ON r.productId = p.productId AND r.customerId = cus.customerId";
+        String query = " SELECT o.orderId, cus.username, o.date, o.receiver, o.phone, o.status \n"
+                + "FROM [Order] o \n"
+                + "INNER JOIN Customer cus ON o.customerId = cus.customerId \n";
 
         if (searchQuery != null && !searchQuery.isEmpty() && searchType != null && !searchType.isEmpty()) {
             switch (searchType) {
@@ -127,17 +143,9 @@ public class OrderDAO {
                     int orderId = rs.getInt("orderId");
                     String receiver = rs.getString("receiver");
                     String phone = rs.getString("phone");
-                    String address = rs.getString("address");
-                    String username = rs.getString("username");
+                    String customer = rs.getString("username");
                     Date date = rs.getDate("date");
                     Status status = Status.valueOf(rs.getString("status"));
-
-                    int quantity = rs.getInt("quantity");
-                    int price = rs.getInt("price");
-                    int totalMoney = quantity * price;
-                    boolean isRated = rs.getInt("isRated") == 1;
-
-                    Product product = new Product(rs.getInt("productId"), rs.getString("productName"), null, null, rs.getString("productImages"), 0, null, 0);
 
                     Order order = null;
                     for (Order o : orderList) {
@@ -148,17 +156,20 @@ public class OrderDAO {
                     }
 
                     if (order == null) {
-                        order = new Order(orderId, username, date, status, receiver, address, phone);
-                        order.setOrderProducts(new ArrayList<>());
+
+                        order = new Order.Builder()
+                                .id(orderId)
+                                .customer(customer)
+                                .date(date)
+                                .status(status)
+                                .receiver(receiver)
+                                .phone(phone)
+                                .build();
+
                         orderList.add(order);
                         totalCount++;
                     }
 
-                    OrderProduct orderProduct = new OrderProduct(product, quantity, price);
-                    orderProduct.setIsRated(isRated);
-
-                    order.getOrderProducts().add(orderProduct);
-                    order.setTotalMoney(order.getTotalMoney() + totalMoney);
                 }
             }
         } catch (Exception e) {
@@ -206,7 +217,11 @@ public class OrderDAO {
                 int totalMoney = quantity * price;
                 boolean isRated = rs.getInt("isRated") == 1;
 
-                Product product = new Product(rs.getInt("productId"), rs.getString("productName"), null, null, rs.getString("productImages"), 0, null, 0);
+                Product product = new Product.Builder()
+                        .id(rs.getInt("productId"))
+                        .name(rs.getString("productName"))
+                        .images(rs.getString("productImages"))
+                        .build();
 
                 Order order = null;
                 for (Order o : orderList) {
@@ -217,19 +232,30 @@ public class OrderDAO {
                 }
 
                 if (order == null) {
-                    //Order(int id, String customer, Date date, Status status, String receiver, String address, String phone)
+                    order = new Order.Builder()
+                            .id(orderId)
+                            .customer(customer)
+                            .date(date)
+                            .status(status)
+                            .receiver(receiver)
+                            .address(address)
+                            .phone(phone)
+                            .build();
 
-                    order = new Order(orderId, customer, date, status, receiver, address, phone);
                     order.setOrderProducts(new ArrayList<>());
                     orderList.add(order);
                     totalCount++;
                 }
 
                 //public OrderProduct(Product product, int quantity, int price)
-                OrderProduct orderProuduct = new OrderProduct(product, quantity, price);
-                orderProuduct.setIsRated(isRated);
+                OrderProduct orderProduct = new OrderProduct.Builder()
+                        .product(product)
+                        .quantity(quantity)
+                        .price(price)
+                        .isRated(isRated)
+                        .build();
 
-                order.getOrderProducts().add(orderProuduct);
+                order.getOrderProducts().add(orderProduct);
                 order.setTotalMoney(order.getTotalMoney() + totalMoney);
 
             }

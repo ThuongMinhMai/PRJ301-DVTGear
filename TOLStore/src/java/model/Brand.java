@@ -5,30 +5,48 @@ public class Brand {
     private int id;
     private String name;
 
-    public Brand(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "Product{" + "id=" + id + ", name=" + name + '}';
+    // Private constructor to prevent direct instantiation
+    private Brand() {
     }
 
+    // Builder class
+    public static class Builder {
+
+        private int id;
+        private String name;
+
+        public Builder id(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Brand build() {
+            Brand brand = new Brand();
+            brand.id = this.id;
+            brand.name = this.name;
+            return brand;
+        }
+    }
+
+    // Getters for id and name (you can also add setters if needed)
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

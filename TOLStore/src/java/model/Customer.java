@@ -10,54 +10,84 @@ package model;
  */
 public class Customer {
 
-  private int customerId;
-  private String username;
-  private String password;
-  private String avatarUrl;
+    private int customerId;
+    private String username;
+    private String password;
+    private String avatarUrl;
 
-  public Customer(int customerId, String username, String password, String avatarUrl) {
-    this.customerId = customerId;
-    this.username = username;
-    this.password = password;
-    this.avatarUrl = avatarUrl;
+    // Private constructor to prevent direct instantiation
+    private Customer() {
+    }
 
-  }
+    // Builder class
+    public static class Builder {
 
-  public String getAvatarUrl() {
-    return avatarUrl;
-  }
+        private int customerId;
+        private String username;
+        private String password;
+        private String avatarUrl;
 
-  public void setAvatarUrl(String avatarUrl) {
-    this.avatarUrl = avatarUrl;
-  }
+        public Builder id(int customerId) {
+            this.customerId = customerId;
+            return this;
+        }
 
-  public int getCustomerId() {
-    return customerId;
-  }
+        public Builder username(String username) {
+            this.username = username;
+            return this;
+        }
 
-  public void setCustomerId(int customerId) {
-    this.customerId = customerId;
-  }
+        public Builder password(String password) {
+            this.password = password;
+            return this;
+        }
 
-  public String getUsername() {
-    return username;
-  }
+        public Builder avatarUrl(String avatarUrl) {
+            this.avatarUrl = avatarUrl;
+            return this;
+        }
 
-  public void setUsername(String username) {
-    this.username = username;
-  }
+        public Customer build() {
+            Customer customer = new Customer();
+            customer.customerId = this.customerId;
+            customer.username = this.username;
+            customer.password = this.password;
+            customer.avatarUrl = this.avatarUrl;
+            return customer;
+        }
+    }
 
-  public String getPassword() {
-    return password;
-  }
+    // Getters for customerId, username, password, and avatarUrl (you can also add setters if needed)
+    public int getCustomerId() {
+        return customerId;
+    }
 
-  public void setPassword(String password) {
-    this.password = password;
-  }
+    public String getUsername() {
+        return username;
+    }
 
-  @Override
-  public String toString() {
-    return "Customer{" + "customerId=" + customerId + ", username=" + username + ", password=" + password + ", avatarUrl=" + avatarUrl + '}';
-  }
+    public String getPassword() {
+        return password;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
 
 }

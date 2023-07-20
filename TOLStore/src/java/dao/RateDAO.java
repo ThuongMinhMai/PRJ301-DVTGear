@@ -16,7 +16,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class RateDAO {
 
     public void addRate(int productId, int customerId, String rateContent, int rateValue) {
@@ -47,7 +46,7 @@ public class RateDAO {
             return rateList;
         }
 
-        String query = "SELECT r.content, r.value, cust.customerId, cust.avatarUrl, cust.username " + "FROM Rate r " + "LEFT JOIN Customer cust ON r.customerId = cust.customerId " + "WHERE r.productId = ?";
+        String query = "SELECT r.content, r.value, cust.avatarUrl, cust.username " + "FROM Rate r " + "LEFT JOIN Customer cust ON r.customerId = cust.customerId " + "WHERE r.productId = ?";
 
         try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, product.getId());
@@ -55,11 +54,10 @@ public class RateDAO {
             while (rs.next()) {
                 String content = rs.getString("content");
                 int value = rs.getInt("value");
-                int customerId = rs.getInt("customerId");
                 String avatarUrl = rs.getString("avatarUrl");
                 String username = rs.getString("username");
-                Customer customer = new Customer(customerId, username, null, avatarUrl);
-                Rate rate = new Rate(customer, product, content, value);
+                Customer customer = new Customer.Builder().avatarUrl(avatarUrl).username(username).build();
+                Rate rate = new Rate.Builder().customer(customer).content(content).value(value).build();
                 rateList.add(rate);
             }
         } catch (Exception e) {

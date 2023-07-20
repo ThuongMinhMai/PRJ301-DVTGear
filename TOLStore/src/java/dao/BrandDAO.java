@@ -18,11 +18,16 @@ public class BrandDAO {
         String query = "SELECT * FROM Brand";
 
         try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(query);
-             ResultSet rs = ps.executeQuery()) {
+                PreparedStatement ps = conn.prepareStatement(query);
+                ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                brandList.add(new Brand(rs.getInt("brandId"), rs.getString("name")));
+                brandList.add(
+                        new Brand.Builder()
+                                .id(rs.getInt("brandId"))
+                                .name(rs.getString("name"))
+                                .build()
+                );
             }
         } catch (Exception e) {
             // Handle the exception appropriately
@@ -36,7 +41,7 @@ public class BrandDAO {
         String query = "SELECT b.name AS brand, COUNT(op.productId) AS totalSold FROM [Order] o INNER JOIN OrderProducts op ON o.orderId = op.orderId INNER JOIN Product p ON op.productId = p.productId INNER JOIN Brand b ON p.brandId = b.brandId WHERE o.status = 'COMPLETE' GROUP BY b.name";
 
         try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
+                PreparedStatement ps = conn.prepareStatement(query)) {
 
             ResultSet rs = ps.executeQuery();
 

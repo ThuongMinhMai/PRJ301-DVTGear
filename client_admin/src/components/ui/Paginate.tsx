@@ -1,7 +1,7 @@
 "use client";
 
-import {useRouter} from "next/navigation";
-import React from "react";
+import {useRouter, useSearchParams} from "next/navigation";
+import React, {useEffect} from "react";
 import ReactPaginate from "react-paginate";
 
 type PaginateProps = {

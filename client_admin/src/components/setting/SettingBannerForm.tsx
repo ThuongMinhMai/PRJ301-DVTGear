@@ -3,7 +3,7 @@
 import axios from "axios";
 import {storage} from "@/firebase";
 import {getDownloadURL, ref, uploadBytes} from "firebase/storage";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {ReactSortable} from "react-sortablejs";
 import {BounceLoader} from "react-spinners";
 import {v4} from "uuid";
@@ -17,11 +17,12 @@ const SettingBannerForm = ({}: Props) => {
   const [bannerUrls, setBannerUrls] = useState<string[]>([]);
   const [edit, setEdit] = useState(false);
 
+  const fetchBanner = useCallback(async () => {
+    const {data} = await axios.get(`${API_PATH}/banner`);
+    setBannerUrls(data.bannerUrl ? JSON.parse(data.bannerUrl) : []);
+  }, []);
+
   useEffect(() => {
-    const fetchBanner = async () => {
-      const {data} = await axios.get(`${API_PATH}/banner`);
-      setBannerUrls(data.bannerUrl ? JSON.parse(data.bannerUrl) : []);
-    };
     fetchBanner();
   }, []);
 
@@ -82,6 +83,7 @@ const SettingBannerForm = ({}: Props) => {
               className="text-white btn btn-primary w-fit"
               onClick={() => {
                 setEdit(false);
+                fetchBanner();
               }}
             >
               Cancel
@@ -91,8 +93,8 @@ const SettingBannerForm = ({}: Props) => {
               type="submit"
               className="text-white btn btn-primary w-fit"
               onClick={() => {
-                handleUpdateBanner();
                 setEdit(false);
+                handleUpdateBanner();
               }}
             >
               Save

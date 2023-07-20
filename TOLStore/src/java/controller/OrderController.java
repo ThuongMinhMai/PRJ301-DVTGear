@@ -40,7 +40,7 @@ public class OrderController extends HttpServlet {
             int pageInt = Integer.parseInt(page);
             if (pageInt > 1) {
                 FetchResult<Order> fetchData = orderDAO.getAllCustomerOrders(customer.getCustomerId(), filterBy, pageInt, 5);
-
+                System.out.println(fetchData);
                 JSONObject jsonResponse = new JSONObject();
                 jsonResponse.put("message", "Get orders successfully!");
                 jsonResponse.put("itemsCount", fetchData.getTotalCount());

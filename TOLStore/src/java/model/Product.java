@@ -10,6 +10,8 @@ import java.util.List;
 /**
  * @author Kingc
  */
+import java.util.List;
+
 public class Product {
 
     private int id;
@@ -22,78 +24,7 @@ public class Product {
     private int storage;
     private boolean disable;
     private int sold;
-
-    //expand attribute
     private List<Rate> rateList;
-
-    public Product(int id, String name, Category category, Brand brand, String images, int price, String description, int storage) {
-        this.id = id;
-        this.name = name;
-        this.category = category;
-        this.brand = brand;
-        this.images = images;
-        this.price = price;
-        this.description = description;
-        this.storage = storage;
-    }
-
-    // Open/closed principle
-    public Product(int id, String name, Category category, Brand brand, String images, int price, String description, int storage, boolean disable) {
-        this.id = id;
-        this.name = name;
-        this.category = category;
-        this.brand = brand;
-        this.images = images;
-        this.price = price;
-        this.description = description;
-        this.storage = storage;
-        this.disable = disable;
-    }
-
-    public Product(int id, String name, Category category, Brand brand, String images, int price, String description, int storage, boolean disable, int sold) {
-        this.id = id;
-        this.name = name;
-        this.category = category;
-        this.brand = brand;
-        this.images = images;
-        this.price = price;
-        this.description = description;
-        this.storage = storage;
-        this.disable = disable;
-        this.sold = sold;
-    }
-
-    public int getSold() {
-        return sold;
-    }
-
-    public void setSold(int sold) {
-        this.sold = sold;
-    }
-
-    public boolean isDisable() {
-        return disable;
-    }
-
-    public void setDisable(boolean disable) {
-        this.disable = disable;
-    }
-
-    public List<Rate> getRateList() {
-        return rateList;
-    }
-
-    public void setRateList(List<Rate> rateList) {
-        this.rateList = rateList;
-    }
-
-    public int getStorage() {
-        return storage;
-    }
-
-    public void setStorage(int storage) {
-        this.storage = storage;
-    }
 
     public int getId() {
         return id;
@@ -151,9 +82,128 @@ public class Product {
         this.description = description;
     }
 
-    @Override
-    public String toString() {
-        return "Product{" + "id=" + id + ", name=" + name + ", category=" + category + ", brand=" + brand + ", images=" + images + ", price=" + price + ", description=" + description + ", storage=" + storage + '}';
+    public int getStorage() {
+        return storage;
     }
 
+    public void setStorage(int storage) {
+        this.storage = storage;
+    }
+
+    public boolean isDisable() {
+        return disable;
+    }
+
+    public void setDisable(boolean disable) {
+        this.disable = disable;
+    }
+
+    public int getSold() {
+        return sold;
+    }
+
+    public void setSold(int sold) {
+        this.sold = sold;
+    }
+
+    public List<Rate> getRateList() {
+        return rateList;
+    }
+
+    public void setRateList(List<Rate> rateList) {
+        this.rateList = rateList;
+    }
+
+    private Product(Builder builder) {
+        this.id = builder.id;
+        this.name = builder.name;
+        this.category = builder.category;
+        this.brand = builder.brand;
+        this.images = builder.images;
+        this.price = builder.price;
+        this.description = builder.description;
+        this.storage = builder.storage;
+        this.disable = builder.disable;
+        this.sold = builder.sold;
+        this.rateList = builder.rateList;
+    }
+
+    // Getters for the private fields (omitted for brevity).
+    public static class Builder {
+
+        private int id;
+        private String name;
+        private Category category;
+        private Brand brand;
+        private String images;
+        private int price;
+        private String description;
+        private int storage;
+        private boolean disable;
+        private int sold;
+        private List<Rate> rateList;
+
+        public Builder() {
+
+        }
+
+        public Builder id(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder category(Category category) {
+            this.category = category;
+            return this;
+        }
+
+        public Builder brand(Brand brand) {
+            this.brand = brand;
+            return this;
+        }
+
+        public Builder images(String images) {
+            this.images = images;
+            return this;
+        }
+
+        public Builder price(int price) {
+            this.price = price;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder storage(int storage) {
+            this.storage = storage;
+            return this;
+        }
+
+        public Builder disable(boolean disable) {
+            this.disable = disable;
+            return this;
+        }
+
+        public Builder sold(int sold) {
+            this.sold = sold;
+            return this;
+        }
+
+        public Builder rateList(List<Rate> rateList) {
+            this.rateList = rateList;
+            return this;
+        }
+
+        public Product build() {
+            return new Product(this);
+        }
+    }
 }

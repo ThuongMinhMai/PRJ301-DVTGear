@@ -28,7 +28,7 @@ public class ProductDAO {
         List<Product> bestSellers = new ArrayList<>();
 
         // Query to get the top best-selling products
-        String query = "SELECT TOP " + n + " p.productId, p.name, c.name AS category, b.name AS brand, p.description, p.images, p.price, p.categoryId, p.brandId, p.storage, p.sold "
+        String query = "SELECT TOP " + n + " p.productId, p.name, c.name AS category, b.name AS brand, p.images, p.price, p.storage, p.sold "
                 + "FROM Product p "
                 + "INNER JOIN Brand b ON p.brandId = b.brandId "
                 + "INNER JOIN Category c ON p.categoryId = c.categoryId "
@@ -40,18 +40,18 @@ public class ProductDAO {
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                int productId = rs.getInt("productId");
-                String productName = rs.getString("name");
-                Category category = new Category(rs.getInt("categoryId"), rs.getString("category"));
-                Brand brand = new Brand(rs.getInt("brandId"), rs.getString("brand"));
-                String description = rs.getString("description");
-                String images = rs.getString("images");
-                int price = rs.getInt("price");
-                int storage = rs.getInt("storage");
-                int sold = rs.getInt("sold");
 
-                // Create a new Product instance and add it to the list
-                Product product = new Product(productId, productName, category, brand, images, price, description, storage, false, sold);
+                Product product = new Product.Builder()
+                        .id(rs.getInt("productId"))
+                        .name(rs.getString("name"))
+                        .category(new Category.Builder().name(rs.getString("category")).build())
+                        .brand(new Brand.Builder().name(rs.getString("brand")).build())
+                        .images(rs.getString("images"))
+                        .price(rs.getInt("price"))
+                        .storage(rs.getInt("storage"))
+                        .sold(rs.getInt("sold"))
+                        .build();
+
                 bestSellers.add(product);
             }
         } catch (Exception e) {
@@ -63,23 +63,23 @@ public class ProductDAO {
 
     public Product getProductDetail(int id) {
         Product product = null;
-        String query = "SELECT p.productId, p.name, c.name AS category, b.name AS brand, p.description, p.images, p.price, p.categoryId, p.brandId, p.storage FROM Product p INNER JOIN Brand b ON p.brandId = b.brandId INNER JOIN Category c ON p.categoryId = c.categoryId WHERE p.productId = ? AND [disable] = 0";
+        String query = "SELECT p.productId, p.name, c.name AS category, b.name AS brand, p.description, p.images, p.price, p.categoryId, p.brandId, p.storage, p.sold FROM Product p INNER JOIN Brand b ON p.brandId = b.brandId INNER JOIN Category c ON p.categoryId = c.categoryId WHERE p.productId = ? AND [disable] = 0";
 
         try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                int productId = rs.getInt("productId");
-                String productName = rs.getString("name");
-                Category category = new Category(rs.getInt("categoryId"), rs.getString("category"));
-                Brand brand = new Brand(rs.getInt("brandId"), rs.getString("brand"));
-                String description = rs.getString("description");
-                String images = rs.getString("images");
-                int price = rs.getInt("price");
-                int storage = rs.getInt("storage");
-
-                // Create a new Product instance
-                product = new Product(productId, productName, category, brand, images, price, description, storage);
+                product = new Product.Builder()
+                        .id(rs.getInt("productId"))
+                        .name(rs.getString("name"))
+                        .category(new Category.Builder().id(rs.getInt("categoryId")).name(rs.getString("category")).build())
+                        .brand(new Brand.Builder().id(rs.getInt("brandId")).name(rs.getString("brand")).build())
+                        .images(rs.getString("images"))
+                        .description(rs.getString("description"))
+                        .price(rs.getInt("price"))
+                        .storage(rs.getInt("storage"))
+                        .sold(rs.getInt("sold"))
+                        .build();
             }
         } catch (Exception e) {
             System.err.println(e);
@@ -91,7 +91,13 @@ public class ProductDAO {
     public List<Product> getSameProducts(int productId) {
         List<Product> sameProducts = new ArrayList<>();
 
-        String query = "SELECT TOP 8 p.productId, p.name, c.name AS category, b.name AS brand, p.description, p.images, p.price, p.categoryId, p.brandId, p.storage FROM Product p INNER JOIN Brand b ON p.brandId = b.brandId INNER JOIN Category c ON p.categoryId = c.categoryId WHERE (p.categoryId = (SELECT categoryId FROM Product WHERE productId = ?) OR p.brandId = (SELECT brandId FROM Product WHERE productId = ?)) AND p.productId != ? AND [disable] = 0";
+        String query = "SELECT TOP 8 p.productId, p.name, p.images, p.price, p.storage\n"
+                + "FROM Product p\n"
+                + "INNER JOIN Brand b ON p.brandId = b.brandId\n"
+                + "INNER JOIN Category c ON p.categoryId = c.categoryId\n"
+                + "WHERE (p.categoryId = (SELECT categoryId FROM Product WHERE productId = ?)\n"
+                + "       OR p.brandId = (SELECT brandId FROM Product WHERE productId = ?))\n"
+                + "      AND p.productId != ? AND [disable] = 0";
 
         try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
 
@@ -101,7 +107,13 @@ public class ProductDAO {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                sameProducts.add(new Product(rs.getInt("productId"), rs.getString("name"), new Category(rs.getInt("categoryId"), rs.getString("category")), new Brand(rs.getInt("brandId"), rs.getString("brand")), rs.getString("images"), rs.getInt("price"), rs.getString("description"), rs.getInt("storage")));
+                sameProducts.add(new Product.Builder()
+                        .id(rs.getInt("productId"))
+                        .name(rs.getString("name"))
+                        .images(rs.getString("images"))
+                        .price(rs.getInt("price"))
+                        .storage(rs.getInt("storage"))
+                        .build());
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -145,7 +157,20 @@ public class ProductDAO {
 
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
-                        productList.add(new Product(rs.getInt("productId"), rs.getString("name"), new Category(rs.getInt("categoryId"), rs.getString("category")), new Brand(rs.getInt("brandId"), rs.getString("brand")), rs.getString("images"), rs.getInt("price"), rs.getString("description"), rs.getInt("storage"), rs.getBoolean("disable"), rs.getInt("sold")));
+                        productList.add(
+                                new Product.Builder()
+                                        .id(rs.getInt("productId"))
+                                        .name(rs.getString("name"))
+                                        .category(new Category.Builder().id(rs.getInt("categoryId")).name(rs.getString("category")).build())
+                                        .brand(new Brand.Builder().id(rs.getInt("brandId")).name(rs.getString("brand")).build())
+                                        .images(rs.getString("images"))
+                                        .description(rs.getString("description"))
+                                        .price(rs.getInt("price"))
+                                        .storage(rs.getInt("storage"))
+                                        .disable(rs.getBoolean("disable"))
+                                        .sold(rs.getInt("sold"))
+                                        .build()
+                        );
                     }
                 }
             }
@@ -160,7 +185,7 @@ public class ProductDAO {
         List<Product> searchedProducts = new ArrayList<>();
         int totalCount = 0;
 
-        StringBuilder queryBuilder = new StringBuilder("SELECT p.productId,p.name,c.name AS category,b.name AS brand,p.description,p.images,p.price,p.categoryId,p.brandId,p.storage\n").append("FROM Product p\n").append("INNER JOIN Brand b ON p.brandId=b.brandId\n").append("INNER JOIN Category c ON p.categoryId = c.categoryId\n").append("WHERE p.disable = 0");
+        StringBuilder queryBuilder = new StringBuilder("SELECT p.productId,p.name,p.images,p.price,p.storage\n").append("FROM Product p\n").append("INNER JOIN Brand b ON p.brandId=b.brandId\n").append("INNER JOIN Category c ON p.categoryId = c.categoryId\n").append("WHERE p.disable = 0");
 
         if (searchTerm != null && !searchTerm.isEmpty()) {
             queryBuilder.append(" AND LOWER(p.name) LIKE ?");
@@ -225,7 +250,15 @@ public class ProductDAO {
             while (rs.next()) {
 
                 if (currentRow >= startIndex && currentRow <= endIndex) {
-                    searchedProducts.add(new Product(rs.getInt("productId"), rs.getString("name"), new Category(rs.getInt("categoryId"), rs.getString("category")), new Brand(rs.getInt("brandId"), rs.getString("brand")), rs.getString("images"), rs.getInt("price"), rs.getString("description"), rs.getInt("storage")));
+                    searchedProducts.add(
+                            new Product.Builder()
+                                    .id(rs.getInt("productId"))
+                                    .name(rs.getString("name"))
+                                    .storage(rs.getInt("storage"))
+                                    .images(rs.getString("images"))
+                                    .price(rs.getInt("price"))
+                                    .build()
+                    );
                 }
                 currentRow++;
                 totalCount++;
@@ -240,7 +273,7 @@ public class ProductDAO {
 
     public List<Product> getFavoriteProducts(int customerId) {
         List<Product> favoriteProducts = new ArrayList<>();
-        String query = "SELECT p.productId, p.name, c.name AS category, b.name AS brand, p.description, p.images, p.price, p.categoryId, p.brandId, p.storage\n" + "FROM Product p\n" + "INNER JOIN Brand b ON p.brandId = b.brandId\n" + "INNER JOIN Category c ON p.categoryId = c.categoryId\n" + "INNER JOIN Favorite f ON p.productId = f.productId\n" + "WHERE f.customerId = ? AND p.disable = 0";
+        String query = "SELECT p.productId, p.name, p.images, p.price, p.storage\n" + "FROM Product p\n" + "INNER JOIN Brand b ON p.brandId = b.brandId\n" + "INNER JOIN Category c ON p.categoryId = c.categoryId\n" + "INNER JOIN Favorite f ON p.productId = f.productId\n" + "WHERE f.customerId = ? AND p.disable = 0";
 
         try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
 
@@ -248,7 +281,15 @@ public class ProductDAO {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                favoriteProducts.add(new Product(rs.getInt("productId"), rs.getString("name"), new Category(rs.getInt("categoryId"), rs.getString("category")), new Brand(rs.getInt("brandId"), rs.getString("brand")), rs.getString("images"), rs.getInt("price"), rs.getString("description"), rs.getInt("storage")));
+                favoriteProducts.add(
+                        new Product.Builder()
+                                .id(rs.getInt("productId"))
+                                .name(rs.getString("name"))
+                                .images(rs.getString("images"))
+                                .price(rs.getInt("price"))
+                                .storage(rs.getInt("storage"))
+                                .build()
+                );
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -266,8 +307,8 @@ public class ProductDAO {
         }
 
         StringBuilder queryBuilder = new StringBuilder();
-        queryBuilder.append("SELECT p.productId, p.name,p.storage, c.name AS category, b.name AS brand, ");
-        queryBuilder.append("p.description, p.images, p.price, p.categoryId, p.brandId ");
+        queryBuilder.append("SELECT p.productId, p.name,p.storage, ");
+        queryBuilder.append("p.images, p.price ");
         queryBuilder.append("FROM Product p ");
         queryBuilder.append("INNER JOIN Brand b ON p.brandId = b.brandId ");
         queryBuilder.append("INNER JOIN Category c ON p.categoryId = c.categoryId ");
@@ -285,7 +326,15 @@ public class ProductDAO {
         try (Connection conn = new DBContext().getConnection(); PreparedStatement ps = conn.prepareStatement(queryBuilder.toString()); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                productList.add(new Product(rs.getInt("productId"), rs.getString("name"), new Category(rs.getInt("categoryId"), rs.getString("category")), new Brand(rs.getInt("brandId"), rs.getString("brand")), rs.getString("images"), rs.getInt("price"), rs.getString("description"), rs.getInt("storage")));
+                productList.add(
+                        new Product.Builder()
+                                .id(rs.getInt("productId"))
+                                .name(rs.getString("name"))
+                                .images(rs.getString("images"))
+                                .price(rs.getInt("price"))
+                                .storage(rs.getInt("storage"))
+                                .build()
+                );
             }
         } catch (Exception e) {
             System.out.println(e);

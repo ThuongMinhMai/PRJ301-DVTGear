@@ -19,11 +19,15 @@ public class CategoryDAO {
         String query = "SELECT * FROM Category";
 
         try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(query);
-             ResultSet rs = ps.executeQuery()) {
+                PreparedStatement ps = conn.prepareStatement(query);
+                ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                categoryList.add(new Category(rs.getInt("categoryId"), rs.getString("name")));
+                categoryList.add(
+                        new Category.Builder()
+                                .id(rs.getInt("categoryId"))
+                                .name(rs.getString("name"))
+                                .build());
             }
         } catch (Exception e) {
             // Handle the exception appropriately
@@ -38,7 +42,7 @@ public class CategoryDAO {
         String query = "SELECT c.name AS category, COUNT(op.productId) AS totalSold FROM [Order] o INNER JOIN OrderProducts op ON o.orderId = op.orderId INNER JOIN Product p ON op.productId = p.productId INNER JOIN Category c ON p.categoryId = c.categoryId WHERE o.status = 'COMPLETE' GROUP BY c.name";
 
         try (Connection conn = new DBContext().getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
+                PreparedStatement ps = conn.prepareStatement(query)) {
 
             ResultSet rs = ps.executeQuery();
 

@@ -13,126 +13,204 @@ import java.util.List;
  */
 public class Order {
 
-  private int id;
-  private String customer;
-  private Date date;
-  private Status status;
-  private String receiver;
-  private String address;
-  private String phone;
+    private int id;
+    private String customer;
+    private Date date;
+    private Status status;
+    private String receiver;
+    private String address;
+    private String phone;
+    private int totalMoney;
+    private List<OrderProduct> orderProducts;
 
-  //expand attribute
-  private int totalMoney;
-  private List<OrderProduct> orderProducts;
+    public int getId() {
+        return id;
+    }
 
-  public Order(int id, String customer, Date date, Status status, String receiver, String address, String phone) {
-	this.id = id;
-	this.customer = customer;
-	this.date = date;
-	this.status = status;
-	this.receiver = receiver;
-	this.address = address;
-	this.phone = phone;
-  }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-  public int getId() {
-	return id;
-  }
+    public String getCustomer() {
+        return customer;
+    }
 
-  public void setId(int id) {
-	this.id = id;
-  }
+    public void setCustomer(String customer) {
+        this.customer = customer;
+    }
 
-  public String getCustomer() {
-	return customer;
-  }
+    public Date getDate() {
+        return date;
+    }
 
-  public void setCustomer(String customer) {
-	this.customer = customer;
-  }
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
-  public Date getDate() {
-	return date;
-  }
+    public Status getStatus() {
+        return status;
+    }
 
-  public void setDate(Date date) {
-	this.date = date;
-  }
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
-  public Status getStatus() {
-	return status;
-  }
+    public String getReceiver() {
+        return receiver;
+    }
 
-  public void setStatus(Status status) {
-	this.status = status;
-  }
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
+    }
 
-  public String getReceiver() {
-	return receiver;
-  }
+    public String getAddress() {
+        return address;
+    }
 
-  public void setReceiver(String receiver) {
-	this.receiver = receiver;
-  }
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-  public String getAddress() {
-	return address;
-  }
+    public String getPhone() {
+        return phone;
+    }
 
-  public void setAddress(String address) {
-	this.address = address;
-  }
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-  public String getPhone() {
-	return phone;
-  }
+    public int getTotalMoney() {
+        return totalMoney;
+    }
 
-  public void setPhone(String phone) {
-	this.phone = phone;
-  }
+    public void setTotalMoney(int totalMoney) {
+        this.totalMoney = totalMoney;
+    }
 
-  public int getTotalMoney() {
-	return totalMoney;
-  }
+    public List<OrderProduct> getOrderProducts() {
+        return orderProducts;
+    }
 
-  public void setTotalMoney(int totalMoney) {
-	this.totalMoney = totalMoney;
-  }
+    public void setOrderProducts(List<OrderProduct> orderProducts) {
+        this.orderProducts = orderProducts;
+    }
 
-  public List<OrderProduct> getOrderProducts() {
-	return orderProducts;
-  }
+    // Private constructor to prevent direct instantiation from outside the class.
+    private Order() {
+    }
 
-  public void setOrderProducts(List<OrderProduct> orderProducts) {
-	this.orderProducts = orderProducts;
-  }
+    // Builder class for the Order class
+    public static class Builder {
 
-  public enum Status {
-	COMPLETE, PROCESSING, DELIVERING, CANCELLED;
+        private int id;
+        private String customer;
+        private Date date;
+        private Status status;
+        private String receiver;
+        private String address;
+        private String phone;
+        private int totalMoney;
+        private List<OrderProduct> orderProducts;
 
-	public String translate() {
-	  return translateStatus(this);
-	}
+        public Builder() {
+            // Set default values if necessary
+            id = 0;
+            status = Status.COMPLETE; // Set default status
+        }
 
-	public static String translateStatus(Status status) {
-	  switch (status) {
-		case COMPLETE:
-		  return "Hoàn Thành";
-		case PROCESSING:
-		  return "Đang Chờ Xử Lý";
-		case DELIVERING:
-		  return "Đang Giao Hàng";
-		case CANCELLED:
-		  return "Đã Hủy";
-		default:
-		  return "";
-	  }
-	}
+        // Setters for the fields that can be chained
+        public Builder id(int id) {
+            this.id = id;
+            return this;
+        }
 
-	public boolean equalString(String str) {
-	  return this.equals(valueOf(str));
-	}
+        public Builder customer(String customer) {
+            this.customer = customer;
+            return this;
+        }
 
-  }
+        public Builder date(Date date) {
+            this.date = date;
+            return this;
+        }
+
+        public Builder status(Status status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder receiver(String receiver) {
+            this.receiver = receiver;
+            return this;
+        }
+
+        public Builder address(String address) {
+            this.address = address;
+            return this;
+        }
+
+        public Builder phone(String phone) {
+            this.phone = phone;
+            return this;
+        }
+
+        public Builder totalMoney(int totalMoney) {
+            // Ensure that the totalMoney is non-negative
+            if (totalMoney >= 0) {
+                this.totalMoney = totalMoney;
+            } else {
+                throw new IllegalArgumentException("Total money cannot be negative.");
+            }
+            return this;
+        }
+
+        public Builder orderProducts(List<OrderProduct> orderProducts) {
+            this.orderProducts = orderProducts;
+            return this;
+        }
+
+        // Build method to create the Order instance
+        public Order build() {
+            Order order = new Order();
+            order.id = this.id;
+            order.customer = this.customer;
+            order.date = this.date;
+            order.status = this.status;
+            order.receiver = this.receiver;
+            order.address = this.address;
+            order.phone = this.phone;
+            order.totalMoney = this.totalMoney;
+            order.orderProducts = this.orderProducts;
+            return order;
+        }
+    }
+
+    // Your Status enum code goes here...
+    public enum Status {
+        COMPLETE, PROCESSING, DELIVERING, CANCELLED;
+
+        public String translate() {
+            return translateStatus(this);
+        }
+
+        public static String translateStatus(Status status) {
+            switch (status) {
+                case COMPLETE:
+                    return "Hoàn Thành";
+                case PROCESSING:
+                    return "Đang Chờ Xử Lý";
+                case DELIVERING:
+                    return "Đang Giao Hàng";
+                case CANCELLED:
+                    return "Đã Hủy";
+                default:
+                    return "";
+            }
+        }
+
+        public boolean equalString(String str) {
+            return this.equals(valueOf(str));
+        }
+    }
 
 }
