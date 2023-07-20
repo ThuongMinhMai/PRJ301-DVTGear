@@ -52,27 +52,27 @@
 
 
     <div
-        id="productsContainer"
-        class="relative justify-center grid grid-cols-12 gap-5"
-        >
+            id="productsContainer"
+            class="relative justify-center grid grid-cols-12 gap-5"
+    >
         <c:forEach var="product" items="${productList}">
             <div class="bg-dvt-black-2 flex flex-col rounded-3xl overflow-hidden cursor-pointer col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3"
-                 >
+            >
                 <a href="/store/products?id=${product.getId()}" class="w-full overflow-hidden relative aspect-square"
-                   > <c:set var="imageUrl" value="${Utils.parseJSONStringArray(product.getImages()).get(0)}"/> <img
+                > <c:set var="imageUrl" value="${Utils.parseJSONStringArray(product.getImages()).get(0)}"/> <img
                         class="w-full h-full object-cover bt-[20px] transition duration-300 ease-linear hover:scale-125"
                         src="${imageUrl}" alt="product"/>
                     <div class="absolute bottom-0 right-0 bg-black bg-opacity-60 rounded-tl-2xl py-3 px-5 text-2xl">         ${Utils.formatNum(product.getPrice())}₫</div>
                 </a>
                 <div class="px-5 py-0 my-2 mx-0 name_product">
                     <span class="font-bold line-clamp-2">
-                        ${product.getName()}
+                            ${product.getName()}
                     </span>
                 </div>
 
                 <div onclick="addToCart(${product.getId()}, 1,${product.getStorage()})"
                      class="mt-auto mx-auto px-4 py-2 rounded-[30px] bg-primary border-none uppercase cursor-pointer mb-4 hover:opacity-80"
-                     > Thêm vào giỏ hàng
+                > Thêm vào giỏ hàng
                 </div>
             </div>
         </c:forEach>
@@ -81,7 +81,7 @@
 
 </div>
 <script>
-    let hideProductsCount = ${totalProducts} - 12;//12 is products per page
+    let hideProductsCount = ${totalProducts} -12;//12 is products per page
     let currentPage = 1;
 
     const renderMoreProducts = (products) => {
@@ -159,14 +159,14 @@
 
 
         const {products} = await fetch(newUrl)
-                .then((response) => {
-                    // Check if the response was successful
-                    if (response.ok) { // Parse the response data 
-                        return response.json();
-                    } else {
-                        throw new Error('Error: ' + response.status);
-                    }
-                });
+            .then((response) => {
+                // Check if the response was successful
+                if (response.ok) { // Parse the response data
+                    return response.json();
+                } else {
+                    throw new Error('Error: ' + response.status);
+                }
+            });
 
         renderMoreProducts(products);
         removeLoader();

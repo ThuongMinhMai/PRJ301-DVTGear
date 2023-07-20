@@ -2,12 +2,13 @@
 
 import {approveOrder} from "@/app/_actions/orders";
 import {useAlertStore} from "@/store";
+import clsx from "clsx";
 import Image from "next/image";
 import React from "react";
 
-type Props = {orderId: number};
+type Props = {orderId: number; className?: string};
 
-export default function ApproveButton({orderId}: Props) {
+export default function ApproveButton({orderId, className}: Props) {
   const handleApproveOrder = async (id: number) => {
     const {isSuccess, message} = await approveOrder(id);
     if (isSuccess) {
@@ -25,7 +26,7 @@ export default function ApproveButton({orderId}: Props) {
         handleApproveOrder(orderId);
       }}
       type="submit"
-      className="text-center text-white btn btn-primary"
+      className={clsx("text-center text-white btn btn-primary", className)}
     >
       <Image
         width={24}

@@ -1,10 +1,11 @@
-'use client'
+"use client";
 
 import statusToColor from "@/utils/statusColor";
 import clsx from "clsx";
 import Image from "next/image";
 import {useRouter} from "next/navigation";
 import React from "react";
+import ApproveButton from "./ApproveButton";
 
 type Props = {
   order: Order;
@@ -63,6 +64,12 @@ export default function OrderItem({order}: Props) {
                 />
                 Detail
               </a>
+            </li>
+            <li>
+              <ApproveButton
+                className="justify-start overflow-hidden font-normal normal-case border-none outline-none hover:bg-primary"
+                orderId={order.id!}
+              />
             </li>
           </ul>
         </div>

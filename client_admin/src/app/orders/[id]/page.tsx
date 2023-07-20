@@ -1,5 +1,5 @@
 import {getOrderDetail} from "@/app/_actions/orders";
-import {ApproveButton, Scroll, Skeleton} from "@/components";
+import {ApproveButton, Scroll} from "@/components";
 import statusToColor from "@/utils/statusColor";
 import clsx from "clsx";
 import Image from "next/image";

@@ -2,17 +2,17 @@
 
 Member:
 
-- Trần Trương Văn ( Leader ) 
-- Mai Thị Minh Thương 
+- Trần Trương Văn ( Leader )
+- Mai Thị Minh Thương
 - Võ Nhật Trường Duy
 
-**1. Requirements**: 
+**1. Requirements**:
 
-**Name of the system:** 
+**Name of the system:**
 
 TOL Gear
 
-**Purpose**: 
+**Purpose**:
 
 TOL Gear consists of two websites: TOL Store and TOL Admin. The TOL Store is an e-commerce platform for selling various types of technology device. The TOL Admin is a management system used by administrators to handle products, orders, admin accounts, and revenue.
 
@@ -52,164 +52,80 @@ TOL Gear consists of two websites: TOL Store and TOL Admin. The TOL Store is an 
 
 **Technology stack:**
 
-\- TOL Store (http://localhost:8080/store): is an application where regular HTML, CSS, and JavaScript are employed for frontend development, while Java Servlets serve as the backend infrastructure.
+\- TOL Store (<http://localhost:8080/store>): is an application where regular HTML, CSS, and JavaScript are employed for frontend development, while Java Servlets serve as the backend infrastructure.
 
-\- TOL Admin (http://localhost:3000): The client-side will be developed using Next.js/React.js, and the server-side will utilize Java Servlets to create an API (http://localhost:8080/store/api) for interacting with the TOLGear database.
+\- TOL Admin (<http://localhost:3000>): The client-side will be developed using Next.js/React.js, and the server-side will utilize Java Servlets to create an API (<http://localhost:8080/store/api>) for interacting with the TOLGear database.
 
-**2. Wireframe or screenshots of the system** 
+**2. Wireframe or screenshots of the system**
 
 **TOL store:**
 
 - **Header**
 
-![](./wireframe/Aspose.Words.1421c8ff-42c0-4d8a-abb8-a6b5f341b335.001.png)
-
-
-
+![](./wireframe/header.jpg)
 
 - **Footer**
 
-![](./wireframe/Aspose.Words.1421c8ff-42c0-4d8a-abb8-a6b5f341b335.002.png)
+![](./wireframe/footer.jpg)
 
+- **<http://localhost:8080/store/> (Home Page)**
 
+![](./wireframe/home.psd)
 
-
-- **http://localhost:8080/store/ (Home Page)** 
-
-
-![](./wireframe/Aspose.Words.1421c8ff-42c0-4d8a-abb8-a6b5f341b335.003.png)
-
-![](./wireframe/Aspose.Words.1421c8ff-42c0-4d8a-abb8-a6b5f341b335.004.png)
-
-![](./wireframe/Aspose.Words.1421c8ff-42c0-4d8a-abb8-a6b5f341b335.005.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-- **http://localhost:8080/store/product?id=....... (Product Detail Page)**
+- **<http://localhost:8080/store/product?id=>....... (Product Detail Page)**
 
 ![](./wireframe/Aspose.Words.1421c8ff-42c0-4d8a-abb8-a6b5f341b335.006.png)
-
 
 ![](./wireframe/Aspose.Words.1421c8ff-42c0-4d8a-abb8-a6b5f341b335.007.png)
 
 ![](./wireframe/Aspose.Words.1421c8ff-42c0-4d8a-abb8-a6b5f341b335.008.png)
 
-
-
-
-
-
-
-
-- **http://localhost:8080/store/orders**
-
+- **<http://localhost:8080/store/orders>**
 
 ![](./wireframe/Aspose.Words.1421c8ff-42c0-4d8a-abb8-a6b5f341b335.009.png)
 
 ![](./wireframe/Aspose.Words.1421c8ff-42c0-4d8a-abb8-a6b5f341b335.010.png)
 
-
-
-- **http://localhost:8080/store/login**
+- **<http://localhost:8080/store/login>**
 
 ![](./wireframe/Aspose.Words.1421c8ff-42c0-4d8a-abb8-a6b5f341b335.011.png)
 
-
-
-
-
-
-
-
-
-
-
-- **http://localhost:8080/store/register**
+- **<http://localhost:8080/store/register>**
 
 ![](./wireframe/Aspose.Words.1421c8ff-42c0-4d8a-abb8-a6b5f341b335.012.png)
-
-
-
-
-
-
-
-
 
 **TOL admin:**
 
 ![](./wireframe/Aspose.Words.1421c8ff-42c0-4d8a-abb8-a6b5f341b335.013.png)
 
-
 - **No token login, screen will always be login screen, no matter what path url**
 
 ![](./wireframe/Aspose.Words.1421c8ff-42c0-4d8a-abb8-a6b5f341b335.014.png)
 
-
-
-
-
-
-
-
-
-- **http://localhost:3000**
+- **<http://localhost:3000>**
 
 ![](./wireframe/Aspose.Words.1421c8ff-42c0-4d8a-abb8-a6b5f341b335.015.jpeg)
 
-- **http://localhost:3000/products**
+- **<http://localhost:3000/products>**
 
 ![](./wireframe/Aspose.Words.1421c8ff-42c0-4d8a-abb8-a6b5f341b335.016.png)
 
-
-
-
-
-
-
-
-
-- **http://localhost:3000/products/add**
+- **<http://localhost:3000/products/add>**
 
 ![](./wireframe/Aspose.Words.1421c8ff-42c0-4d8a-abb8-a6b5f341b335.017.jpeg)
 
-
-- **http://localhost:3000/products/edit (same with …/products/add, but already have the data of edited product )**
+- **<http://localhost:3000/products/edit> (same with …/products/add, but already have the data of edited product )**
 
 ![](./wireframe/Aspose.Words.1421c8ff-42c0-4d8a-abb8-a6b5f341b335.018.png)
 
-
-- **http://localhost:3000/orders**
+- **<http://localhost:3000/orders>**
 
 ![](./wireframe/Aspose.Words.1421c8ff-42c0-4d8a-abb8-a6b5f341b335.019.jpeg)
 
-
-
-
-
-- **http://localhost:3000/settings**
+- **<http://localhost:3000/settings>**
 
 ![](./wireframe/Aspose.Words.1421c8ff-42c0-4d8a-abb8-a6b5f341b335.020.jpeg)
 
-
-
-
-
-**3. Database Design** 
-
+**3. Database Design**
 
 ![](./wireframe/dbTOLGear.jpg)
-
-
-
