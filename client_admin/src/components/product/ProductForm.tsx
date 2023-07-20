@@ -102,16 +102,21 @@ export default function ProductForm({handleSubmit, edit}: Props) {
 
 const DescriptionPreview = () => {
   const {getFieldProps} = useFormikContext();
+  const content = getFieldProps("description").value;
   return (
     <div className="flex flex-col gap-4">
       <div className="text-xl font-semibold md:text-2xl">
         Description Preview
       </div>
 
-      <div
-        className="min-w-full p-4 bg-black-2 desc-preview"
-        dangerouslySetInnerHTML={{__html: getFieldProps("description").value}}
-      />
+      {!!content ? (
+        <div
+          className="min-w-full p-4 rounded-lg bg-black-2 desc-preview"
+          dangerouslySetInnerHTML={{__html: content}}
+        />
+      ) : (
+        <div>Not found content of description.</div>
+      )}
     </div>
   );
 };

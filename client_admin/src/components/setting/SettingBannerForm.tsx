@@ -34,9 +34,9 @@ const SettingBannerForm = ({}: Props) => {
 
   return (
     <div className="flex flex-col rounded-2xl">
-      <div className="flex flex-col gap-4 mb-4 md:flex-row md:items-center">
+      <div className="flex flex-col justify-between gap-4 mb-4 md:flex-row md:items-center">
         <div className="text-base font-semibold md:text-xl">
-          Banner Image {"( just one )"}
+          Banner Image 
         </div>
         {!edit && (
           <button
