@@ -39,7 +39,9 @@ public class CategoryDAO {
     public JSONArray calculateTotalProductsSoldByCategory() {
         JSONArray jsonArray = new JSONArray();
 
-        String query = "SELECT c.name AS category, COUNT(op.productId) AS totalSold FROM [Order] o INNER JOIN OrderProducts op ON o.orderId = op.orderId INNER JOIN Product p ON op.productId = p.productId INNER JOIN Category c ON p.categoryId = c.categoryId WHERE o.status = 'COMPLETE' GROUP BY c.name";
+        String query = "SELECT c.name AS category, SUM(p.sold) AS totalSold FROM Product p "
+                + "INNER JOIN Category c ON p.categoryId = c.categoryId "
+                + "GROUP BY c.name";
 
         try (Connection conn = new DBContext().getConnection();
                 PreparedStatement ps = conn.prepareStatement(query)) {
@@ -64,4 +66,5 @@ public class CategoryDAO {
 
         return jsonArray;
     }
+
 }

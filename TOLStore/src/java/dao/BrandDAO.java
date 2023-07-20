@@ -38,7 +38,9 @@ public class BrandDAO {
     public JSONArray calculateTotalProductsSoldByBrand() {
         JSONArray jsonArray = new JSONArray();
 
-        String query = "SELECT b.name AS brand, COUNT(op.productId) AS totalSold FROM [Order] o INNER JOIN OrderProducts op ON o.orderId = op.orderId INNER JOIN Product p ON op.productId = p.productId INNER JOIN Brand b ON p.brandId = b.brandId WHERE o.status = 'COMPLETE' GROUP BY b.name";
+        String query = "SELECT b.name AS brand, SUM(p.sold) AS totalSold FROM Product p "
+                + "INNER JOIN Brand b ON p.brandId = b.brandId "
+                + "GROUP BY b.name";
 
         try (Connection conn = new DBContext().getConnection();
                 PreparedStatement ps = conn.prepareStatement(query)) {

@@ -110,7 +110,7 @@ export default async function page({params: {id}}: Props) {
         <table className="min-w-full pb-24 border-separate border-spacing-y-3 whitespace-nowrap">
           <thead>
             <tr className="text-xs font-medium uppercase">
-              <th className="pl-6 pr-4">NO.</th>
+              <th className="pl-6 pr-4">ID</th>
               <th className="px-4">Photo</th>
               <th className="px-4">Name</th>
               <th className="px-4">Quantity</th>
@@ -124,9 +124,9 @@ export default async function page({params: {id}}: Props) {
                   key={orderProduct?.product?.id}
                   className="px-6 py-4 mb-2 bg-black-2 rounded-xl"
                 >
-                  <td className="pl-6 pr-4 font-bold text-primary rounded-l-xl">
+                  <td className="pl-6 pr-4 font-bold rounded-l-xl">
                     {"#"}
-                    {index + 1}
+                    {orderProduct?.product?.id}
                   </td>
                   <td className="px-4">
                     <div className="relative w-10 h-10 overflow-hidden bg-white rounded-lg">

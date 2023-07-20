@@ -362,6 +362,7 @@ public class OrderDAO {
                 updatePs.setInt(2, orderId);
                 int rowsUpdated = updatePs.executeUpdate();
                 if (rowsUpdated > 0) {
+                    updateSold(orderId);
                     System.out.println("Order status updated to COMPLETE.");
                 } else {
                     System.out.println("Failed to update order status.");
@@ -381,6 +382,31 @@ public class OrderDAO {
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
+    }
+
+    private void updateSold(int orderId) {
+        List<Integer> productIds = new ArrayList<>();
+
+        String query = "SELECT productId FROM OrderProducts WHERE orderId = ?";
+
+        try (Connection conn = new DBContext().getConnection();
+                PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setInt(1, orderId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int productId = rs.getInt("productId");
+                // Add the productId to the list for updating sold quantities later
+                productIds.add(productId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Update sold quantities for the products in the list
+        ProductDAO productDAO = new ProductDAO();
+        productDAO.updateSold(productIds);
     }
 
     private String getCurrentStatus(Connection conn, int orderId) throws SQLException {

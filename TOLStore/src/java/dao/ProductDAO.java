@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -179,6 +180,45 @@ public class ProductDAO {
         }
 
         return new FetchResult<>(productList, totalProducts);
+    }
+
+    public void updateSold(List<Integer> productIds) {
+        String query = "UPDATE Product "
+                + "SET sold = ( "
+                + "    SELECT SUM(op.quantity) "
+                + "    FROM OrderProducts op "
+                + "    JOIN [Order] o ON op.orderId = o.orderId "
+                + "    WHERE op.productId = Product.productId "
+                + "    AND o.status = 'COMPLETE' "
+                + "    GROUP BY op.productId "
+                + ") "
+                + "WHERE productId IN " + getInClause(productIds);
+
+        try (Connection conn = new DBContext().getConnection();
+                PreparedStatement ps = conn.prepareStatement(query)) {
+
+            int index = 1;
+            for (Integer productId : productIds) {
+                ps.setInt(index++, productId);
+            }
+
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Helper method to generate the IN clause dynamically for the productIds list
+    private String getInClause(List<Integer> values) {
+        StringBuilder sb = new StringBuilder("(");
+        for (int i = 0; i < values.size(); i++) {
+            sb.append("?");
+            if (i < values.size() - 1) {
+                sb.append(",");
+            }
+        }
+        sb.append(")");
+        return sb.toString();
     }
 
     public FetchResult<Product> getSearchedProducts(String searchTerm, String categoryId, String brandId, String sortBy, int page, int pageSize) {
