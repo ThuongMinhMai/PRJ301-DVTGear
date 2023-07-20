@@ -106,7 +106,7 @@ TOL Gear consists of two interfaces: TOL Store and TOL Admin. The TOL Store is a
 - **Orders Page (<http://localhost:3000/orders>)**
 ![Orders Page](./wireframe/orders-admin.png)
 
-- **Orders Page (<http://localhost:3000/orders>)**
+- **Orders Page (<http://localhost:3000/orders/[id]>)**
 ![Orders_Detail](./wireframe/order-detail.png)
 
 - **Settings Page (<http://localhost:3000/settings>)**
