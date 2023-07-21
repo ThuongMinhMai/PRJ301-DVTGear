@@ -168,6 +168,12 @@ The application integrates the following third-party services and APIs to enhanc
 
 In the future, the application aims to incorporate several new features to enhance user engagement and satisfaction. These include implementing a loyalty points system for customers, enabling users to rate products with videos or photos, adding a chatbox for improved customer support, allowing product reservations, and implementing multi-language support to cater to diverse audiences.
 
+### Knowledge learned
+
+- The process of developing a web application is one of the most valuable things that we learn in this course, it contributes to increasing the knowledge to develop ourselves as well as to be better prepared when starting to work.
+- We learned the development process, user experience optimization, product and order management, performance analysis and evaluation, learned some other languages to support interface design: tailwind, js.....
+- We have learned and practiced more teamwork.
+
 ### Pros
 
 - The application provides a wide range of technology products, offering users a convenient one-stop shop.
